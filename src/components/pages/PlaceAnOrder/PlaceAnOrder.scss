@@ -1,0 +1,161 @@
+.flex-item-order-left {
+    margin-right: 50px;
+}
+
+.flex-item-order-right {
+    margin-left: 50px;
+}
+
+.space-place-an-order {
+    padding: 50px 100px 90px 100px;
+    margin-bottom: 150px;
+}
+
+.date-picker-booking-tour {
+    width: 100%;
+    padding: 15px 10px;
+    padding-left: 80px;
+    border-radius: 10px;
+    outline: none;
+    border: solid 1px #d9d9d9;
+    font-weight: bold;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.icon-place-order {
+    height: 45px;
+    width: auto;
+    margin-right: -55px;
+    margin-left: 10px;
+    z-index: 1;
+}
+
+.arrow-place-order {
+    height: 25px;
+    width: auto;
+    margin-left: -45px;
+}
+
+.input-place-order {
+    align-items: center;
+    align-content: center;
+}
+
+.mb-10 {
+    margin-bottom: 10px !important;
+}
+
+.react-datepicker__triangle {
+    display: none;
+}
+
+.react-datepicker-popper {
+    padding-top: 0 !important;
+    transform: translate3d(381.6px, 440.8px, 0px) !important;
+}
+
+.react-datepicker {
+    transform: scale(1.5) !important;
+}
+
+.people-picker-place-order {
+    background-color: white;
+}
+
+.note-about-age {
+    font-size: 12px;
+    color: gray;
+}
+
+.take-point {
+    font-size: 14px;
+}
+
+.mr-50 {
+    margin-right: 50px;
+}
+
+.box-select-people {
+    width: 44%;
+    background-color: white;
+    box-shadow: 0px 1px 2px 1px gray;
+    padding: 10px;
+    float: right;
+    border-radius: 5px;
+    transform-origin: top;
+    transform: scaleY(0);
+}
+
+.box-select-people-open {
+    animation: slideDown 0.2s forwards;
+}
+
+.box-select-people-right {
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.price-select-people {
+    width: 30%;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.txt-ac {
+    font-weight: bold;
+}
+
+.count-adult {
+    text-align: center;
+    width: 35px;
+    height: 30px;
+    border: 0.5px solid #000000;
+    border-radius: 4px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+.count-adult::-webkit-outer-spin-button,
+.count-adult::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+.count-adult {
+    -moz-appearance: textfield;
+}
+
+.information-people {
+    width: 30%;
+}
+
+.count-total-price {
+    padding: 10px 0px;
+    border-top: solid 1px gray;
+}
+
+.price-origin {
+    font-weight: bold;
+}
+
+.icon-add-people {
+    border-radius: 50px;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.icon-add-people:hover {
+    background-color: #d9d9d9;
+}
+
+.btn-next-place-order {
+    padding: 10px 40px !important;
+    font-size: 18px !important;
+    color: white !important;
+    font-weight: bold !important;
+    position: relative;
+    margin: 20px 0px;
+    margin-left: 88%;
+}

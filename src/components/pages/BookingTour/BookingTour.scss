@@ -1,0 +1,51 @@
+.line-booking-tour {
+    width: 0%;
+    height: 2px;
+    background: #235efa;
+    margin-bottom: -25px;
+    margin-left: 10%;
+    transition: 0.5s;
+}
+
+.p-booking-tour {
+    padding: 45px 30% 20px 30% !important;
+    margin: 0 !important;
+    background-color: white;
+}
+
+.image-booking-tour {
+    width: 50px;
+    height: auto;
+    padding: 10px;
+    border-radius: 50px;
+    border: solid 1px #235efa;
+    background-color: #d9d9d9;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    transition: 0.5s;
+    margin-bottom: 20px;
+}
+
+.tag-booking-tour {
+    justify-content: space-between;
+    margin-left: auto;
+    margin-right: auto;
+
+    .item-tag-booking-tour {
+        width: 20%;
+        cursor: pointer;
+        div {
+            text-align: center;
+            font-weight: bold;
+        }
+    }
+}
+
+.step-booking {
+    background-color: #235efa;
+}
+
+.p-content-booking {
+    padding: 50px 120px !important;
+}

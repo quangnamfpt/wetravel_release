@@ -1,0 +1,43 @@
+export const english = {
+    txtPropertyName: 'Property name',
+    txtStatus: 'Status',
+    txtTypeOfCuisine: 'Type of cuisine',
+    txtActive: 'Active',
+    txtPause: 'Pause',
+    txtClose: 'Close',
+    txtStarRating: 'Star rating',
+    txtCity: 'City',
+    txtAddress: 'Address',
+    txtTimeOpen: 'Time Open',
+    txtTimeClose: 'Time Close',
+    txtWebsite: 'Website',
+    txtTaxCode: 'Tax code',
+    txtDescription: 'Description',
+    txtContact: 'Contact',
+    txtPhoneNumber: 'Phone number',
+    txtFax: 'Fax',
+    txtEmail: 'Email',
+    txtSaveAndNext: 'Save and next section'
+}
+
+export const vietnamese = {
+    txtPropertyName: 'Tên tài sản',
+    txtStatus: 'Trạng thái',
+    txtTypeOfCuisine: 'Loại hình ẩm thực',
+    txtActive: 'Hoạt động',
+    txtPause: 'Tạm dừng',
+    txtClose: 'Đã đóng',
+    txtStarRating: 'Hạng sao',
+    txtCity: 'Thành phố',
+    txtAddress: 'Địa chỉ',
+    txtTimeOpen: 'Giờ mở cửa',
+    txtTimeClose: 'Giờ đóng cửa',
+    txtWebsite: 'Trang web',
+    txtTaxCode: 'Mã số thuế',
+    txtDescription: 'Mô tả',
+    txtContact: 'Liên hệ',
+    txtPhoneNumber: 'Số điện thoại',
+    txtFax: 'Fax',
+    txtEmail: 'Email',
+    txtSaveAndNext: 'Lưu và nhập tiếp'
+}

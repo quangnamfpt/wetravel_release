@@ -1,0 +1,50 @@
+.confirm-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2;
+}
+
+.center-screen {
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    transition: 0.5s;
+}
+
+.box-confirm {
+    border-radius: 10px;
+}
+
+.title-confirm-dialog {
+    border-radius: 10px 10px 0px 0px;
+    padding: 20px;
+    color: white;
+}
+
+.mlr-20-import {
+    padding: 0px 20px !important;
+}
+
+.bg-red {
+    background-color: red;
+}
+
+.bg-blue {
+    background-color: #198754;
+}
+
+.btn-confirm {
+    padding: 8px 30px !important;
+    font-size: 16px !important;
+}
+
+.font-20 {
+    font-size: 20px;
+}

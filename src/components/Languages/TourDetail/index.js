@@ -1,0 +1,41 @@
+export const english = {
+    txtIntroduce: 'Tour introduction',
+    txtScheduled: 'Tour scheduled',
+    txtPrice: 'Price from',
+    txtDepositPrice: 'Deposit price',
+    txtBookTour: 'Book tour',
+    txtAdult: 'Adult',
+    txtChildren: 'Children',
+    txtChildrenAge: 'Children from 5 to 11 years old',
+    txtDay: 'Day',
+    txtStartDate: 'Start date',
+    txtLocation: 'Shuttle & location information',
+    txtAddress: 'Address',
+    txtInclude: 'Include',
+    txtNonInclude: 'Non include',
+    txtGeneralTerms: 'General terms',
+    txtMoreDescription: 'More description',
+    txtFeedback: 'Feedback',
+    txtWarningPrice: 'The more people participating in the tour, the lower the price will be. You only need to pay the deposit in advance, the remaining amount will be calculated and notified to you after the trip ends.'
+}
+
+export const vietnamese = {
+    txtIntroduce: 'Giới thiệu tour',
+    txtScheduled: 'Lịch trình tour',
+    txtPrice: 'Giá từ',
+    txtDepositPrice: 'Giá đặt cọc',
+    txtBookTour: 'Đặt tour',
+    txtAdult: 'Người lớn',
+    txtChildren: 'Trẻ em',
+    txtChildrenAge: 'Trẻ em từ 5 - 11 tuổi',
+    txtDay: 'Ngày',
+    txtStartDate: 'Ngày bắt đầu',
+    txtLocation: 'Thông tin đưa đón & địa điểm',
+    txtAddress: 'Địa chỉ',
+    txtInclude: 'Bao gồm',
+    txtNonInclude: 'Không bao gồm',
+    txtGeneralTerms: 'Điều khoản chung',
+    txtMoreDescription: 'Thông tin thêm',
+    txtFeedback: 'Nhận xét',
+    txtWarningPrice: 'Càng nhiều người tham gia vào tour giá tiền sẽ càng thấp. Bạn chỉ cần trả trước tiền đặt cọc, số tiền còn lại sẽ được tính và thông báo thanh toán đến bạn sau khi chuyến đi kết thúc.'
+}

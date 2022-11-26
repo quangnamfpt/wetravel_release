@@ -1,0 +1,176 @@
+.w-33 {
+    width: 33%;
+}
+
+.tab-history-booking {
+    padding: 10px 10px;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.tab-history-booking-selected {
+    transition: 0.5s;
+    box-shadow: 0px 2px blue;
+}
+
+.br-all {
+    background-color: white;
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 0px 1px 2px gray;
+}
+
+.item-list-history-booking {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 1px 2px gray;
+    justify-content: space-between;
+    align-items: center;
+    align-content: center;
+}
+
+.tour-name-history-booking {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.start-date-history-booking {
+    color: #a8a8a8;
+    font-size: 14px;
+}
+
+.btn-pay-history-booking {
+    font-size: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 5px 20px;
+    background-color: white;
+    border: solid 2px rgb(85, 85, 255);
+    color: rgb(85, 85, 255);
+    transition: 0.5s;
+}
+
+.btn-pay-history-booking:hover {
+    background-color: rgb(224, 224, 255);
+}
+
+.btn-cancel-history-booking {
+    font-size: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 5px 20px;
+    background-color: white;
+    border: solid 2px #eb1d1d;
+    color: #eb1d1d;
+    transition: 0.5s;
+}
+
+.btn-cancel-history-booking:hover {
+    background-color: #ffd8d8;
+}
+
+.price-payed-history-booking {
+    font-size: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #eb1d1d;
+}
+
+.btn-feedback-history-booking {
+    font-size: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    padding: 5px 20px;
+    background-color: white;
+    border: solid 2px #ffa000;
+    color: #ffa000;
+    margin-left: 10px;
+    transition: 0.5s;
+}
+
+.btn-feedback-history-booking:hover {
+    background-color: #fff1d7;
+}
+
+.canceled-history-booking {
+    font-size: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #eb1d1d;
+}
+
+.waiting-history-booking {
+    font-size: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #ffa000;
+}
+
+.waiting-pay-history-booking {
+    font-size: 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: rgb(85, 85, 255);
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.link-detail-tour {
+    cursor: pointer;
+    color: #a8a8a8;
+    transition: 0.5s;
+}
+
+.link-detail-tour:hover {
+    color: #6a92ff;
+}
+
+.image-no-booking {
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0px 1px 2px gray;
+    background-color: white;
+    text-align: center;
+}
+
+.text-no-booking {
+    color: #a8a8a8;
+}
+
+.link-no-booking {
+    text-decoration: none;
+    color: rgb(85, 85, 255);
+}
+
+.cancel-tour {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.441);
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    z-index: 4;
+}
+
+.popup-cancel-tour {
+    width: 30% !important;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.btn-cancel-tour {
+    padding: 8px 30px !important;
+    font-size: 16px !important;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s forwards;
+}

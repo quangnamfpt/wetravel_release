@@ -1,0 +1,318 @@
+.background-w {
+    background-color: white;
+    margin: 0px !important;
+    transition: 0.2s;
+}
+
+.space-30 {
+    padding: 30px;
+}
+
+.had-input {
+    border: solid 1px #d9d9d9;
+}
+
+.w-45 {
+    width: 45%;
+}
+
+.size-12 {
+    font-size: 12px;
+}
+
+.line-input-3-line {
+    align-items: flex-end;
+}
+
+.mt-30 {
+    margin-top: 30px !important;
+}
+
+.ml-50 {
+    margin-right: 50px;
+}
+
+.warning-image {
+    font-size: 14px;
+}
+
+.select-image-hide {
+    display: none;
+}
+
+.select-image-service {
+    width: 182px;
+    height: 182px;
+    background-color: rgba(217, 217, 217, 0.33);
+    padding: 39.5px 50px;
+    color: transparent;
+    justify-content: center;
+    align-items: center;
+    border: solid 1px #d9d9d9;
+    border-radius: 5px;
+}
+
+.icon-camera-plus {
+    width: 80px;
+    height: 80px;
+    color: gray;
+}
+
+.text-camera-plus {
+    color: gray;
+    text-align: center;
+    font-size: 14px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.image-selected {
+    width: 182px;
+    height: 182px;
+    object-fit: cover;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    transition: 0.5s;
+}
+
+.grid-image {
+    display: grid;
+    grid-template-columns: 20% 20% 20% 20% 20%;
+}
+
+.check-delete-image {
+    position: absolute;
+    width: 182px;
+    height: 182px;
+    background-color: black;
+    opacity: 0.5;
+}
+
+.image-trash {
+    position: absolute;
+    width: 50px;
+    height: auto;
+    color: white;
+    margin-top: 70px;
+    margin-left: 65px;
+}
+
+.layer-delete {
+    transition: 0.5s;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.layer-delete:hover {
+    opacity: 1;
+}
+
+.add-image-button {
+    cursor: pointer;
+}
+
+.btn-submit {
+    padding: 15px 20px !important;
+    font-size: 14px !important;
+    float: right !important;
+    margin-top: 20px;
+    font-weight: bold !important;
+}
+
+.btn-add {
+    width: 100%;
+    border: solid 2px #4874e8 !important;
+    color: #4874e8 !important;
+    font-size: 50px !important;
+    text-align: center;
+    transition: 0.2s linear !important;
+}
+
+.btn-add:hover {
+    background-color: #d0ddffb1 !important;
+}
+
+.title-room-container {
+    background-color: white;
+    // box-shadow: 0 8px 5px -4px gray;
+}
+
+.menu-container {
+    cursor: pointer;
+    float: right;
+}
+
+.bar1,
+.bar2,
+.bar3 {
+    width: 6px;
+    height: 6px;
+    background-color: black;
+    margin: 3px 0;
+    transition: 0.4s;
+    border-radius: 100%;
+}
+
+.form-container {
+    padding-bottom: 20px;
+}
+
+.space-icon-show-container {
+    background-color: white;
+    display: flex;
+    justify-items: center;
+    justify-content: center;
+    transition: 0.5s;
+    cursor: pointer;
+}
+
+.bd-bt {
+    border-bottom: solid 2px #d9d9d9;
+}
+
+.bd-t {
+    border-top: solid 2px #d9d9d9;
+}
+
+.space-icon-show-container:hover {
+    background-color: #f1f1f1;
+}
+
+.icon-show-container {
+    height: 20px;
+}
+
+.mini-infor-room {
+    background-color: white;
+    height: 87px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+}
+
+.w-40 {
+    width: 40%;
+}
+
+.w-60 {
+    width: 60%;
+}
+
+.txt-14 {
+    font-size: 14px;
+}
+
+.short-information-room {
+    font-weight: bold;
+    margin: 10px 0px 10px 30px;
+    align-items: center;
+}
+
+.short-information-detail {
+    margin-left: 20px;
+    animation: opacityShow 1s alternate;
+}
+
+.image-hide-animation {
+    animation: opacityShow 1s alternate;
+}
+
+.image-side-hide {
+    width: 100%;
+    height: 87px;
+    object-fit: cover;
+}
+
+.title-information-room {
+    font-size: 18px !important;
+}
+.liner-white {
+    width: 100%;
+    height: 87px;
+    background: linear-gradient(
+        90deg,
+        #ffffff 0%,
+        rgba(225, 225, 225, 0) 54.06%,
+        rgba(217, 217, 217, 0) 88.44%,
+        rgba(255, 255, 255, 0.92) 100%
+    );
+    position: relative;
+    margin-top: -87px;
+}
+
+.user-select {
+    box-shadow: 0px 2px 5px -2px gray;
+    border-radius: 5px;
+}
+
+.dot-option {
+    float: right;
+    position: relative;
+    margin-bottom: -30px;
+    bottom: -2px;
+    left: -2px;
+    z-index: 1;
+    border-radius: 20px;
+    transition: 0.2s;
+}
+
+.dot-option-image {
+    width: 30px;
+    height: auto;
+}
+
+.space-click-hide {
+    padding: 30px;
+    margin-bottom: 0 !important;
+}
+
+.dot-option:hover {
+    background-color: rgba(217, 217, 217, 0.5);
+}
+
+.dot-option:active {
+    background-color: rgba(128, 128, 128, 0.2);
+}
+
+.animation-show {
+    transform-origin: top;
+    animation: slideDown 0.5s alternate;
+}
+
+@keyframes slideDown {
+    from {
+        transform: scaleY(0);
+    }
+    to {
+        transform: scaleY(1);
+    }
+}
+
+.animation-hide {
+    transform-origin: top;
+    animation: slideUp 0.2s forwards;
+}
+
+@keyframes slideUp {
+    from {
+        transform: scaleY(1);
+    }
+    to {
+        transform: scaleY(0);
+    }
+}
+
+@keyframes opacityShow {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.main-form-rooms {
+    box-shadow: 0px 2px 5px -2px grey;
+}

@@ -1,0 +1,48 @@
+.none {
+    display: none;
+}
+
+.popup-select-date {
+    background-color: white !important;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+}
+
+.locationPopupDate {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    padding: 50px;
+    border-radius: 10px;
+}
+
+.title-warning-select-date {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.back-select-date {
+    background-color: white;
+    padding: 30px;
+    border-radius: 10px;
+    margin-top: -50px;
+    transition: 0.5s;
+}
+
+.btn-font-size-18 {
+    * {
+        font-size: 14px !important;
+    }
+}
+
+.btn-popup-calendar {
+    font-size: 14px !important;
+    margin-left: 10px;
+    padding: 10px 20px !important;
+}

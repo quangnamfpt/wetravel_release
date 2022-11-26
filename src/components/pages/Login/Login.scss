@@ -1,0 +1,175 @@
+.location {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    margin-top: -200px;
+    margin-left: -200px;
+    width: 350px;
+    height: auto;
+    padding: 30px 0px;
+    background-color: white;
+    border: 0px;
+    border-radius: 5px;
+    z-index: 2;
+}
+
+.title-login {
+    font-weight: bold;
+    text-align: center;
+    padding: 20px;
+    color: black;
+}
+
+.icon-inner {
+    position: absolute;
+    margin-left: 50px;
+    margin-top: 10px;
+    display: inline;
+    width: 20px;
+    height: auto;
+    z-index: 2;
+    color: black;
+}
+
+.input-tag {
+    display: inline;
+    width: 100%;
+    height: auto;
+}
+
+.input-text {
+    outline: none;
+    display: block;
+    width: 75%;
+    margin: auto;
+    border: 0px;
+    border-bottom: solid 1px #d9d9d9;
+    font-size: 12px;
+    padding: 10px 10px 10px 50px;
+}
+
+.label-before {
+    line-height: 20px;
+    font-size: 12px;
+    top: -10px;
+    z-index: 1;
+}
+
+.field-login {
+    position: relative;
+    label::before {
+        content: attr(title);
+        position: absolute;
+        top: 0px;
+        left: 93px;
+        line-height: 40px;
+        font-size: 14px !important;
+        color: #777;
+        transition: 300ms all;
+        font-size: 12px;
+    }
+    input {
+        display: block;
+        width: 75%;
+        line-height: 40px;
+        padding: 0 15px;
+        box-sizing: border-box;
+        font-size: 14px !important;
+        color: #222;
+        border: 0px;
+        border-bottom: solid 1px #d9d9d9;
+        margin: auto;
+        padding: 0px 50px 0px 50px;
+        outline: none;
+        &:focus {
+            outline: 0;
+            border-color: blue;
+        }
+        &:valid + label::before {
+            @extend .label-before;
+            content: attr(data-title);
+        }
+        &:focus + label::before {
+            @extend .label-before;
+            color: blue;
+        }
+    }
+}
+
+.remember-forgot {
+    position: relative;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    justify-content: space-between;
+    margin: -12px 40px 0px 30px;
+}
+
+.checkbox-remember {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+}
+
+.forgot-link {
+    font-size: 12px;
+    color: #2b5cba;
+    cursor: pointer;
+}
+
+.login-register {
+    display: flex;
+    justify-items: center;
+    align-items: center;
+    justify-content: space-evenly;
+    margin-top: 30px;
+}
+
+.btn-login {
+    padding: 10px 42px;
+    border-radius: 5px;
+    background-color: #4874e8;
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    border: none;
+}
+
+.ask-to-register {
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.register-link {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.question-no-account {
+    font-size: 14px;
+    color: black;
+}
+
+.icon-show-password {
+    margin-left: 280px;
+}
+
+.warning-input {
+    color: red;
+    font-weight: bold;
+    font-size: 14px;
+    text-align: center;
+    padding-bottom: 20px;
+    display: none;
+}
+
+.warning-login {
+    position: relative;
+    margin-top: -20px;
+    margin-bottom: 20px;
+    color: red;
+    font-weight: bold;
+    font-size: 13px;
+    margin-left: 45px;
+}

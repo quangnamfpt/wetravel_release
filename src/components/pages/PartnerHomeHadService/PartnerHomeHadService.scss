@@ -1,0 +1,179 @@
+.menu-sidebar {
+    background-color: white;
+    font-size: 16px;
+    transition: 0.5s;
+}
+
+.bOQEtf {
+    width: 100% !important;
+    font-size: 17px !important;
+}
+
+li {
+    text-align: center;
+}
+
+.input-inline-list-service {
+    padding: 6px 10px 6px 30px;
+}
+
+.list-service-main {
+    min-width: 80% !important;
+    max-width: 100% !important;
+    background-color: #f1f1f1;
+    min-height: 100vh;
+    padding: 20px;
+    animation: fadeIn 0.5s forwards;
+}
+
+.input-list-service {
+    margin: 0px !important;
+}
+
+.icon-search-list-service {
+    margin-left: 7.5px;
+    margin-top: 9.5px;
+}
+
+.tool-list-service-main {
+    justify-content: space-between;
+    padding: 0px 30px;
+}
+
+.btn-add-new-service {
+    text-align: center;
+    font-size: 14px !important;
+    padding: 6.5px 30px !important;
+}
+
+.search-input-text {
+    width: 40%;
+}
+
+.select-status {
+    width: 25% !important;
+}
+
+.select-type {
+    width: 35% !important;
+}
+
+.icon-sort {
+    color: gray;
+}
+
+.select-search-service {
+    padding-left: 10px;
+    font-size: 14px;
+}
+
+.list-service-tool {
+    width: 50%;
+}
+
+.btn-action {
+    border: 0;
+    background-color: transparent;
+}
+
+.first-item-sidebar {
+    margin-top: 50px;
+}
+
+.table-list-service {
+    background-color: white;
+    box-shadow: 0px 5px 5px -2px gray;
+
+    thead {
+        font-weight: bold;
+        td {
+            cursor: pointer;
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
+        }
+    }
+
+    tbody {
+        tr {
+            cursor: pointer;
+        }
+    }
+
+    td {
+        padding: 15px 20px !important;
+    }
+}
+
+.space-table {
+    padding: 0px 30px;
+}
+
+.status {
+    padding: 2px 5px;
+    border-radius: 5px;
+}
+
+.status-active {
+    background: #e8fadf;
+    color: rgba(133, 226, 84, 1);
+}
+
+.status-pause {
+    background: #fff2d6;
+    color: rgba(255, 178, 22, 1);
+}
+
+.status-close {
+    color: rgba(115, 116, 252, 1);
+    background: #e7e7ff;
+}
+
+.icon-close-sidebar {
+    position: relative;
+    margin-bottom: -30px;
+    width: 20px;
+    color: black;
+    z-index: 1;
+}
+
+.paging {
+    align-items: center;
+    margin-right: 30px;
+}
+
+.btn-paging {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background-color: white;
+    border-radius: 5px;
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px;
+    transition: 0.2s;
+}
+
+.unseleted:hover {
+    background-color: #c1c1c1;
+}
+
+.selected-paging {
+    background-color: rgba(72, 116, 232, 1);
+    color: white;
+    border: 0px;
+}
+
+.stt-column {
+    width: 10%;
+}
+
+.name-column {
+    width: 20%;
+}
+
+.type-column {
+    width: 20%;
+}

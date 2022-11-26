@@ -1,0 +1,32 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap');
+
+:root {
+    --primary: aqua;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.6rem;
+    color: #333;
+    line-height: 1.5;
+    text-rendering: optimizeSpeed;
+}
+
+label {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none;
+}

@@ -1,0 +1,99 @@
+.input-profile-company-form {
+    width: 70% !important;
+    padding: 30px;
+    margin: auto;
+    background-color: white;
+    box-shadow: 0px 2px 5px gray;
+    border-radius: 5px;
+    transition: all 0.5s;
+}
+
+.form-input-all-profile-partner {
+    padding: 30px;
+    z-index: 2;
+}
+
+.background-image {
+    position: fixed;
+    left: 0;
+    top: -100px;
+    width: 100vw;
+    z-index: -1;
+    object-fit: cover;
+}
+
+.ml-20 {
+    margin-left: 2%;
+}
+
+.mt-20 {
+    margin-top: 2%;
+}
+
+.mlr-50 {
+    margin: 0px 5%;
+    width: 50%;
+}
+
+.w-25 {
+    width: 20% !important;
+}
+
+.line-input {
+    justify-content: space-between;
+}
+
+.line-4-item {
+    width: 90%;
+    margin: auto;
+}
+
+.input-inline {
+    width: 100%;
+    padding: 5px 10px;
+    outline: none;
+    transition: all 0.3s;
+    border: solid 1px #d9d9d9;
+    border-radius: 5px;
+    margin: 5px 0px 30px 0px;
+    background-color: #fafafa;
+    transition: 0.4s;
+}
+
+.title-form-input {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 0px 20px 20px 20px;
+}
+
+.input-alone {
+    width: 100% !important;
+}
+
+.requird-star {
+    color: red;
+}
+
+.form-2-on-4-left {
+    justify-content: space-between;
+    margin: 0px 5.5% 0px 0px;
+}
+
+.form-2-on-4-right {
+    justify-content: space-between;
+    margin: 0px 0px 0px 5.5%;
+}
+
+.lenght-birthdate-input-information-partner {
+    width: 55%;
+}
+
+.btn-submit-profile-partner {
+    padding: 15px 50px !important;
+    font-weight: bold !important;
+    font-size: 16px !important;
+    float: right;
+    margin-top: 20px;
+    margin-right: 15%;
+    margin-bottom: 20px;
+}

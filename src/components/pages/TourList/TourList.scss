@@ -1,0 +1,68 @@
+.mt-50-import {
+    margin-top: 50px !important;
+}
+
+.mb-20 {
+    margin-bottom: 10px;
+}
+
+.w-35 {
+    width: 30%;
+}
+
+.option-label {
+    font-size: 14px;
+    width: 150px;
+}
+
+.grid-tour {
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+    grid-template-rows: 230px 230px 230px 230px;
+}
+
+.mt-50 {
+    margin-top: 50px;
+}
+
+.tour-item {
+    height: 210px;
+    border-radius: 5px;
+    padding-bottom: 10px;
+    margin: 15px;
+    box-shadow: 0px 1px 2px 1px #d9d9d9;
+    cursor: pointer;
+    transition: 0.5s;
+    background-color: white;
+}
+
+.tour-item:hover {
+    transform: scale(1.05);
+    box-shadow: -2px 2px 5px 2px #9b9b9b;
+}
+
+.image-main-tour {
+    border-radius: 5px 5px 0px 0px;
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.tour-name {
+    font-weight: bold;
+    font-size: 13px;
+}
+
+.tour-price {
+    font-weight: bold;
+    font-size: 13px;
+    color: #ffb216;
+}
+
+.pd-short-information-tour {
+    padding: 10px 20px 5px 20px;
+}
+
+.box-shadow-tour-list {
+    box-shadow: 0px 1px 2px 1px #d9d9d9 !important;
+}
