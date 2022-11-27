@@ -4,8 +4,10 @@ export const english = {
     txtForYou: 'For you',
     txtTopic: 'Topic',
     txtTitle: 'Travel Forum',
+    txtEdit: 'Edit',
     txtReport: 'Report',
     txtDelete: 'Delete',
+    txtCreateNewPost: 'Create new post',
     txtDescription: 'Share and discuss all things travel related; from itinerary help requests, to travel hacks or pictures of your favorite'
 }
 
@@ -62,8 +64,10 @@ export const vietnamese = {
     txtForYou: 'Dành cho bạn',
     txtTopic: 'Chủ đề',
     txtTitle: 'Diễn dàn du lịch',
+    txtEdit: 'Sửa',
     txtReport: 'Tố cáo',
     txtDelete: 'Xoá',
+    txtCreateNewPost: 'Tạo bài viết mới',
     txtDescription: 'Chia sẻ và thảo luận về mọi thứ liên quan đến du lịch; từ các yêu cầu trợ giúp về hành trình, đến các thủ thuật du lịch hoặc hình ảnh yêu thích của bạn'
 }
 

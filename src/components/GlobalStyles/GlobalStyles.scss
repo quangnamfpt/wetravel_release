@@ -30,3 +30,22 @@ label {
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none;
 }
+
+#btn-back-top {
+    display: none;
+    width: 60px;
+    height: 60px;
+    justify-items: center;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-size: 30px;
+    background-color: rgb(41, 159, 255);
+    border-radius: 50px;
+    position: fixed;
+    right: 20px;
+    bottom: 85px;
+    transition: 0.5s;
+    cursor: pointer;
+    animation: fadeIn 0.5s forwards;
+}

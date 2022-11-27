@@ -2,27 +2,23 @@ import { memo, useState, useEffect } from 'react'
 import BackgroundForum from '../../images/bg_forum.jpg'
 import Forum1 from '../../images/forum (1).jpg'
 import Forum2 from '../../images/forum (2).jpg'
-import { FaRegPaperPlane } from 'react-icons/fa'
-import './ListPostForum.scss'
+import { useNavigate } from 'react-router-dom'
+import './MyPost.scss'
 import { english, typePostEnglish, typePostVietnamese, vietnamese } from '../../Languages/ListPostForum'
 import { BsChatLeftDots, BsThreeDotsVertical } from 'react-icons/bs'
+import { MdOutlineModeEditOutline } from 'react-icons/md'
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
-import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
-import { StickyContainer, Sticky } from 'react-sticky'
-import { useNavigate } from 'react-router-dom'
-import { CgDanger } from 'react-icons/cg'
 import { FiTrash } from 'react-icons/fi'
+import { Scrollbars } from 'react-custom-scrollbars-2';
 
-function ListPostForum({ languageSelected }) {
+function MyPost({ languageSelected }) {
     const languageDisplay = languageSelected === 'EN' ? english : vietnamese
     const languageTypePost = languageSelected === 'EN' ? typePostEnglish : typePostVietnamese
 
     const navigate = useNavigate()
 
-    const [showListTopic, setShowListTopic] = useState(false)
-    const [topicSelected, setTopicSelected] = useState([])
     const [listPost, setListPost] = useState([
         {
             id: 1,
@@ -90,7 +86,7 @@ function ListPostForum({ languageSelected }) {
             ]
         },
         {
-            id: 2,
+            id: 1,
             topic: 2,
             accountName: 'Nguyen Van A',
             dateCreate: '2022-01-01',
@@ -155,7 +151,7 @@ function ListPostForum({ languageSelected }) {
             ]
         },
         {
-            id: 3,
+            id: 1,
             topic: 2,
             accountName: 'Nguyen Van A',
             dateCreate: '2022-01-01',
@@ -220,7 +216,7 @@ function ListPostForum({ languageSelected }) {
             ]
         },
         {
-            id: 4,
+            id: 1,
             topic: 2,
             accountName: 'Nguyen Van A',
             dateCreate: '2022-01-01',
@@ -285,7 +281,7 @@ function ListPostForum({ languageSelected }) {
             ]
         },
         {
-            id: 5,
+            id: 1,
             topic: 2,
             accountName: 'Nguyen Van A',
             dateCreate: '2022-01-01',
@@ -350,7 +346,7 @@ function ListPostForum({ languageSelected }) {
             ]
         },
         {
-            id: 6,
+            id: 1,
             topic: 2,
             accountName: 'Nguyen Van A',
             dateCreate: '2022-01-01',
@@ -416,24 +412,6 @@ function ListPostForum({ languageSelected }) {
         }
     ])
 
-    const [numberPage, setNumberPage] = useState(1)
-    const [numberOfPages, setNumberOfPages] = useState([1, 2, 3])
-
-    useEffect(() => {
-
-    }, [])
-
-    const handleSelectTopic = (value) => {
-        let topicSelectedRaw = [...topicSelected]
-        const indexTopic = topicSelectedRaw.indexOf(value)
-        if (indexTopic !== -1) {
-            topicSelectedRaw.splice(indexTopic, 1)
-        } else {
-            topicSelectedRaw.push(value)
-        }
-        setTopicSelected([...topicSelectedRaw])
-    }
-
     let listPostShow = []
 
     listPost.forEach((post) => {
@@ -449,103 +427,57 @@ function ListPostForum({ languageSelected }) {
         listPostShow.push(postRaw)
     })
 
-    const role = sessionStorage.getItem('role')
-
     return (
-        <div className='container home-main'>
-            <img src={BackgroundForum} className='bg-image rotation-0' />
-            <div className='border-search container search w-86'>
-                <FaRegPaperPlane className='icon-search' />
-                <input className='input-search' placeholder={languageDisplay.txtSearchByName} />
-                <button className='btn-search'>{languageDisplay.txtSearch}</button>
-            </div>
-            <div className='container'>
-                <div className='bg-white bg-list-post'>
-                    <div className='container mb-50'>
-                        <div className='text-center title-travel-forum'>{languageDisplay.txtTitle}</div>
-                        <div className='text-center description-travel-forum'>{languageDisplay.txtDescription}</div>
-                    </div>
-                    <StickyContainer>
-                        <div className='d-flex'>
-                            <div className='w-70'>
-                                <div className='d-flex space-between'>
-                                    <header className='title mb-10'>{languageDisplay.txtForYou}</header>
-                                    {role && role != 1 &&
-                                        <button className='btn btn-warning mr-20 btn-create-new-post'>{languageDisplay.txtCreateNewPost}</button>
-                                    }
-                                </div>
-                                {listPostShow.map((post, index) => (
-                                    <div className='d-flex mb-20 mr-20'>
-                                        <img src={post.image} className='image-list-port-forum' />
-                                        <div className='pl-20 short-information-post w-100'>
-                                            <div>
-                                                <div className='d-flex space-between'>
-                                                    <div className='topic-post-in-list font-14 mb-10'>{languageTypePost[parseInt(post.topic) - 1].label.toUpperCase()}</div>
-                                                    <div>
-                                                        <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
-                                                            <MenuItem className='requird-star'>
-                                                                <CgDanger /><label className='ml-5'>{languageDisplay.txtReport}</label>
-                                                            </MenuItem>
-                                                            {/* {sessionStorage.getItem('role') == 1 && */}
-                                                            <MenuItem>
-                                                                <FiTrash /><label className='ml-5'>{languageDisplay.txtDelete}</label>
-                                                            </MenuItem>
-                                                            {/* } */}
-                                                        </Menu>
-                                                    </div>
-                                                </div>
-                                                <div className='title m-0 font-20 each-post' onClick={() => navigate(`/forum/post`, { state: { post: post, listPost: listPost, index: index } })}>{post.title}</div>
-                                                <div>{post.contentShort}</div>
-                                            </div>
+        <div className='container bg-all-my-post'>
+            <div className='bg-white bg-my-post m-20 mt-20'>
+                <div className='header-my-post'>
+                    <label className='text-bold font-20'>{languageSelected === 'EN' ? 'My post' : 'Bài viết của tôi'}</label>
+                    <button className='btn btn-warning btn-create-new-post mb-0'>{languageSelected === 'EN' ? 'Create new post' : 'Tạo bài viết mới'}</button>
+                </div>
+                <div className='list-my-post'>
+                    <Scrollbars>
+                        {listPostShow.map((post, index) => (
+                            <>
+                                {index === 0 && <div className='mt-20' />}
+                                <div className='d-flex mb-20 mr-20 p-0-50'>
+                                    <img src={post.image} className='image-list-port-forum' />
+                                    <div className='pl-20 short-information-post w-100'>
+                                        <div>
                                             <div className='d-flex space-between'>
+                                                <div className='topic-post-in-list font-14 mb-10'>{languageTypePost[parseInt(post.topic) - 1].label.toUpperCase()}</div>
                                                 <div>
-                                                    <label className='title m-0 font-14'>{post.accountName}</label>
-                                                    <input type='date' className='fake-label pl-20' disabled value={post.dateCreate} />
+                                                    <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
+                                                        <MenuItem>
+                                                            <MdOutlineModeEditOutline /><label className='ml-5'>{languageDisplay.txtEdit}</label>
+                                                        </MenuItem>
+                                                        <MenuItem>
+                                                            <FiTrash /><label className='ml-5'>{languageDisplay.txtDelete}</label>
+                                                        </MenuItem>
+                                                    </Menu>
                                                 </div>
-                                                <div>
-                                                    <BsChatLeftDots />
-                                                    <label className='pl-5'>{post.comment.length}</label>
-                                                </div>
+                                            </div>
+                                            <div className='title m-0 font-20 each-post' onClick={() => navigate(`/forum/post`, { state: { post: post, listPost: listPost, index: index } })}>{post.title}</div>
+                                            <div>{post.contentShort}</div>
+                                        </div>
+                                        <div className='d-flex space-between'>
+                                            <div>
+                                                <label className='title m-0 font-14'>{post.accountName}</label>
+                                                <input type='date' className='fake-label pl-20' disabled value={post.dateCreate} />
+                                            </div>
+                                            <div>
+                                                <BsChatLeftDots />
+                                                <label className='pl-5'>{post.comment.length}</label>
                                             </div>
                                         </div>
                                     </div>
-                                ))}
-                                <div className='d-flex float-end paging'>
-                                    {numberPage > 1 && <label onClick={() => setNumberPage(pre => pre - 1)} className='btn-paging unseleted'>
-                                        <AiOutlineLeft />
-                                    </label>}
-                                    {numberOfPages.map((item) => (
-                                        <label className={`btn-paging ${numberPage === item ? 'selected-paging' : 'unseleted'}`} onClick={() => setNumberPage(item)}>{item}</label>
-                                    ))}
-                                    {numberPage < numberOfPages.length && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
-                                        <AiOutlineRight />
-                                    </label>}
                                 </div>
-                            </div>
-                            <div className='w-30'>
-                                <Sticky>
-                                    {({ style }) => (
-                                        <div style={style}>
-                                            <header className='title m-0'>{languageDisplay.txtTopic}</header>
-                                            <div className='list-all-topic mt-10'>
-                                                {
-                                                    languageTypePost.map((topic, index) => (
-                                                        <label className={`fade-in-${index} select-topic ${topicSelected.indexOf(topic.value) !== -1 && 'selected-topic'}`}
-                                                            onClick={() => handleSelectTopic(topic.value)}>{topic.label}</label>
-                                                    ))
-                                                }
-                                            </div>
-                                        </div>
-                                    )}
-                                </Sticky>
-
-                            </div>
-                        </div>
-                    </StickyContainer>
+                            </>
+                        ))}
+                    </Scrollbars>
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 
-export default memo(ListPostForum)
+export default memo(MyPost)

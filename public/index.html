@@ -23,15 +23,35 @@
   <title>WeTravel</title>
 </head>
 
-<body>
+<body onscroll="showBackToTop()">
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
+
+  <div onclick="scrollToTop()" id="btn-back-top">&uarr;</div>
   <!-- Messenger Plugin chat Code -->
   <div id="fb-root"></div>
 
   <!-- Your Plugin chat code -->
   <div id="fb-customer-chat" class="fb-customerchat">
   </div>
+
+  <script>
+    function showBackToTop() {
+      var btnBackToTop = document.getElementById("btn-back-top");
+      const rect = document.getElementById("root").getBoundingClientRect();
+
+      if (rect.top.toFixed() <= -500) {
+        btnBackToTop.style.display = "flex"
+      }
+      else {
+        btnBackToTop.style.display = "none"
+      }
+    }
+
+    function scrollToTop() {
+      window.scrollTo(0, 0);
+    }
+  </script>
 
   <script>
     var chatbox = document.getElementById('fb-customer-chat');

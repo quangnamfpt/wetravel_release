@@ -112,7 +112,6 @@ function App() {
                   </SecondLayout> :
                     <Page setProgress={setProgress} languageSelected={languageSelected} role={role} />
                   }
-
                 </Layout>} />
             })}
           </Routes>

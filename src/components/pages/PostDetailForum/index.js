@@ -1,4 +1,4 @@
-import { memo, useState } from 'react'
+import { memo, useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import './PostDetailForum.scss'
 import { typePostEnglish, typePostVietnamese } from '../../Languages/ListPostForum'
@@ -33,9 +33,15 @@ function PostDetailForum({ languageSelected }) {
 
     const id = sessionStorage.getItem('id')
 
-    const [post, setPost] = useState(useLocation().state.post)
+    const postParam = useLocation().state.post
+
+    const [post, setPost] = useState(postParam)
     const listPost = useLocation().state.listPost
     const index = useLocation().state.index
+
+    useEffect(() => {
+        setPost(postParam)
+    }, [postParam.id])
 
     const languageTypePost = languageSelected === 'EN' ? typePostEnglish : typePostVietnamese
     const languageList = languageSelected === 'EN' ? english : vietnamese
@@ -53,14 +59,6 @@ function PostDetailForum({ languageSelected }) {
             })
         }
     }
-
-    let anotherPosts = []
-
-    listPost.forEach((post, i) => {
-        if (i !== index) {
-            anotherPosts.push(post)
-        }
-    })
 
     const handleClickSendComment = () => {
         const firstName = sessionStorage.getItem('firstName')
@@ -179,7 +177,7 @@ function PostDetailForum({ languageSelected }) {
                 <header className='title text-left'>{languageList.txtAnotherPost}</header>
                 <div>
                     <Carousel autoPlay={true}
-                        autoPlaySpeed={1500}
+                        autoPlaySpeed={3000}
                         swipeable={false}
                         showDots={true}
                         draggable={false}
@@ -190,8 +188,9 @@ function PostDetailForum({ languageSelected }) {
                         removeArrowOnDeviceType={["tablet", "mobile"]}
                         dotListClass="custom-dot-list-style"
                         itemClass="carousel-item-padding-40-px">
-                        {anotherPosts.map((item, index) => (
-                            <div className='each-post-another' onClick={() => navigate('/forum/post', { state: { post: item, listPost: listPost, index: index } })}>
+                        {listPost.map((item, indexPost) => (
+                            indexPost !== index &&
+                            <div className='each-post-another' onClick={() => navigate(`/forum/post`, { state: { post: item, listPost: listPost, index: indexPost } })}>
                                 <img src={item.image} className='image-another-post-slide' />
                                 <div className='topic-another-post'>{languageTypePost[parseInt(item.topic) - 1].label.toUpperCase()}</div>
                                 <div className='title m-0 title-another-post'>{item.title}</div>
@@ -200,8 +199,8 @@ function PostDetailForum({ languageSelected }) {
                         ))}
                     </Carousel>
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 

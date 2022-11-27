@@ -33,8 +33,7 @@ import ViewProfileCustomer from '../components/pages/ViewProfileCustomer';
 import ListBookingTable from '../components/pages/ListBookingTable';
 import ListPostForum from '../components/pages/ListPostForum';
 import PostDetailForum from '../components/pages/PostDetailForum';
-
-const role = sessionStorage.getItem('role');
+import MyPost from '../components/pages/MyPost';
 
 const publicRoute = [
     { path: '/', component: Home },
@@ -76,7 +75,8 @@ const publicRoute = [
     { path: '/admin/view-detail-customer', component: ViewProfileCustomer, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/booking/list-booking', component: ListBookingTable, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/forum', component: ListPostForum },
-    { path: '/forum/post', component: PostDetailForum }
+    { path: '/forum/post', component: PostDetailForum },
+    { path: '/my-post', component: MyPost }
 ]
 
 const privateRoute = [

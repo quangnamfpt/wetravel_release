@@ -8,6 +8,7 @@ export const vietnamese = {
     txtChangePassword: 'Đổi mật khẩu',
     txtEditProfile: 'Hồ sơ',
     txtHistoryBooking: 'Lịch sử đặt tour',
+    txtMyPost: 'Bài viết của tôi',
     txtLogout: 'Đăng xuất'
 }
 
@@ -21,5 +22,6 @@ export const english = {
     txtChangePassword: 'Change Password',
     txtEditProfile: 'Profile',
     txtHistoryBooking: 'History Booking',
+    txtMyPost: 'My Post',
     txtLogout: 'Logout'
 }

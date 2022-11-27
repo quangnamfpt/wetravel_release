@@ -2,12 +2,14 @@ import { useState, memo, useEffect } from 'react'
 import Login from '../../pages/Login'
 import ForgotPassword from '../../pages/ForgotPassword';
 import { Link } from 'react-router-dom'
-import { FaRegHandshake, FaRegBell } from "react-icons/fa";
-import { BiTrip, BiHistory } from 'react-icons/bi'
+import { FaRegHandshake } from "react-icons/fa";
+import { BiTrip } from 'react-icons/bi'
+import { RiEditBoxLine } from 'react-icons/ri'
+import { TfiWrite } from 'react-icons/tfi'
 import VietNamFlag from '../../images/vietnam.png'
 import EnglishFlag from '../../images/english.png'
 import { AiOutlineCaretDown, AiOutlineLogout, AiOutlineUser } from "react-icons/ai";
-import { MdOutlineForum } from "react-icons/md";
+import { MdOutlineForum, MdPassword } from "react-icons/md";
 import 'react-dropdown/style.css';
 import './Header.css';
 import { vietnamese, english } from '../../Languages/Header'
@@ -94,10 +96,11 @@ function Header({ languageSelected, setLanguageSelected, setProgress }) {
                         <summary className='d-flex'>{role > 1 ? `${firstName} ${lastName}` : `${email}`} <AiOutlineCaretDown className='icon-image icon-lower' /></summary>
                         <div className='dropdown-profile-item'>
                             <div>{languageList.txtMyAccount}</div>
-                            <Link to='/change-password' className='item-dropdown-profile'><AiOutlineUser className='icon-image icon-dropdown-profile' /> {languageList.txtChangePassword}</Link>
+                            <Link to='/change-password' className='item-dropdown-profile'><MdPassword className='icon-image icon-dropdown-profile' /> {languageList.txtChangePassword}</Link>
                             {role > 1 &&
                                 <>
                                     <Link to='/profile' className='item-dropdown-profile'><AiOutlineUser className='icon-image icon-dropdown-profile' /> {languageList.txtEditProfile}</Link>
+                                    <Link to='/my-post' className='item-dropdown-profile'><RiEditBoxLine className='icon-image icon-dropdown-profile' /> {languageList.txtMyPost}</Link>
                                 </>
                             }
                             <Link onClick={handleCLickLogout} to='/' className='item-dropdown-profile'><AiOutlineLogout className='icon-image icon-dropdown-profile' /> {languageList.txtLogout}</Link>
