@@ -7,6 +7,7 @@ import { HiOutlineUserGroup } from 'react-icons/hi'
 import { GrFormSubtract, GrFormAdd } from 'react-icons/gr'
 import "react-datepicker/dist/react-datepicker.css";
 import './PlaceAnOrder.scss'
+import { toast } from 'react-toastify';
 
 function PlaceAnOrder({ languageList, languageSelected, tour, countAdult, setCountAdult, countChildren,
     setCountChildren, priceOrigin, setPriceOrigin, startDate, setStartDate, setOptionSelected }) {
@@ -33,6 +34,44 @@ function PlaceAnOrder({ languageList, languageSelected, tour, countAdult, setCou
         const price = tour.adultPrice * countAdult + tour.childrenPrice * countChildren
         setPriceOrigin(price)
     }, [countAdult, countChildren])
+
+    const inputAdult = (value) => {
+        if (value === '' || !value || value === '-') {
+            setCountAdult(tour.minAdult)
+        }
+        else if (value > tour.maxAdult) {
+            setCountAdult(tour.maxAdult)
+        }
+        else {
+            setCountAdult(value)
+        }
+    }
+
+    const afterInputAdult = (value) => {
+        if (value < tour.minAdult) {
+            setCountAdult(tour.minAdult)
+            toast.warning(languageSelected === 'EB' ? `At least ${tour.minAdult} adults are required for this tour` : `Cần ít nhất ${tour.minAdult} người lớn cho tour này`)
+        }
+    }
+
+    const inputChildren = (value) => {
+        if (value === '' || !value || value === '-') {
+            setCountChildren(tour.minChildren)
+        }
+        else if (value > tour.maxChildren) {
+            setCountChildren(tour.maxChildren)
+        }
+        else {
+            setCountChildren(value)
+        }
+    }
+
+    const afterInputChildren = (value) => {
+        if (value < tour.minChildren) {
+            setCountChildren(tour.minChildren)
+            toast.warning(languageSelected === 'EB' ? `At least ${tour.minAdult} childrens are required for this tour` : `Cần ít nhất ${tour.minAdult} trẻ em cho tour này`)
+        }
+    }
 
     return (
         <div className='section-tour-detail space-place-an-order'>
@@ -70,25 +109,27 @@ function PlaceAnOrder({ languageList, languageSelected, tour, countAdult, setCou
                         <div className='mr-50 information-people'>
                             <div className='txt-ac'>{languageList.txtAdult}</div>
                             <div className='note-about-age'>{languageList.txtAdultAge}</div>
+                            <div className='note-about-age'>{languageSelected === 'EN' ? `From ${tour.minAdult} to ${tour.maxAdult} people` : `Từ ${tour.minAdult} tới ${tour.maxAdult} người`}</div>
                         </div>
                         {tour.type === 1 ? <div className='price-select-people'>{formatter.format(tour.adultPrice)}</div>
                             :
                             <div className='price-select-people' />}
-                        <GrFormSubtract onClick={() => setCountAdult(countAdult - 1)} className='icon-add-people' />
-                        <input onChange={(e) => setCountAdult(e.target.value)} type='number' className='count-adult' value={countAdult} />
-                        <GrFormAdd onClick={() => setCountAdult(parseInt(countAdult) + 1)} className='icon-add-people' />
+                        <GrFormSubtract onClick={() => countAdult > tour.minAdult && setCountAdult(countAdult - 1)} className='icon-add-people' />
+                        <input onBlur={(e) => afterInputAdult(e.target.value)} onChange={((e) => inputAdult(e.target.value))} type='number' min={tour.minAdult} max={tour.maxAdult} className='count-adult' value={countAdult} />
+                        <GrFormAdd onClick={() => countAdult < tour.maxAdult && setCountAdult(parseInt(countAdult) + 1)} className='icon-add-people' />
                     </div>
                     <div className='d-flex box-select-people-right'>
                         <div className='mr-50 information-people'>
                             <div className='txt-ac'>{languageList.txtChildren}</div>
                             <div className='note-about-age'>{languageList.txtChildrenAge}</div>
+                            <div className='note-about-age'>{languageSelected === 'EN' ? `From ${tour.minChildren} to ${tour.maxChildren} children` : `Từ ${tour.minChildren} tới ${tour.maxChildren} trẻ em`}</div>
                         </div>
                         {tour.type === 1 ? <div className='price-select-people'>{formatter.format(tour.childrenPrice)}</div>
                             :
                             <div className='price-select-people' />}
-                        <GrFormSubtract onClick={() => setCountChildren(countChildren - 1)} className='icon-add-people' />
-                        <input onChange={(e) => setCountChildren(e.target.value)} type='number' className='count-adult' value={countChildren} />
-                        <GrFormAdd onClick={() => setCountChildren(parseInt(countChildren) + 1)} className='icon-add-people' />
+                        <GrFormSubtract onClick={() => countChildren > tour.minChildren && setCountChildren(countChildren - 1)} className='icon-add-people' />
+                        <input onBlur={(e) => afterInputChildren(e.target.value)} onChange={(e) => inputChildren(e.target.value)} type='number' className='count-adult' value={countChildren} />
+                        <GrFormAdd onClick={() => countChildren < tour.maxChildren && setCountChildren(parseInt(countChildren) + 1)} className='icon-add-people' />
                     </div>
                     {tour.type === 1 ?
                         <div className='count-total-price'>

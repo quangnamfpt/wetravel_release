@@ -10,19 +10,8 @@ function DetailBookingCustomer({ languageSelected, booking, isDisabled, setShowD
     const navigate = useNavigate()
 
     const bookingRaw = {
-        ...booking,
-        invoidceCode: 123123,
-        bookingDate: '2022-02-01',
-        fullName: 'Nguyen Van A',
-        phone: '4234234234',
-        email: 'a@gmail.com',
-        idCard: '123123213',
-        dateOfIssue: '2022-01-01',
-        placeOfIssue: 'asdasd',
-        request: 'asdhu'
+        ...booking
     }
-
-    console.log(bookingRaw)
 
     const formatter = new Intl.NumberFormat('en-US', {
         style: 'currency',

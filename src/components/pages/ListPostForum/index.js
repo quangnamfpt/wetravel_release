@@ -1,4 +1,4 @@
-import { memo, useState, useEffect } from 'react'
+import { memo, useState, useEffect, useRef } from 'react'
 import BackgroundForum from '../../images/bg_forum.jpg'
 import Forum1 from '../../images/forum (1).jpg'
 import Forum2 from '../../images/forum (2).jpg'
@@ -14,6 +14,8 @@ import { StickyContainer, Sticky } from 'react-sticky'
 import { useNavigate } from 'react-router-dom'
 import { CgDanger } from 'react-icons/cg'
 import { FiTrash } from 'react-icons/fi'
+import PopupCreateAlert from '../../Layout/PopupCreateAlert'
+import PopupReport from '../../Layout/PopupReport';
 
 function ListPostForum({ languageSelected }) {
     const languageDisplay = languageSelected === 'EN' ? english : vietnamese
@@ -21,7 +23,18 @@ function ListPostForum({ languageSelected }) {
 
     const navigate = useNavigate()
 
-    const [showListTopic, setShowListTopic] = useState(false)
+    const [showConfirm, setShowConfirm] = useState(false)
+    const [titleConfirm, setTitleConfirm] = useState(languageDisplay.txtDelete)
+    const [shortReason, setShortReason] = useState(languageDisplay.txtShortReason)
+    const [fullReason, setFullReason] = useState(languageDisplay.txtWarningDelete)
+    const callbackConfirm = useRef(() => { })
+    const [isRed, setIsRed] = useState(true)
+    const [textOk, setTextOk] = useState(languageDisplay.txtDelete)
+    const [textCancel, setTextCancel] = useState(languageDisplay.txtCancel)
+
+    const [showReport, setShowReport] = useState(false)
+    const [idReasonReport, setIdReasonReport] = useState(0)
+
     const [topicSelected, setTopicSelected] = useState([])
     const [listPost, setListPost] = useState([
         {
@@ -30,7 +43,7 @@ function ListPostForum({ languageSelected }) {
             accountName: 'Nguyen Van A',
             dateCreate: '2022-01-01',
             title: 'ABC Phượt hết Đà Nẵng chỉ với 1 triệu đồng',
-            description: 'ABC Là thiên đường nghỉ dưỡng với những bãi biển đẹp, trải nghiệm vui chơi, giải trí và đồ ăn ngon với mức giá phải chăng, Đà Nẵng là điểm đến lý tưởng cho giới trẻ mê khám phá.            ',
+            description: 'ABC Là thiên đường nghỉ dưỡng với những bãi biển đẹp, trải nghiệm vui chơi, giải trí và đồ ăn ngon với mức giá phải chăng, Đà Nẵng là điểm đến lý tưởng cho giới trẻ mê khám phá.',
             content: '<p>Di chuyển không tốn kém</p><p><br></p><p>Đến Đà Nẵng, du khách có thể sử dụng dịch vụ cho thuê xe máy vốn rất phổ biến. Với chi phí khoảng 80.000-120.000 đồng/ngày, du khách có thể tiết kiệm được một khoản kha khá. Ngoài ra, hệ thống xe bus, taxi cùng nhiều dịch vụ đặt xe qua ứng dụng tại Đà Nẵng cũng được nhiều du khách ưa chuộng vì không quá đắt đỏ.</p><p>Nhiều điểm tham quan miễn phí</p><p><br></p><p>Đến Đà Nẵng, du khách có thể ghé qua nhiều điểm tham quan miễn phí nhưng không kém phần hấp dẫn như công viên Biển Đông, sông Hàn, bán đảo Sơn Trà...</p><p><br></p><p>Du khách có thể thử thức dậy thật sớm, vừa ngắm bình minh, vừa dạo biển tại công viên Biển Đông. Tại đây, ngoài tận hưởng không gian trong lành, du khách sẽ được chiêm ngưỡng những ngọn núi trên bán đảo Sơn Trà và tượng Phật Bà của chùa Linh Ứng. Cho bồ câu ăn lúc 7h30 sáng hàng ngày là trải nghiệm khó bỏ qua khi đến đây.</p><p><br></p><p>Trên đường đi đến bán đảo Sơn Trà, từ trung tâm thành phố chạy xe theo đường Hoàng Sa, Lê Đức Thọ, du khách sẽ bắt gặp một bến tàu là nơi tập trung nhiều thuyền thúng và những bãi hoa muống biển thơ mộng. Ngoài ra, bãi đá Obama (giá vé 10.000 đồng/người), bãi Rạng, bãi Bụt (chỉ thu phí khi khách thuê chòi)... cũng là điểm đáng đến.</p><p>Đến bán đảo, du khách có thể tham quan một số địa điểm miễn phí như chùa Linh Ứng, đỉnh Bàn Cờ… Đỉnh Bàn Cờ là nơi ngắm toàn cảnh Đà Nẵng, từ đường bờ biển, các tòa cao ốc san sát tới những cây cầu bắc qua sông Hàn.</p>',
             image: Forum1,
             status: true,
@@ -96,7 +109,7 @@ function ListPostForum({ languageSelected }) {
             dateCreate: '2022-01-01',
             title: 'XYZ Phượt hết Đà Nẵng chỉ với 1 triệu đồng',
             description: 'XYZ Là thiên đường nghỉ dưỡng với những bãi biển đẹp, trải nghiệm vui chơi, giải trí và đồ ăn ngon với mức giá phải chăng, Đà Nẵng là điểm đến lý tưởng cho giới trẻ mê khám phá.            ',
-            content: '<p>Di chuyển không tốn kém</p>',
+            content: '<p>Di chuyển không tốn kém</p><p><br></p><p>Đến Đà Nẵng, du khách có thể sử dụng dịch vụ cho thuê xe máy vốn rất phổ biến. Với chi phí khoảng 80.000-120.000 đồng/ngày, du khách có thể tiết kiệm được một khoản kha khá. Ngoài ra, hệ thống xe bus, taxi cùng nhiều dịch vụ đặt xe qua ứng dụng tại Đà Nẵng cũng được nhiều du khách ưa chuộng vì không quá đắt đỏ.</p><p>Nhiều điểm tham quan miễn phí</p><p><br></p><p>Đến Đà Nẵng, du khách có thể ghé qua nhiều điểm tham quan miễn phí nhưng không kém phần hấp dẫn như công viên Biển Đông, sông Hàn, bán đảo Sơn Trà...</p><p><br></p><p>Du khách có thể thử thức dậy thật sớm, vừa ngắm bình minh, vừa dạo biển tại công viên Biển Đông. Tại đây, ngoài tận hưởng không gian trong lành, du khách sẽ được chiêm ngưỡng những ngọn núi trên bán đảo Sơn Trà và tượng Phật Bà của chùa Linh Ứng. Cho bồ câu ăn lúc 7h30 sáng hàng ngày là trải nghiệm khó bỏ qua khi đến đây.</p><p><br></p><p>Trên đường đi đến bán đảo Sơn Trà, từ trung tâm thành phố chạy xe theo đường Hoàng Sa, Lê Đức Thọ, du khách sẽ bắt gặp một bến tàu là nơi tập trung nhiều thuyền thúng và những bãi hoa muống biển thơ mộng. Ngoài ra, bãi đá Obama (giá vé 10.000 đồng/người), bãi Rạng, bãi Bụt (chỉ thu phí khi khách thuê chòi)... cũng là điểm đáng đến.</p><p>Đến bán đảo, du khách có thể tham quan một số địa điểm miễn phí như chùa Linh Ứng, đỉnh Bàn Cờ… Đỉnh Bàn Cờ là nơi ngắm toàn cảnh Đà Nẵng, từ đường bờ biển, các tòa cao ốc san sát tới những cây cầu bắc qua sông Hàn.</p>',
             image: Forum2,
             status: true,
             comment: [
@@ -434,15 +447,30 @@ function ListPostForum({ languageSelected }) {
         setTopicSelected([...topicSelectedRaw])
     }
 
+    const handleClickBlock = (callback) => {
+        setShowConfirm(true)
+        callbackConfirm.current = callback
+    }
+
+    const handleBlockPost = (idPost) => {
+        console.log('idPost: ', idPost)
+        setShowConfirm(false)
+    }
+
+    const handleClickReprot = (callback) => {
+        setShowReport(true)
+        callbackConfirm.current = callback
+    }
+
+    const createReportPost = (idPost) => {
+        console.log('createReportPost: ', idPost)
+    }
+
     let listPostShow = []
 
     listPost.forEach((post) => {
         let postRaw = post
-        let contentShort = postRaw.content
-        contentShort = contentShort.replace(/<p>|<br>|<div class="mb-10"><\/div>/g, '')
-        contentShort = contentShort.replace(/<\/p>/g, ' ')
-        contentShort = contentShort.replace(/  /g, '. ')
-        contentShort = contentShort.substring(0, 130)
+        let contentShort = postRaw.description.substring(0, 150)
         postRaw.contentShort = contentShort + '...'
         let content = post.content.replace(/<br>/g, '<div class="mb-10"></div>')
         postRaw.content = content
@@ -453,6 +481,10 @@ function ListPostForum({ languageSelected }) {
 
     return (
         <div className='container home-main'>
+            {showReport && <PopupReport setShowReport={setShowReport} languageSelected={languageSelected} idReason={idReasonReport} setIdReason={setIdReasonReport} callback={callbackConfirm} />}
+            {showConfirm &&
+                <PopupCreateAlert textOk={textOk} textCancel={textCancel} title={titleConfirm} shortReason={shortReason} fullReason={fullReason} callback={callbackConfirm.current} isRed={isRed} setShowDialog={setShowConfirm} />
+            }
             <img src={BackgroundForum} className='bg-image rotation-0' />
             <div className='border-search container search w-86'>
                 <FaRegPaperPlane className='icon-search' />
@@ -470,8 +502,8 @@ function ListPostForum({ languageSelected }) {
                             <div className='w-70'>
                                 <div className='d-flex space-between'>
                                     <header className='title mb-10'>{languageDisplay.txtForYou}</header>
-                                    {role && role != 1 &&
-                                        <button className='btn btn-warning mr-20 btn-create-new-post'>{languageDisplay.txtCreateNewPost}</button>
+                                    {role &&
+                                        <button onClick={() => navigate(role != 1 ? '/my-post' : '/admin/my-post')} className='btn btn-warning mr-20 btn-create-new-post'>{languageDisplay.txtCreateNewPost}</button>
                                     }
                                 </div>
                                 {listPostShow.map((post, index) => (
@@ -482,19 +514,24 @@ function ListPostForum({ languageSelected }) {
                                                 <div className='d-flex space-between'>
                                                     <div className='topic-post-in-list font-14 mb-10'>{languageTypePost[parseInt(post.topic) - 1].label.toUpperCase()}</div>
                                                     <div>
-                                                        <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
-                                                            <MenuItem className='requird-star'>
-                                                                <CgDanger /><label className='ml-5'>{languageDisplay.txtReport}</label>
-                                                            </MenuItem>
-                                                            {/* {sessionStorage.getItem('role') == 1 && */}
-                                                            <MenuItem>
-                                                                <FiTrash /><label className='ml-5'>{languageDisplay.txtDelete}</label>
-                                                            </MenuItem>
-                                                            {/* } */}
-                                                        </Menu>
+                                                        {role !== null &&
+                                                            <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
+                                                                {sessionStorage.getItem('role') == 1 ?
+                                                                    <MenuItem
+                                                                        onClick={() => handleClickBlock(() => handleBlockPost(post.id))}>
+                                                                        <FiTrash /><label className='ml-5'>{languageDisplay.txtDelete}</label>
+                                                                    </MenuItem>
+                                                                    :
+                                                                    <MenuItem className='requird-star'
+                                                                        onClick={() => handleClickReprot(() => createReportPost(post.id))}>
+                                                                        <CgDanger /><label className='ml-5'>{languageDisplay.txtReport}</label>
+                                                                    </MenuItem>
+                                                                }
+                                                            </Menu>
+                                                        }
                                                     </div>
                                                 </div>
-                                                <div className='title m-0 font-20 each-post' onClick={() => navigate(`/forum/post`, { state: { post: post, listPost: listPost, index: index } })}>{post.title}</div>
+                                                <div className='title m-0 font-20 each-post' onClick={() => navigate(role != 1 ? '/forum/post' : '/admin/forum/post', { state: { post: post, listPost: listPost, index: index } })}>{post.title}</div>
                                                 <div>{post.contentShort}</div>
                                             </div>
                                             <div className='d-flex space-between'>

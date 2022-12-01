@@ -45,8 +45,9 @@ function RegisterProfile({ languageSelected, role, passwordMain, setProgress, to
             }
 
             //call api from server
-            await axios.post(API_REGISTER_CUSTOMER, registerInfor).then((result) => {
+            await axios.post(API_REGISTER_CUSTOMER, registerInfor).then(() => {
                 toast.success(languageList.txtSuccess)
+                localStorage.removeItem('tokenRegister')
                 setTimeout(navigate("/"), 4000)
             }).catch(() => {
                 setShowLoading(false)

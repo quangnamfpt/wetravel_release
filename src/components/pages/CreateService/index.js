@@ -1,5 +1,5 @@
 import { useState, memo, useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import Carousel from 'react-multi-carousel';
 
 import HotelLogo from '../../images/hotel.png'
@@ -89,6 +89,8 @@ const detailCategory = [
 function CreateService() {
     const [indexServiceSelected, setIndexServiceSelected] = useState(0)
 
+    const role = sessionStorage.getItem('role')
+
     const handleSelectAnService = (index) => {
         setIndexServiceSelected(index)
     }
@@ -97,42 +99,48 @@ function CreateService() {
         sessionStorage.setItem('index-service-selected', indexServiceSelected)
     }, [indexServiceSelected])
 
-    return (<div className='container home-main'>
-        <img src={Background} className='bg-image-partner-create-service' />
-        <div className='container select-service-category'>
-            {commonService.map((service, index) => (
-                <div className={`container item-service-category ${indexServiceSelected === index && 'item-service-category-select'}`}
-                    onClick={() => handleSelectAnService(index)}>
-                    <img src={indexServiceSelected === index ? service.logoSelected : service.logo} className='logo-service-category' />
-                    <label className='name-service-category'>{service.name}</label>
-                    {indexServiceSelected === index && <div className='line-category-select' />}
+    return (
+        <>
+            {role == 2 ? <Navigate to='/error' /> :
+                <div className='container home-main'>
+                    <img src={Background} className='bg-image-partner-create-service' />
+                    <div className='container select-service-category'>
+                        {commonService.map((service, index) => (
+                            <div className={`container item-service-category ${indexServiceSelected === index && 'item-service-category-select'}`}
+                                onClick={() => handleSelectAnService(index)}>
+                                <img src={indexServiceSelected === index ? service.logoSelected : service.logo} className='logo-service-category' />
+                                <label className='name-service-category'>{service.name}</label>
+                                {indexServiceSelected === index && <div className='line-category-select' />}
+                            </div>
+                        ))
+                        }
+                    </div>
+                    <div className='container select-service-category information-service-category'>
+                        <div className='common-description-service-category item-description-service-category'>
+                            <div className='title-service-category'>{detailCategory[indexServiceSelected].title}</div>
+                            <label className='description-service-category'>{detailCategory[indexServiceSelected].description}</label>
+                            <Link to='/register-partner' className='btn btn-primary btn-register-service-category'>Register Now</Link>
+                        </div>
+                        <Carousel
+                            className='slider-description-service-category item-description-service-category'
+                            swipeable={false}
+                            autoPlay={true}
+                            showDots={true}
+                            draggable={false}
+                            responsive={responsive}
+                            ssr={true} // means to render carousel on server-side.
+                            infinite={true}
+                            containerClass="carousel-container"
+                            removeArrowOnDeviceType={["tablet", "mobile"]}
+                            dotListClass="custom-dot-list-style"
+                            itemClass="carousel-item-padding-40-px">
+                            {detailCategory[indexServiceSelected].image.map((item) => <img src={item} className='image-description-service-category' />)}
+                        </Carousel>
+                    </div>
                 </div>
-            ))
             }
-        </div>
-        <div className='container select-service-category information-service-category'>
-            <div className='common-description-service-category item-description-service-category'>
-                <div className='title-service-category'>{detailCategory[indexServiceSelected].title}</div>
-                <label className='description-service-category'>{detailCategory[indexServiceSelected].description}</label>
-                <Link to='/register-partner' className='btn btn-primary btn-register-service-category'>Register Now</Link>
-            </div>
-            <Carousel
-                className='slider-description-service-category item-description-service-category'
-                swipeable={false}
-                autoPlay={true}
-                showDots={true}
-                draggable={false}
-                responsive={responsive}
-                ssr={true} // means to render carousel on server-side.
-                infinite={true}
-                containerClass="carousel-container"
-                removeArrowOnDeviceType={["tablet", "mobile"]}
-                dotListClass="custom-dot-list-style"
-                itemClass="carousel-item-padding-40-px">
-                {detailCategory[indexServiceSelected].image.map((item) => <img src={item} className='image-description-service-category' />)}
-            </Carousel>
-        </div>
-    </div>)
+        </>
+    )
 }
 
 export default memo(CreateService)

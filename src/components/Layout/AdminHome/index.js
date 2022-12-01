@@ -61,6 +61,9 @@ function AdminHome({ languageSelected, children }) {
                                             <MenuItem onClick={() => navigate('/admin/booking')} className={`menu-item-left item-sub-menu ${pathName === '/admin/booking' && 'selected-menu-item-admin'}`}>
                                                 {adminMenuLabel.txtHistoryBooking}
                                             </MenuItem>
+                                            <MenuItem onClick={() => navigate('/admin/request-cancel')} className={`menu-item-left item-sub-menu ${pathName === '/admin/request-cancel' && 'selected-menu-item-admin'}`}>
+                                                {adminMenuLabel.txtRequestCancellation}
+                                            </MenuItem>
                                         </SubMenu>
                                         <MenuItem onClick={() => navigate('/admin/customers')} icon={<MdPeopleOutline />} className={`menu-item-left ${pathName === '/admin/customers' && 'selected-menu-item-admin'}`}>
                                             {adminMenuLabel.txtCustomer}
@@ -68,9 +71,14 @@ function AdminHome({ languageSelected, children }) {
                                         <MenuItem onClick={() => navigate('/admin/partners')} icon={<FaRegHandshake />} className={`menu-item-left ${pathName === '/admin/partners' && 'selected-menu-item-admin'}`}>
                                             {adminMenuLabel.txtPartner}
                                         </MenuItem>
-                                        <MenuItem icon={<MdOutlineFeedback />} className={`menu-item-left ${pathName === '/admin/feedback' && 'selected-menu-item-admin'}`}>
-                                            {adminMenuLabel.txtFeedback}
-                                        </MenuItem>
+                                        <SubMenu label={adminMenuLabel.txtReport} icon={<MdOutlineFeedback />} className='menu-item-left menu-sub-main'>
+                                            <MenuItem onClick={() => navigate('/admin/report/feedback')} className={`menu-item-left item-sub-menu ${pathName === '/admin/report/feedback' && 'selected-menu-item-admin'}`}>
+                                                {adminMenuLabel.txtFeedback}
+                                            </MenuItem>
+                                            <MenuItem onClick={() => navigate('/admin/report/post')} className={`menu-item-left item-sub-menu ${pathName === '/admin/report/post' && 'selected-menu-item-admin'}`}>
+                                                {adminMenuLabel.txtPost}
+                                            </MenuItem>
+                                        </SubMenu>
                                         <MenuItem onClick={() => navigate('/admin/service-confirm')} icon={<AiOutlineCheckCircle />} className={`menu-item-left ${pathName === '/admin/service-confirm' && 'selected-menu-item-admin'}`}>
                                             {adminMenuLabel.txtServiceConfirm}
                                         </MenuItem>

@@ -228,3 +228,15 @@
     height: 20px;
     width: 20px;
 }
+
+.text-right {
+    text-align: right;
+}
+
+.link-report {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: right;
+}

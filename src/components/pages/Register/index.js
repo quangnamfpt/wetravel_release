@@ -33,20 +33,20 @@ function Register({ languageSelected, role, setProgress }) {
             let roleId = role
 
             // call api from server
-            await axios.post(API_VERIFY, null, {
-                params: {
-                    email,
-                    roleId,
-                    serviceCategoryId
-                }
-            }).then((res) => {
-                localStorage.setItem('tokenRegister', res.data.data)
-                navigate(`/checkmail`, { state: { email: email, role: roleId, token: res.data.data } })
-            }).catch(() => {
-                console.log('trung')
-                setShowLoading(false);
-                toast.warning(languageList[6])
-            })
+            await axios.post(`${API_VERIFY}?email=${email}&roleId=${roleId}&serviceCategoryId=${serviceCategoryId}`)
+                .then((res) => {
+                    if (res.data.data === 'Email exist!') {
+                        setShowLoading(false);
+                        toast.error(languageList[6])
+                    }
+                    else {
+                        localStorage.setItem('tokenRegister', res.data.data)
+                        navigate(`/checkmail`, { state: { email: email, role: roleId, token: res.data.data } })
+                    }
+                }).catch(() => {
+                    setShowLoading(false);
+                    toast.warning(languageList[6])
+                })
             setProgress(100)
         }
         else if (!agree) {

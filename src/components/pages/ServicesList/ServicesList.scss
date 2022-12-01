@@ -1,0 +1,29 @@
+.type-service-option {
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.radio-fake {
+    width: 20px;
+    height: 20px;
+    border-radius: 5px;
+    border: solid 1px gray;
+    margin-right: 20px;
+    transition: 0.5s;
+}
+
+.radio-fake-selected {
+    background-color: rgb(46, 101, 255);
+}
+
+.pb-0 {
+    padding-bottom: 0 !important;
+}
+
+.w-65 {
+    width: 65%;
+}

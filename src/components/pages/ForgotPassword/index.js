@@ -20,8 +20,15 @@ function ForgotPassword({ languageSelected, setShowLoading, toast, setProgress }
                 params: {
                     email
                 }
-            }).then(() => {
-                navigate(`/checkmail?email=${email}&role=3`)
+            }).then((res) => {
+                if (res.data.data === "Email not exist!") {
+                    toast.error(languageSelected === 'EN' ? 'Account does not exist!' : 'Tài khoản không tồn tại!')
+                    setShowLoading(false)
+                }
+                else {
+                    localStorage.setItem('tokenForgot', res.data.data)
+                    navigate('/checkmail', { state: { email: emailForgot } })
+                }
             }).catch(() => {
                 toast.error(languageList.warningEmailNotRegistered)
                 setShowLoading(false)

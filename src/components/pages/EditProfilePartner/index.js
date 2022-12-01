@@ -46,7 +46,8 @@ function EditProfilePartner({ languageSelected }) {
             params: {
                 accountId: sessionStorage.getItem('id'),
                 page: numberPage,
-                size: 10
+                size: 10,
+                isBlock: 0
             }
         }).then((response) => {
             let totalPage = response.data.data.totalPages
@@ -67,7 +68,17 @@ function EditProfilePartner({ languageSelected }) {
                     status: bookingItem.status,
                     deposit: bookingItem.deposit,
                     price: bookingItem.totalPrice,
-                    statusDeposit: bookingItem.statusDeposit
+                    statusDeposit: bookingItem.statusDeposit,
+                    invoidceCode: bookingItem.orderId,
+                    bookingDate: bookingItem.bookingDate,
+                    fullName: bookingItem.fullName,
+                    phone: bookingItem.phone,
+                    email: bookingItem.email,
+                    idCard: bookingItem.idCard,
+                    dateOfIssue: bookingItem.dateOfIssue,
+                    placeOfIssue: bookingItem.placeOfIssue,
+                    request: bookingItem.request,
+                    isFeedback: bookingItem.isFeedback
                 }
                 listBookingRaw.push(bookingItemRaw)
             })
@@ -142,12 +153,44 @@ function EditProfilePartner({ languageSelected }) {
 
     const handleClickSave = () => {
         setShowLoading(true)
-        axios.post(API_EDIT_PROFILE_PARTNER + sessionStorage.getItem('id'), partner)
+        let newInformation = {
+            "partnerInfor": {
+                "firstName": partner.firstName,
+                "lastName": partner.lastName,
+                "gender": partner.gender,
+                "address": partner.addressContact,
+                "city": partner.cityContact,
+                "birthDate": partner.birthDate,
+                "phone": partner.phone,
+                "email": partner.emailContact,
+                "position": partner.position,
+                "department": partner.department,
+                "numberIdCard": partner.numberIdCard,
+                "placeIssue": partner.placeIssue,
+                "dateIssue": partner.dateIssue
+            },
+            "companyPartnerInfor": {
+                "companyName": partner.companyName,
+                "shortName": partner.shortName,
+                "address": partner.addressCompany,
+                "city": partner.cityCompany,
+                "email": partner.emailContactCompany,
+                "fax": partner.fax,
+                "phone": partner.phoneCompany,
+                "website": partner.website,
+                "businessCode": partner.businessLicenseCode,
+                "taxCode": partner.taxCode,
+                "registrationDate": partner.registrationDate,
+                "incorporationDate": partner.incorporationDate
+            }
+        }
+
+        axios.post(API_EDIT_PROFILE_PARTNER + sessionStorage.getItem('id'), newInformation)
             .then(() => {
                 toast.success(languageSelected === 'EN' ? 'Profile has been updated' : 'Hồ sơ đã được cập nhật')
                 setShowLoading(false)
+                setShowConfirm(false)
             }).catch((e) => {
-                console.log(e)
                 toast.error('error')
                 setShowLoading(false)
             })

@@ -44,7 +44,16 @@ function ViewProfileCustomer({ languageSelected }) {
                     status: bookingItem.status,
                     deposit: bookingItem.deposit,
                     price: bookingItem.totalPrice,
-                    statusDeposit: bookingItem.statusDeposit
+                    statusDeposit: bookingItem.statusDeposit,
+                    invoidceCode: bookingItem.orderId,
+                    bookingDate: bookingItem.bookingDate,
+                    fullName: bookingItem.fullName,
+                    phone: bookingItem.phone,
+                    email: bookingItem.email,
+                    idCard: bookingItem.idCard,
+                    dateOfIssue: bookingItem.dateOfIssue,
+                    placeOfIssue: bookingItem.placeOfIssue,
+                    request: bookingItem.request
                 }
                 listBookingRaw.push(bookingItemRaw)
             })

@@ -6,9 +6,12 @@ export const english = {
     txtTitle: 'Travel Forum',
     txtEdit: 'Edit',
     txtReport: 'Report',
-    txtDelete: 'Delete',
-    txtCreateNewPost: 'Create new post',
-    txtDescription: 'Share and discuss all things travel related; from itinerary help requests, to travel hacks or pictures of your favorite'
+    txtDelete: 'Block',
+    txtCreateNewPost: 'My post',
+    txtDescription: 'Share and discuss all things travel related; from itinerary help requests, to travel hacks or pictures of your favorite',
+    txtShortReason: 'Summary of reasons',
+    txtWarningDelete: 'Full reason',
+    txtCancel: 'Cancel'
 }
 
 export const typePostEnglish = [
@@ -66,9 +69,12 @@ export const vietnamese = {
     txtTitle: 'Diễn dàn du lịch',
     txtEdit: 'Sửa',
     txtReport: 'Tố cáo',
-    txtDelete: 'Xoá',
-    txtCreateNewPost: 'Tạo bài viết mới',
-    txtDescription: 'Chia sẻ và thảo luận về mọi thứ liên quan đến du lịch; từ các yêu cầu trợ giúp về hành trình, đến các thủ thuật du lịch hoặc hình ảnh yêu thích của bạn'
+    txtDelete: 'Khoá',
+    txtCreateNewPost: 'Bài viết của tôi',
+    txtDescription: 'Chia sẻ và thảo luận về mọi thứ liên quan đến du lịch; từ các yêu cầu trợ giúp về hành trình, đến các thủ thuật du lịch hoặc hình ảnh yêu thích của bạn',
+    txtShortReason: 'Tóm tắt lý do',
+    txtWarningDelete: 'Lý do đầy đủ',
+    txtCancel: 'Huỷ'
 }
 
 export const typePostVietnamese = [

@@ -1,5 +1,6 @@
 export const vietnamese = {
     txtForum: 'Diễn đàn',
+    txtServices: 'Dịch vụ',
     txtPartner: 'Hợp tác',
     txtAlert: 'Thông báo',
     txtLogin: 'Đăng nhập',
@@ -14,6 +15,7 @@ export const vietnamese = {
 
 export const english = {
     txtForum: 'Forum',
+    txtServices: 'Services',
     txtPartner: 'Partner',
     txtAlert: 'Alert',
     txtLogin: 'Login',

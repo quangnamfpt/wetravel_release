@@ -15,6 +15,7 @@ import { UploadImage } from "../../../firebase/UploadImage";
 import { API_PUT_UPDATE_SERVICEACCOMMODATION, API_SERVICE_DETAIL_INFORMATION, API_PUT_UPDATE_SERVICEENTERTAIMENT, API_PUT_UPDATE_SERVICERESTAURANT } from "../../API"
 import { ref, listAll, getDownloadURL, deleteObject } from 'firebase/storage'
 import { storage } from "../../../firebase/Upload";
+import { StickyContainer, Sticky } from 'react-sticky'
 
 function RegisterInformationServiceLayout({ setProgress, languageSelected }) {
     const navigate = useNavigate()
@@ -443,6 +444,8 @@ function RegisterInformationServiceLayout({ setProgress, languageSelected }) {
     const count = useRef(-1)
     const [leng, setLeng] = useState(0)
     useEffect(() => {
+        //edit va create
+        const pathname = window.location.pathname
         if (leng === count.current) {
             count.current = -1;
             setLeng(0)
@@ -894,20 +897,27 @@ function RegisterInformationServiceLayout({ setProgress, languageSelected }) {
     return (
         <>
             <div className="detail-service">
-                <div className="container d-flex space-register-information-service">
-                    <div className="options">
-                        {numberOfOption[categoryService - 1].map((item, index) => (<>
-                            <div key={index} className={`option ${selectedOption === index && 'selected-option'}`}
-                                onClick={() => handleSelectAnOpion(index)}
-                            >{languageList[categoryService - 1][index]}
-                            </div>
-                        </>
-                        ))}
+                <StickyContainer>
+                    <div className="container d-flex space-register-information-service">
+                        <div className="options">
+                            <Sticky>
+                                {({ style }) => (
+                                    <div style={style}>
+                                        {numberOfOption[categoryService - 1].map((item, index) => (
+                                            <div key={index} className={`option ${selectedOption === index && 'selected-option'}`}
+                                                onClick={() => handleSelectAnOpion(index)}
+                                            >{languageList[categoryService - 1][index]}
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </Sticky>
+                        </div>
+                        <div className="content-register-information-service">
+                            {numberOfOption[categoryService - 1][selectedOption]}
+                        </div>
                     </div>
-                    <div className="content-register-information-service">
-                        {numberOfOption[categoryService - 1][selectedOption]}
-                    </div>
-                </div>
+                </StickyContainer>
             </div>
             {showLoading && <div className='popup'>
                 <div className='bg-popup' />

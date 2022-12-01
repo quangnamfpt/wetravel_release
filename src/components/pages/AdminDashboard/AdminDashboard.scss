@@ -1,0 +1,169 @@
+.tag-dashboard {
+    width: 22%;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 1px 2px gray;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+    cursor: default;
+
+    .data-number-dashboard {
+        font-size: 40px;
+        font-weight: bold;
+    }
+
+    .text-title-dashboard {
+        font-size: 16px;
+        font-weight: bold;
+    }
+}
+
+.bd-blue-2 {
+    border-bottom: solid 4px rgba(109, 141, 216, 255);
+}
+
+.bd-red-2 {
+    border-bottom: solid 4px rgba(217, 90, 129, 255);
+}
+
+.bd-yellow-2 {
+    border-bottom: solid 4px rgba(242, 203, 93, 255);
+}
+
+.bd-green-2 {
+    border-bottom: solid 4px rgba(114, 216, 178, 255);
+}
+
+.color-green-rate-up {
+    color: rgba(114, 216, 178, 255);
+}
+
+.color-red-rate-down {
+    color: rgba(217, 90, 129, 255);
+}
+
+.space-evenly {
+    justify-content: space-evenly;
+}
+
+.br-10 {
+    border-radius: 10px;
+}
+
+.box-shadow-common {
+    box-shadow: 0px 1px 2px gray;
+}
+
+.chart-dashboard {
+    padding-top: 80px !important;
+}
+
+.mtb-20 {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.btn-change-type-chart {
+    font-size: 24px;
+    padding: 5px 10px;
+    text-align: center;
+    margin-left: 10px;
+    cursor: pointer;
+    color: #235efa;
+    font-weight: bold;
+    background-color: white;
+    transition: 0.5s;
+}
+
+.btn-change-type-chart-selected {
+    background-color: #235efa;
+    color: white;
+}
+
+.btn-change-data-chart {
+    width: 120px;
+    padding: 10px;
+    text-align: center;
+    margin-left: 10px;
+    cursor: pointer;
+    color: #235efa;
+    font-weight: bold;
+    background-color: white;
+    transition: 0.5s;
+}
+
+.btn-change-data-chart-selected {
+    background-color: #235efa;
+    color: white;
+}
+
+.btn-option-chart {
+    position: relative;
+    margin-top: 50px;
+    margin-right: 50px;
+    margin-bottom: -180px;
+}
+
+.mt-100 {
+    margin-top: 120px;
+}
+
+.note-rate {
+    position: absolute;
+    right: 20px;
+    margin-top: -10px;
+    animation: fadeIn 0.5s forwards;
+    box-shadow: 0px 0px 5px 1px gray;
+}
+
+.color-gray {
+    color: gray;
+}
+
+.bd-bottom {
+    border-bottom: solid 1px gray;
+}
+
+.p-5-import {
+    padding: 5px;
+}
+
+.service-list-pending-short {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.btn-view-all-service-pending {
+    cursor: pointer;
+    border: solid 1px gray;
+    padding: 5px;
+    border-radius: 5px;
+    transition: 0.5s;
+}
+
+.btn-view-all-service-pending:hover {
+    background-color: #d9d9d9;
+}
+
+.link-view-all-customer {
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.link-view-all-customer:hover {
+    color: rgb(0, 132, 255);
+}
+
+.pb-20 {
+    padding-bottom: 20px;
+}
+
+.mr-20-import {
+    margin-right: 20px !important;
+}
+
+.bg-gray {
+    background-color: #d9d9d9;
+}

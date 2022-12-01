@@ -1,8 +1,6 @@
 import { memo, useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-
 import BackgroundHome from '../../images/bgHome.jpg'
-
 import { FaRegPaperPlane } from 'react-icons/fa'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import { english, vietnamese } from '../../Languages/Home';
@@ -199,35 +197,38 @@ function TourList({ languageSelected }) {
                             </label>
                         </div>
                     </div>
-                    <div className='container tour-list w-65 grid-tour'>
-                        {getDataComplete ?
-                            [...tours].map((tour, index) => (
-                                <div key={index} className='tour-item' onClick={() => navigate('/tour-detail', { state: { id: tour.id } })}>
-                                    <img src={tour.image} className='image-main-tour' />
-                                    <div className='short-information-tour pd-short-information-tour'>
-                                        <div className='tour-name'>{tour.name}</div>
-                                        {tour.type === 1 ?
-                                            <div className='tour-price'>{formatter.format(tour.price)}</div>
-                                            :
-                                            <div className='tour-price'>{formatter.format(tour.totalPrice / (tour.maxAdult + tour.maxChildren))} - {formatter.format(tour.totalPrice / tour.minToActive)}</div>
-                                        }
-                                    </div>
-                                </div>
-                            )) : <LoadingDialog />
-                        }
+                    <div className='container'>
+                        <div className='grid-tour'>
+                            {getDataComplete ?
+                                [...tours].map((tour, index) => (
+                                    <label key={index} className='tour-item' onClick={() => navigate('/tour-detail', { state: { id: tour.id } })}>
+                                        <img src={tour.image} className='image-main-tour' />
+                                        <div className='short-information-tour pd-short-information-tour'>
+                                            <div className='tour-name'>{tour.name}</div>
+                                            {tour.type === 1 ?
+                                                <div className='tour-price'>{formatter.format(tour.price)}</div>
+                                                :
+                                                <div className='tour-price'>{formatter.format(tour.totalPrice / (tour.maxAdult + tour.maxChildren))} - {formatter.format(tour.totalPrice / tour.minToActive)}</div>
+                                            }
+                                        </div>
+                                    </label>
+                                )) : <LoadingDialog />
+                            }
+                        </div>
+                        <div className='d-flex paging float-end mb-20'>
+                            {numberPage > 1 && <label onClick={() => setNumberPage(pre => pre - 1)} className='btn-paging unseleted'>
+                                <AiOutlineLeft />
+                            </label>}
+                            {numberOfPages.map((item) => (
+                                <label className={`btn-paging ${numberPage === item ? 'selected-paging' : 'unseleted'}`} onClick={() => setNumberPage(item)}>{item}</label>
+                            ))}
+                            {numberPage < numberOfPages.length && numberOfPages.length > 1 && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
+                                <AiOutlineRight />
+                            </label>}
+                        </div>
                     </div>
                 </div>
-                <div className='d-flex paging float-end mb-20'>
-                    {numberPage > 1 && <label onClick={() => setNumberPage(pre => pre - 1)} className='btn-paging unseleted'>
-                        <AiOutlineLeft />
-                    </label>}
-                    {numberOfPages.map((item) => (
-                        <label className={`btn-paging ${numberPage === item ? 'selected-paging' : 'unseleted'}`} onClick={() => setNumberPage(item)}>{item}</label>
-                    ))}
-                    {numberPage < numberOfPages.length && numberOfPages.length > 1 && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
-                        <AiOutlineRight />
-                    </label>}
-                </div>
+
             </div>
         </div>
     )

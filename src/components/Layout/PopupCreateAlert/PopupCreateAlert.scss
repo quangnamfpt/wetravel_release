@@ -1,0 +1,15 @@
+.outline-none {
+    outline: none;
+}
+
+.bd-solid-1-gray {
+    border: solid 1px gray;
+}
+
+.input-animation {
+    transition: 0.5s;
+}
+
+.input-animation:focus {
+    border: solid 1px rgb(41, 137, 255);
+}

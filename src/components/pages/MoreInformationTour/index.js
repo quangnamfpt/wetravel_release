@@ -441,7 +441,7 @@ function MoreInformationTour({ languageSelected, tour, setTour, tourSchedule, is
                             }
                         </div>
                     </div>
-                    {(tour.type == 1 && window.location.pathname !== '/admin/view-detail-tour') &&
+                    {(tour.type == 1 && window.location.pathname !== '/admin/view-detail-tour' && window.location.pathname !== '/admin/edit-tour') &&
                         <div className="d-flex line-input">
                             <div className="input-alone">
                                 <div onClick={handleClickCreateTour} className='input-inline btn-create-tour'>{languageList.txtCreateTour}</div>

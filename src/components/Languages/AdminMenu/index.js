@@ -8,9 +8,12 @@ export const englishAdminMenu = {
     txtTourProduct: 'Tour Product',
     txtBooking: 'Booking',
     txtHistoryBooking: 'History booking',
+    txtRequestCancellation: 'Request cancellation',
     txtCustomer: 'Customers',
     txtPartner: 'Partners',
+    txtReport: 'Report',
     txtFeedback: 'Feedback',
+    txtPost: 'Post',
     txtServiceConfirm: 'Service confirm'
 }
 
@@ -24,8 +27,11 @@ export const vietnameseAdminMenu = {
     txtTourProduct: 'Các Tour',
     txtBooking: 'Lệnh đặt',
     txtHistoryBooking: 'Lịch sử đặt',
+    txtRequestCancellation: 'Yêu cầu huỷ',
     txtCustomer: 'Khách hàng',
     txtPartner: 'Đối tác',
-    txtFeedback: 'Phản hồi',
+    txtReport: 'Báo cáo',
+    txtFeedback: 'Đánh giá',
+    txtPost: 'Bài đăng',
     txtServiceConfirm: 'Xác minh dịch vụ'
 }

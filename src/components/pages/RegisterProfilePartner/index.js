@@ -102,6 +102,7 @@ function RegisterProfilePartner({ languageSelected, role, setProgress }) {
                 await axios.post(API_REGISTER_PARTNER, data).then(() => {
                     toast.success(languageList.txtSuccess)
                     setTimeout(navigate('/'), 3000)
+                    localStorage.removeItem('tokenRegister')
                 }).catch(() => {
                     toast.error(languageList.txtError)
                 })

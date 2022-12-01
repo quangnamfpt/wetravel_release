@@ -174,3 +174,12 @@
 .fade-in {
     animation: fadeIn 0.5s forwards;
 }
+
+.color-have-feedback {
+    color: #02a499;
+    border: solid 1px #02a499;
+}
+
+.color-have-feedback:hover {
+    background-color: #21ffff87;
+}

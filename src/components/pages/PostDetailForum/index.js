@@ -1,4 +1,4 @@
-import { memo, useState, useEffect } from 'react'
+import { memo, useState, useEffect, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import './PostDetailForum.scss'
 import { typePostEnglish, typePostVietnamese } from '../../Languages/ListPostForum'
@@ -6,6 +6,10 @@ import { english, vietnamese } from '../../Languages/PostDetailForum'
 import Carousel from 'react-multi-carousel';
 import Lottie from 'lottie-react'
 import UploadingAnimation from '../../Animation/uploading.json'
+import { CgDanger } from 'react-icons/cg'
+import PopupReport from '../../Layout/PopupReport';
+import { BiTrashAlt } from 'react-icons/bi'
+import PopupCreateAlert from '../../Layout/PopupCreateAlert'
 
 const responsive = {
     desktop: {
@@ -28,6 +32,34 @@ const responsive = {
 function PostDetailForum({ languageSelected }) {
     const navigate = useNavigate()
 
+    const languageTypePost = languageSelected === 'EN' ? typePostEnglish : typePostVietnamese
+    const languageList = languageSelected === 'EN' ? english : vietnamese
+
+    const [showReport, setShowReport] = useState(false)
+    const [idReasonReport, setIdReasonReport] = useState(0)
+
+    const role = sessionStorage.getItem('role')
+
+    const createReportPost = () => {
+        console.log('Post report: ', post.id)
+    }
+    const blockPost = () => {
+        console.log('Post report: ', post.id)
+    }
+    const callbackConfirm = useRef(role == 1 ? blockPost : createReportPost)
+
+    const [showConfirm, setShowConfirm] = useState(false)
+    const [titleConfirm, setTitleConfirm] = useState(languageList.txtBlock)
+    const [shortReason, setShortReason] = useState(languageList.txtShortReason)
+    const [fullReason, setFullReason] = useState(languageList.txtFullReason)
+    const [isRed, setIsRed] = useState(true)
+    const [textOk, setTextOk] = useState(languageList.txtBlock)
+    const [textCancel, setTextCancel] = useState(languageList.txtCancel)
+
+    const handleClickBlock = () => {
+        setShowConfirm(true)
+    }
+
     const [newComment, setNewComment] = useState('')
     const [newReply, setNewReply] = useState('')
 
@@ -43,8 +75,9 @@ function PostDetailForum({ languageSelected }) {
         setPost(postParam)
     }, [postParam.id])
 
-    const languageTypePost = languageSelected === 'EN' ? typePostEnglish : typePostVietnamese
-    const languageList = languageSelected === 'EN' ? english : vietnamese
+    const handleClickReport = () => {
+        setShowReport(true)
+    }
 
     const handleClickBtnReply = (id) => {
         const element = document.getElementById(id)
@@ -61,44 +94,52 @@ function PostDetailForum({ languageSelected }) {
     }
 
     const handleClickSendComment = () => {
-        const firstName = sessionStorage.getItem('firstName')
-        const lastName = sessionStorage.getItem('lastName')
-        let listCommentCurrent = [...post.comment]
-        let addComment = {
-            content: newComment,
-            isUploaded: false,
-            name: firstName + ' ' + lastName,
-            createDate: new Date().toISOString().split('T')[0],
-            reply: [],
-            parentComment: null
+        if (newComment !== '') {
+            const firstName = sessionStorage.getItem('firstName')
+            const lastName = sessionStorage.getItem('lastName')
+            let listCommentCurrent = [...post.comment]
+            let addComment = {
+                content: newComment,
+                isUploaded: false,
+                name: firstName + ' ' + lastName,
+                createDate: new Date().toISOString().split('T')[0],
+                reply: [],
+                parentComment: null
+            }
+            listCommentCurrent.splice(0, 0, addComment);
+            for (let i = 0; i < post.comment.length; i++) {
+                const element = document.getElementById(`reply-input-${i}`)
+                element.style.display = 'none'
+            }
+            setPost({ ...post, comment: listCommentCurrent })
+            setNewComment('')
         }
-        listCommentCurrent.splice(0, 0, addComment);
-        for (let i = 0; i < post.comment.length; i++) {
-            const element = document.getElementById(`reply-input-${i}`)
-            element.style.display = 'none'
-        }
-        setPost({ ...post, comment: listCommentCurrent })
-        setNewComment('')
     }
 
     const handleClickReplyComment = (index, id) => {
-        const firstName = sessionStorage.getItem('firstName')
-        const lastName = sessionStorage.getItem('lastName')
-        let listReplyCurrent = [...post.comment]
-        let addReply = {
-            content: newReply,
-            isUploaded: false,
-            name: firstName + ' ' + lastName,
-            createDate: new Date().toISOString().split('T')[0],
-            parentComment: id
+        if (newReply !== '') {
+            const firstName = sessionStorage.getItem('firstName')
+            const lastName = sessionStorage.getItem('lastName')
+            let listReplyCurrent = [...post.comment]
+            let addReply = {
+                content: newReply,
+                isUploaded: false,
+                name: firstName + ' ' + lastName,
+                createDate: new Date().toISOString().split('T')[0],
+                parentComment: id
+            }
+            listReplyCurrent[index].reply.push(addReply)
+            setPost({ ...post, comment: listReplyCurrent })
+            setNewReply('')
         }
-        listReplyCurrent[index].reply.push(addReply)
-        setPost({ ...post, comment: listReplyCurrent })
-        setNewReply('')
     }
 
     return (
         <div className='container post-detail'>
+            {showConfirm &&
+                <PopupCreateAlert textOk={textOk} textCancel={textCancel} title={titleConfirm} shortReason={shortReason} fullReason={fullReason} callback={callbackConfirm.current} isRed={isRed} setShowDialog={setShowConfirm} />
+            }
+            {showReport && <PopupReport setShowReport={setShowReport} languageSelected={languageSelected} idReason={idReasonReport} setIdReason={setIdReasonReport} callback={callbackConfirm} />}
             <img src={post.image} className='w-75 bg-image rotation-0 mt-20 mb-20 image-post-detail' />
             <div className='w-75 bg-white pd-20 main-content-post-detail'>
                 <div className='content-post-detail topic-post mb-20'>{languageTypePost[parseInt(post.topic) - 1].label.toUpperCase()}</div>
@@ -109,15 +150,32 @@ function PostDetailForum({ languageSelected }) {
                 </div>
                 <div className='content-post-detail text-bold'>{post.description}</div>
                 <div className='content-post-detail text-left' dangerouslySetInnerHTML={{ __html: post.content }}></div>
+                {role !== null &&
+                    <>
+                        {role != 1 ?
+                            <div className='content-post-detail requird-star link-report'
+                                onClick={handleClickReport}>
+                                <CgDanger />{languageList.txtReport}
+                            </div>
+                            :
+                            <div className='content-post-detail requird-star link-report'
+                                onClick={handleClickBlock}>
+                                <BiTrashAlt />{languageSelected === 'EN' ? 'Block' : 'Khoá'}
+                            </div>
+                        }
+                    </>
+                }
                 <div className='content-post-detail space-comment'>
-                    <div className='input-comment d-flex'>
-                        <input type='text' value={newComment} placeholder={languageList.txtComment} className='w-75 input-comment-post-detail'
-                            onChange={(e) => setNewComment(e.target.value)} />
-                        <button className='btn btn-primary w-25 btn-send-comment'
-                            onClick={handleClickSendComment}>
-                            {languageList.txtSend}
-                        </button>
-                    </div>
+                    {role !== null &&
+                        <div className='input-comment d-flex'>
+                            <input type='text' value={newComment} placeholder={languageList.txtComment} className='w-75 input-comment-post-detail'
+                                onChange={(e) => setNewComment(e.target.value)} />
+                            <button className='btn btn-primary w-25 btn-send-comment'
+                                onClick={handleClickSendComment}>
+                                {languageList.txtSend}
+                            </button>
+                        </div>
+                    }
                     {post.comment.map((comment, index) => (
                         <div className='space-each-comment text-left'>
                             <div className='hover-comment'>
@@ -137,8 +195,10 @@ function PostDetailForum({ languageSelected }) {
                                     </div>
                                 </div>
                                 <input type='date' disabled className='fake-label mb-10 create-date-post-detail' value={comment.createDate} />
-                                <div className={`m-10 content-word-wrap ${!comment.isUploaded && 'comment-uploading'}`}>{comment.content}</div>
-                                <div className={`btn-reply-post-detail ${!comment.isUploaded && 'comment-uploading'}`} onClick={() => comment.isUploaded && handleClickBtnReply(`reply-input-${index}`)}>{languageList.txtReply}</div>
+                                <div className={`content-word-wrap ${!comment.isUploaded && 'comment-uploading'}`}>{comment.content}</div>
+                                {role !== null &&
+                                    <div className={`btn-reply-post-detail ${!comment.isUploaded && 'comment-uploading'}`} onClick={() => comment.isUploaded && handleClickBtnReply(`reply-input-${index}`)}>{languageList.txtReply}</div>
+                                }
                             </div>
                             <div className='space-reply mt-20'>
                                 {comment.reply.map((reply) => (
@@ -157,7 +217,7 @@ function PostDetailForum({ languageSelected }) {
                                             </div>
                                         </div>
                                         <div className={`create-date-post-detail date-reply ${!reply.isUploaded && 'comment-uploading'}`}>{reply.createDate}</div>
-                                        <div className={`m-10 content-word-wrap content-reply ${!reply.isUploaded && 'comment-uploading'}`}>{reply.content}</div>
+                                        <div className={`content-word-wrap content-reply ${!reply.isUploaded && 'comment-uploading'}`}>{reply.content}</div>
                                     </div>
                                 ))}
                             </div>
@@ -190,7 +250,7 @@ function PostDetailForum({ languageSelected }) {
                         itemClass="carousel-item-padding-40-px">
                         {listPost.map((item, indexPost) => (
                             indexPost !== index &&
-                            <div className='each-post-another' onClick={() => navigate(`/forum/post`, { state: { post: item, listPost: listPost, index: indexPost } })}>
+                            <div className='each-post-another' onClick={() => navigate(role != 1 ? '/forum/post' : '/admin/forum/post', { state: { post: item, listPost: listPost, index: indexPost } })}>
                                 <img src={item.image} className='image-another-post-slide' />
                                 <div className='topic-another-post'>{languageTypePost[parseInt(item.topic) - 1].label.toUpperCase()}</div>
                                 <div className='title m-0 title-another-post'>{item.title}</div>

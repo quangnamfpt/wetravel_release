@@ -13,8 +13,8 @@ function RegisterInformation({ languageSelected, role, setProgress }) {
     const token = urlParams.get('token');
     const tokenSaved = localStorage.getItem('tokenRegister')
 
-    if (token !== tokenSaved) {
-        toast.error('Yêu cầu không hợp lệ')
+    if (token === null || token !== tokenSaved) {
+        toast.error(languageSelected === 'EN' ? 'Request is invalid' : 'Yêu cầu không hợp lệ')
     }
 
     const handleNextScreen = () => {
@@ -23,7 +23,7 @@ function RegisterInformation({ languageSelected, role, setProgress }) {
 
     return (
         <>
-            {token !== tokenSaved ?
+            {token === null || token !== tokenSaved ?
                 <Navigate to='/' />
                 :
                 <>

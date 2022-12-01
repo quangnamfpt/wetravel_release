@@ -34,6 +34,15 @@ import ListBookingTable from '../components/pages/ListBookingTable';
 import ListPostForum from '../components/pages/ListPostForum';
 import PostDetailForum from '../components/pages/PostDetailForum';
 import MyPost from '../components/pages/MyPost';
+import CreatePost from '../components/pages/CreatePost'
+import ChangePasswordAccount from '../components/pages/ChangePasswordAccount';
+import AdminDashboard from '../components/pages/AdminDashboard';
+import RequestCancelList from '../components/pages/RequestCancelList';
+import RequestCancelDetail from '../components/pages/RequestCancelDetail';
+import ReportFeedbackList from '../components/pages/ReportFeedbackList';
+import ReportPostList from '../components/pages/ReportPostList';
+import ServicesList from '../components/pages/ServicesList';
+import ServiceDetail from '../components/pages/ServiceDetail';
 
 const publicRoute = [
     { path: '/', component: Home },
@@ -44,12 +53,14 @@ const publicRoute = [
     { path: '/register-information-partner', component: RegisterInformation, layout: RegisterInfomationLayout, image: Hiring, role: 2 },
     { path: '/register-profile-partner', role: 2, component: RegisterProfilePartner, layout: HeaderOnly },
     { path: '/change-password', component: ChangePassword, layout: RegisterInfomationLayout, changePassword: true },
+    { path: '/change-password-account', component: ChangePasswordAccount, layout: RegisterInfomationLayout, changePassword: true, needAccount: true },
+    { path: '/admin/change-password-account', component: ChangePasswordAccount, layout: RegisterInfomationLayout, changePassword: true, needAccount: true },
     { path: '/select-service', component: CreateService, layout: HeaderOnly },
     { path: '/partner', component: PartnerHome, layout: HeaderOnly },
     { path: '/partner/select-detail-service', component: SelectDetailService, layout: HeaderOnly },
     { path: '/partner/register-information-service', component: RegisterInformationServiceLayout, layout: HeaderOnly },
     { path: '/partner/edit-service', component: RegisterInformationServiceLayout, layout: HeaderOnly },
-    { path: '/admin/dashboard', component: AdminSuppliers, layout: HeaderOnly, secondLayout: AdminHome },
+    { path: '/admin/dashboard', component: AdminDashboard, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/suppliers/accommodation', component: AdminSuppliers, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/suppliers/entertainment', component: AdminSuppliers, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/suppliers/restaurant', component: AdminSuppliers, layout: HeaderOnly, secondLayout: AdminHome },
@@ -59,6 +70,7 @@ const publicRoute = [
     { path: '/admin/services/tour-product', component: ListTourProduct, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/services/create-tour', component: CreateTour, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/booking', component: ViewBookingList, layout: HeaderOnly, secondLayout: AdminHome },
+    { path: '/admin/request-cancel', component: RequestCancelList, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/partners', component: ListPartner, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/customers', component: ListCustomer, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/view-detail-tour', component: ViewTour, layout: HeaderOnly, secondLayout: AdminHome },
@@ -76,7 +88,17 @@ const publicRoute = [
     { path: '/admin/booking/list-booking', component: ListBookingTable, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/forum', component: ListPostForum },
     { path: '/forum/post', component: PostDetailForum },
-    { path: '/my-post', component: MyPost }
+    { path: '/admin/forum', component: ListPostForum },
+    { path: '/admin/forum/post', component: PostDetailForum },
+    { path: '/my-post', component: MyPost },
+    { path: '/admin/my-post', component: MyPost },
+    { path: '/create-post', component: CreatePost },
+    { path: '/admin/create-post', component: CreatePost },
+    { path: '/admin/view-detail-request-cancel', component: RequestCancelDetail, layout: HeaderOnly, secondLayout: AdminHome },
+    { path: '/admin/report/feedback', component: ReportFeedbackList, layout: HeaderOnly, secondLayout: AdminHome },
+    { path: '/admin/report/post', component: ReportPostList, layout: HeaderOnly, secondLayout: AdminHome },
+    { path: '/services', component: ServicesList },
+    { path: '/service-detail', component: ServiceDetail }
 ]
 
 const privateRoute = [

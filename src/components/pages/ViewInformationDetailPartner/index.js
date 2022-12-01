@@ -68,7 +68,16 @@ function ViewInformationDetailPartner({ languageSelected }) {
                     status: bookingItem.status,
                     deposit: bookingItem.deposit,
                     price: bookingItem.totalPrice,
-                    statusDeposit: bookingItem.statusDeposit
+                    statusDeposit: bookingItem.statusDeposit,
+                    invoidceCode: bookingItem.orderId,
+                    bookingDate: bookingItem.bookingDate,
+                    fullName: bookingItem.fullName,
+                    phone: bookingItem.phone,
+                    email: bookingItem.email,
+                    idCard: bookingItem.idCard,
+                    dateOfIssue: bookingItem.dateOfIssue,
+                    placeOfIssue: bookingItem.placeOfIssue,
+                    request: bookingItem.request
                 }
                 listBookingRaw.push(bookingItemRaw)
             })
@@ -261,13 +270,13 @@ function ViewInformationDetailPartner({ languageSelected }) {
                             <div className="d-flex line-input">
                                 <div className="mlr-50 ">
                                     <label htmlFor="companyRegistrationDate" className="d-block">{languageList.txtRegistrationDate}<span className="requird-star">*</span></label>
-                                    <input disabled value={partner.registrationDate}
+                                    <input type='date' disabled value={partner.registrationDate}
                                         id='companyRegistrationDate'
                                         className="input-inline" />
                                 </div>
                                 <div className="mlr-50">
                                     <label htmlFor="companyFoundingDate" className="d-block">{languageList.txtFoundingDate}<span className="requird-star">*</span></label>
-                                    <input disabled value={partner.incorporationDate}
+                                    <input type='date' disabled value={partner.incorporationDate}
                                         id='companyFoundingDate' className="input-inline" />
                                 </div>
                             </div>
@@ -298,7 +307,7 @@ function ViewInformationDetailPartner({ languageSelected }) {
                                 </div>
                                 <div className="mlr-50 ">
                                     <label htmlFor="contactBirthdate" className="d-block">{languageList.txtBirthdate}</label>
-                                    <input disabled value={partner.birthDate}
+                                    <input type='date' disabled value={partner.birthDate}
                                         id='contactBirthdate' className="input-inline input-4-item" />
                                 </div>
                             </div>
@@ -353,7 +362,7 @@ function ViewInformationDetailPartner({ languageSelected }) {
                                 <div className="mlr-50 d-flex form-2-on-4-right">
                                     <div className="w-45">
                                         <label htmlFor="contactDateOfIssue" className="d-block">{languageList.txtDateOfIssue}</label>
-                                        <input disabled value={partner.dateIssue}
+                                        <input type='date' disabled value={partner.dateIssue}
                                             id='contactDateOfIssue' className="input-inline input-4-item" />
                                     </div>
                                     <div className="w-45">

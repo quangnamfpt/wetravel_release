@@ -7,7 +7,7 @@ import LoadingDialog from '../../Layout/LoadingDialog'
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
-import { API_GET_SERVICE_BY_CONDITION, API_DELETE_SERVICE } from '../../API'
+import { API_GET_SERVICE_BY_CONDITION, API_DELETE_SERVICE, API_UNBLOCK_SERVICE } from '../../API'
 import axios from 'axios'
 import { english, vietnamese } from '../../Languages/AdminSuppliers'
 import './AdminSuppliers.scss'
@@ -111,10 +111,23 @@ function AdminSuppliers({ languageSelected }) {
         setGetDataComplete(false)
         axios.delete(API_DELETE_SERVICE + id).then(() => {
             setGetDataComplete(true)
-            toast.success(languageSelected === 'EN' ? 'Deleted' : 'Đã xoá')
+            toast.success(languageSelected === 'EN' ? 'Blocked' : 'Đã khoá')
 
             let servicesRaw = [...services]
             servicesRaw[index].isBlock = true
+            setServices(servicesRaw)
+            setShowConfirm(false)
+        })
+    }
+
+    const handleClickActive = (id, index) => {
+        setGetDataComplete(false)
+        axios.put(API_UNBLOCK_SERVICE + id).then(() => {
+            setGetDataComplete(true)
+            toast.success(languageSelected === 'EN' ? 'Actived' : 'Đã kích hoạt')
+
+            let servicesRaw = [...services]
+            servicesRaw[index].isBlock = false
             setServices(servicesRaw)
             setShowConfirm(false)
         })
@@ -150,7 +163,7 @@ function AdminSuppliers({ languageSelected }) {
                             <tr>
                                 <td>{index + 1}</td>
                                 <td>{service.serviceName}</td>
-                                <td>{typeService[serviceCategory - 1][parseInt(service.typeOfServiceCategory) - 1].title}</td>
+                                <td>{typeService[serviceCategory - 1][parseInt(service.typeOfServiceCategory)].title}</td>
                                 <td>{`${service.serviceAddress}, ${service.serviceCity}`}</td>
                                 <td>{(!service.isActive && <label className='status status-pause'>{languageSelected === 'EN' ? 'Waiting' : 'Chờ duyệt'}</label>) ||
                                     (service.isBlock && <label className='status status-close'>{languagesList.txtDeleted}</label>) ||
@@ -166,7 +179,7 @@ function AdminSuppliers({ languageSelected }) {
                                         {service.isBlock ?
                                             <MenuItem onClick={() => handleClickShowConfig(languagesList.txtActive,
                                                 languagesList.txtWarningActiveService,
-                                                () => handleClickDelete(service.serviceId, index), false, languagesList.txtActive,
+                                                () => handleClickActive(service.serviceId, index), false, languagesList.txtActive,
                                                 languagesList.txtCancel)}>
                                                 <AiOutlineCheckCircle /> {languagesList.txtActive}
                                             </MenuItem> :

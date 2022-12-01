@@ -11,12 +11,16 @@ export const english = {
     txtPayNow: 'Pay Now',
     txtCancel: 'Cancel',
     txtFeedback: 'Feedback',
+    txtFeedbacked: 'Have evaluated',
     txtPayDeposit: 'Pay Deposit',
     txtWaiting: 'Waiting',
     txtDetailTour: 'See details',
     txtReason: 'Cancel reason',
     txtDescription: 'Description',
-    txtFeebackAboutTour: 'Feedback about this tour'
+    txtFeebackAboutTour: 'Feedback about this tour',
+    txtAddFeedbackSuccess: 'Add feedback success',
+    txtWaitingCancel: 'Wait for cancellation',
+    txtRequestCancelSuccess: 'Cancellation request was success'
 }
 
 export const vietnamese = {
@@ -32,10 +36,14 @@ export const vietnamese = {
     txtPayNow: 'Thanh toán',
     txtCancel: 'Huỷ',
     txtFeedback: 'Đánh giá',
+    txtFeedbacked: 'Đã đánh giá',
     txtPayDeposit: 'Thanh toán cọc',
     txtWaiting: 'Chờ đi',
     txtDetailTour: 'Xem chi tiết',
     txtReason: 'Lý do huỷ',
     txtDescription: 'Mô tả',
-    txtFeebackAboutTour: 'Đánh giá về tour'
+    txtFeebackAboutTour: 'Đánh giá về tour',
+    txtAddFeedbackSuccess: 'Đánh giá thành công',
+    txtWaitingCancel: 'Chờ huỷ',
+    txtRequestCancelSuccess: 'Yêu cầu huỷ thành công'
 }

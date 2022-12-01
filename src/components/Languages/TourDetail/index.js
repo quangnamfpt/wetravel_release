@@ -16,6 +16,7 @@ export const english = {
     txtGeneralTerms: 'General terms',
     txtMoreDescription: 'More description',
     txtFeedback: 'Feedback',
+    txtReport: 'Report',
     txtWarningPrice: 'The more people participating in the tour, the lower the price will be. You only need to pay the deposit in advance, the remaining amount will be calculated and notified to you after the trip ends.'
 }
 
@@ -37,5 +38,6 @@ export const vietnamese = {
     txtGeneralTerms: 'Điều khoản chung',
     txtMoreDescription: 'Thông tin thêm',
     txtFeedback: 'Nhận xét',
+    txtReport: 'Báo cáo',
     txtWarningPrice: 'Càng nhiều người tham gia vào tour giá tiền sẽ càng thấp. Bạn chỉ cần trả trước tiền đặt cọc, số tiền còn lại sẽ được tính và thông báo thanh toán đến bạn sau khi chuyến đi kết thúc.'
 }

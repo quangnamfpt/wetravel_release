@@ -191,14 +191,10 @@ function ViewTour({ languageSelected }) {
 
             let scheduleRaw = []
             data.tourScheduleDTOList.forEach(element => {
-                let serviceTourRaw = []
-                element.tourServiceOfScheduleDTOList.map((item) => serviceTourRaw.push({ value: item.serviceId }))
-
                 const schedule = {
                     name: element.tourScheduleName,
                     content: element.content,
                     toPlace: element.toPlace,
-                    serviceTour: serviceTourRaw,
                     openServices: false,
                     show: true
                 }

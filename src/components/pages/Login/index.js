@@ -69,7 +69,6 @@ function Login({ languageSelected, handleForgotPassword, setShowLoading, toast, 
                             toast.success(languageList[11])
                             setShowLoading(false)
                             setShowLogin(false)
-                            navigate('/')
                         }
                     }
                     else {

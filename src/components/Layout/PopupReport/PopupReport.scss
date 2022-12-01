@@ -1,0 +1,32 @@
+.bg-popup-report {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+
+.reason-report-item {
+    text-align: left;
+    padding: 10px 100px 10px 10px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.reason-report-item-selected {
+    border-radius: 5px;
+    background-color: rgb(41, 109, 255);
+    color: white;
+}
+
+.btn-submit-report {
+    padding: 10px 30px !important;
+    font-size: 16px !important;
+}

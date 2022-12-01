@@ -63,7 +63,17 @@ function ProfileLayout({ languageSelected }) {
                             status: bookingItem.status,
                             deposit: bookingItem.deposit,
                             price: bookingItem.totalPrice,
-                            statusDeposit: bookingItem.statusDeposit
+                            statusDeposit: bookingItem.statusDeposit,
+                            invoidceCode: bookingItem.orderId,
+                            bookingDate: bookingItem.bookingDate,
+                            fullName: bookingItem.fullName,
+                            phone: bookingItem.phone,
+                            email: bookingItem.email,
+                            idCard: bookingItem.idCard,
+                            dateOfIssue: bookingItem.dateOfIssue,
+                            placeOfIssue: bookingItem.placeOfIssue,
+                            request: bookingItem.request,
+                            isFeedback: bookingItem.isFeedback
                         }
                         listBookingRaw.push(bookingItemRaw)
                     })
@@ -101,7 +111,7 @@ function ProfileLayout({ languageSelected }) {
                                     {option === 0 ?
                                         <EditProfile languageSelected={languageSelected} customer={customer} setCustomer={setCustomer} />
                                         :
-                                        <HistoryBookingCustomer numberOfPages={numberOfPages} numberPage={numberPage} setNumberPage={setNumberPage} listBooking={listBooking} languageSelected={languageSelected} />}
+                                        <HistoryBookingCustomer numberOfPages={numberOfPages} numberPage={numberPage} setNumberPage={setNumberPage} listBooking={listBooking} setListBooking={setListBooking} languageSelected={languageSelected} />}
                                 </div>
                             </div>
                         </StickyContainer>

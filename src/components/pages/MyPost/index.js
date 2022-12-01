@@ -416,23 +416,23 @@ function MyPost({ languageSelected }) {
 
     listPost.forEach((post) => {
         let postRaw = post
-        let contentShort = postRaw.content
-        contentShort = contentShort.replace(/<p>|<br>|<div class="mb-10"><\/div>/g, '')
-        contentShort = contentShort.replace(/<\/p>/g, ' ')
-        contentShort = contentShort.replace(/  /g, '. ')
-        contentShort = contentShort.substring(0, 130)
+        let contentShort = postRaw.description.substring(0, 150)
         postRaw.contentShort = contentShort + '...'
         let content = post.content.replace(/<br>/g, '<div class="mb-10"></div>')
         postRaw.content = content
         listPostShow.push(postRaw)
     })
 
+    const role = sessionStorage.getItem('role')
+
     return (
         <div className='container bg-all-my-post'>
             <div className='bg-white bg-my-post m-20 mt-20'>
                 <div className='header-my-post'>
                     <label className='text-bold font-20'>{languageSelected === 'EN' ? 'My post' : 'Bài viết của tôi'}</label>
-                    <button className='btn btn-warning btn-create-new-post mb-0'>{languageSelected === 'EN' ? 'Create new post' : 'Tạo bài viết mới'}</button>
+                    <button className='btn btn-warning btn-create-new-post mb-0' onClick={() => role != 1 ? navigate('/create-post') : navigate('/admin/create-post')}>
+                        {languageSelected === 'EN' ? 'Create new post' : 'Tạo bài viết mới'}
+                    </button>
                 </div>
                 <div className='list-my-post'>
                     <Scrollbars>

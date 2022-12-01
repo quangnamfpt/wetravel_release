@@ -145,13 +145,6 @@ function PartnerHomeHadService({ services, languageSelected }) {
         numberOfPage.push(i + 1)
     }
 
-    const handleClickDelete = (serviceId) => {
-        axios.delete(`http://localhost:8081/wetravel/delete/service/${serviceId}`).then((res) => {
-            toast.info('Deleted')
-            window.location.reload(false)
-        })
-    }
-
     return (
         <div className='home-partner-main d-flex'>
             <Sidebar className='menu-sidebar'>
@@ -172,12 +165,12 @@ function PartnerHomeHadService({ services, languageSelected }) {
                         <Select onChange={(e) => setSearchStatus(e.value)}
                             placeholder={languageList.txtStatus}
                             isSearchable={false}
-                            className='select-search-service select-status'
+                            className='select-search-service'
                             options={options} />
                         <Select onChange={(e) => setSearchAccomodation(e.value)}
                             placeholder={languageList.txtType}
                             isSearchable={false}
-                            className='select-search-service select-type'
+                            className='select-search-service'
                             options={optionType} />
                     </div>
                     <Link to='/partner/select-detail-service' className='btn btn-primary btn-add-new-service'><AiOutlinePlus /> {languageList.txtAddNew}</Link>
@@ -228,11 +221,6 @@ function PartnerHomeHadService({ services, languageSelected }) {
                                             <MenuItem onClick={() => navigate(`/partner/edit-service?serviceId=${service.serviceId}`)}>
                                                 <AiOutlineEdit /> {languageList.txtEdit}
                                             </MenuItem>
-                                            {service.isActive &&
-                                                <MenuItem onClick={() => handleClickDelete(service.serviceId)}>
-                                                    <AiOutlineDelete /> {languageList.txtDelete}
-                                                </MenuItem>
-                                            }
                                         </Menu>
                                     </td>
                                 </tr>

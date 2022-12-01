@@ -1,0 +1,42 @@
+.min-100-vh {
+    min-height: 100vh;
+}
+
+.container-create-post {
+    padding: 50px 10px !important;
+}
+
+.bg-common {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0px 1px 2px gray;
+    padding: 20px;
+}
+
+.btn-submit-post {
+    font-size: 18px !important;
+    color: white !important;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.input-title-post {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: solid 1px gray;
+}
+
+.image-select-create-post {
+    height: 400px;
+    width: 100%;
+}
+
+.space-select-image-create-post {
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    padding: 0;
+}
