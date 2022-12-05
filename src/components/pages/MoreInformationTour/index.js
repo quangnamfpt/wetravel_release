@@ -174,27 +174,13 @@ function MoreInformationTour({ languageSelected, tour, setTour, tourSchedule, is
                         {
                             "tourScheduleName": tourScheduleItem.name,
                             "content": tourScheduleItem.content,
-                            "toPlace": tourScheduleItem.toPlace,
-                            "tourServiceOfScheduleDTOList":
-                                [...tourScheduleItem.serviceTour].map((serviceTourItem) => (
-                                    {
-                                        "serviceId": serviceTourItem.value
-                                    }
-                                )
-                                )
+                            "toPlace": tourScheduleItem.toPlace
                         }
                     )
                     ) : [{
                         "tourScheduleName": [...tourSchedule][0].name,
                         "content": [...tourSchedule][0].content,
-                        "toPlace": [...tourSchedule][0].toPlace,
-                        "tourServiceOfScheduleDTOList":
-                            [...[...tourSchedule][0].serviceTour].map((serviceTourItem) => (
-                                {
-                                    "serviceId": serviceTourItem.value
-                                }
-                            )
-                            )
+                        "toPlace": [...tourSchedule][0].toPlace
                     }]
             }
             setShowLoading(true)

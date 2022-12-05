@@ -1,11 +1,14 @@
-import { useState, memo, useContext } from 'react'
+import { useState, memo, useContext, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { LanguageShowing } from '../../../App'
 import { englishCampingServiceText, vietnameseCampingServiceText, englishTypeService, vietnameseTypeService } from '../../Languages/ServiceType'
-
 import './SelectDetailService.scss'
 
 function SelectDetailService() {
+    useEffect(() => {
+        sessionStorage.setItem('detail-service', 0)
+    }, [])
+
     const categoryService = sessionStorage.getItem('index-service-selected')
     const [selectIndexDetailService, setSelectIndexDetailService] = useState(0)
 

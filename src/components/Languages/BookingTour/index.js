@@ -29,7 +29,9 @@ export const english = {
     txtNext: 'Next',
     txtMomo: 'Momo E-Wallet',
     txtPay: 'Pay now',
-    txtPayDeposit: 'Pay deposit'
+    txtPayDeposit: 'Pay deposit',
+    txtWarningFullInformation: 'Please enter all required information',
+    txtInvalidInformation: 'Invalid information, please check again'
 }
 
 export const vietnamese = {
@@ -63,5 +65,7 @@ export const vietnamese = {
     txtNext: 'Tiếp',
     txtMomo: 'Ví Momo',
     txtPay: 'Thanh toán',
-    txtPayDeposit: 'Thanh toán cọc'
+    txtPayDeposit: 'Thanh toán cọc',
+    txtWarningFullInformation: 'Vui lòng nhập đủ thông tin bắt buộc',
+    txtInvalidInformation: 'Thông tin không hợp lệ, vui lòng kiểm tra lại'
 }

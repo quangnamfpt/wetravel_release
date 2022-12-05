@@ -28,6 +28,10 @@ function RegisterProfile({ languageSelected, role, passwordMain, setProgress, to
         if (firstName === '' || lastName === '') {
             toast.error(languageList.txtWarningFullInformation)
         }
+        else if (!/^[A-Za-z ]/.test(firstName) || !/^[A-Za-z ]/.test(lastName)
+            || (phone !== '' && !/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(phone))) {
+            toast.error(languageList.txtInvalid)
+        }
         else {
             setShowLoading(true)
             setProgress(70)
@@ -74,7 +78,9 @@ function RegisterProfile({ languageSelected, role, passwordMain, setProgress, to
             <div className='d-flex group-input'>
                 <div>
                     <label className='label-date' htmlFor='birthdate' id='birthdate-label'>{languageList.txtBirthdate}</label>
-                    <input value={birthDate} name='birthdate' className='input-date' type='date' id='birthdate' onChange={(e) => setBirthDate(e.target.value)} />
+                    <input value={birthDate} name='birthdate' className='input-date' type='date' id='birthdate'
+                        max={new Date().toJSON().split('T')[0]}
+                        onChange={(e) => setBirthDate(e.target.value)} />
                 </div>
                 <div>
                     <select name='gender' className='input-gender' onChange={(e) => setGender(e.target.value)}>

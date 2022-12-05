@@ -114,7 +114,7 @@ function ViewInformationDetailPartner({ languageSelected }) {
     }, [])
 
     const handleClickBlock = () => {
-        axios.delete(API_BLOCK_ACCOUNT + partner.accountId).then(() => {
+        axios.put(API_BLOCK_ACCOUNT + partner.accountId).then(() => {
             setPartner({ ...partner, isBlock: true })
             toast.success(table.txtBlocked)
             setShowConfirm(false)

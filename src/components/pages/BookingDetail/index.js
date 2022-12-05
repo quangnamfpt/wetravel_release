@@ -1,4 +1,5 @@
 import { memo } from 'react'
+import { toast } from 'react-toastify';
 import Momo from '../Momo'
 import './BookingDetail.scss'
 
@@ -14,13 +15,24 @@ function BookingDetail({ languageList, setOptionSelected, tour, startDate, count
     });
 
     const handleClickPayNow = (orderInfo, price) => {
-        const requestId = Date.now()
-        const isDeposit = tour.type == 2
-        let priceRaw = isDeposit ? tour.deposit : price
-        let startDateRaw = tour.type != 1 ? tour.startDate : startDate
+        if ((tour.type === 1 && startDate === '') || fullName === '' || phone === '' || email === '' || idCard === '' || dateOfIssue === '' || placeOfIssue === '') {
+            toast.error(languageList.txtWarningFullInformation)
+        }
+        else if (!/^[A-Za-z ]/.test(fullName) || !/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(phone)
+            || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
+            || ((!/^[0-9]{9}$/.test(idCard) && !/^[0-9]{12}$/.test(idCard)))) {
+            console.log(!/^[0-9]{6}[0-9]{3}[0-9]{3}[0-9]{3}[0-9]{3}$/.test(idCard))
+            toast.error(languageList.txtInvalidInformation)
+        }
+        else {
+            const requestId = Date.now()
+            const isDeposit = tour.type == 2
+            let priceRaw = isDeposit ? tour.deposit : price
+            let startDateRaw = tour.type != 1 ? tour.startDate : startDate
 
-        Momo(requestId, orderInfo, priceRaw, tour.id, isDeposit, -1, false, fullName, phone, email, promoCode, request,
-            idCard, dateOfIssue, placeOfIssue, startDateRaw, countAdult, countChildren, tour.type, tour.adultPrice, tour.childrenPrice)
+            Momo(requestId, orderInfo, priceRaw, tour.id, isDeposit, -1, false, fullName, phone, email, promoCode, request,
+                idCard, dateOfIssue, placeOfIssue, startDateRaw, countAdult, countChildren, tour.type, tour.adultPrice, tour.childrenPrice)
+        }
     }
 
     return (
@@ -79,7 +91,7 @@ function BookingDetail({ languageList, setOptionSelected, tour, startDate, count
                         </div>
                     </div>
                     <button onClick={() => handleClickPayNow(`${tour.name} - ${countAdult} ${languageList.txtAdult}, ${countChildren} ${languageList.txtChildren}`, priceOrigin)}
-                        className='d-block btn btn-warning btn-next-place-order ml-80 p-20'>{tour.type != 2 ? languageList.txtPay : languageList.txtPayDeposit}</button>
+                        className='btn btn-warning btn-next-place-order float-end'>{tour.type != 2 ? languageList.txtPay : languageList.txtPayDeposit}</button>
                 </div>
                 <div className='w-35'>
                     <div className='section-tour-detail ml-10 p-10'>

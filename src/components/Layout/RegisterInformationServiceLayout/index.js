@@ -447,10 +447,17 @@ function RegisterInformationServiceLayout({ setProgress, languageSelected }) {
         //edit va create
         const pathname = window.location.pathname
         if (leng === count.current) {
+            setProgress(100)
             count.current = -1;
             setLeng(0)
             setShowLoading(false)
-            toast.success('Add service success')
+            if (pathname.includes('edit')) {
+                toast.success(languageSelected === 'EN' ? 'Edit service success' : 'Đã cập nhật dịch vụ')
+            }
+            else {
+                toast.success(languageSelected === 'EN' ? 'Add service success' : 'Đã thêm dịch vụ')
+            }
+            sessionStorage.removeItem('detail-service')
             navigate('/partner')
         }
     }, [leng])
@@ -498,7 +505,8 @@ function RegisterInformationServiceLayout({ setProgress, languageSelected }) {
             toast.warning(languageList[3])
         }
         else if (serviceData.propertyName !== '' && serviceData.address !== '' &&
-            (serviceData.website === '' || serviceData.website.match(regexWebsite)) && serviceData.taxCode !== ''
+            (serviceData.website === '' || serviceData.website.match(regexWebsite))
+            && (/^[0-9]{10}$/.test(serviceData.taxCode) || /^[0-9]{13}$/.test(serviceData.taxCode))
             && serviceData.phoneNumberContact.match(/\d/g).length === 10 && serviceData.emailContact !== ''
             && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(serviceData.emailContact) && checkInformationRooms) {
             setShowLoading(true)
@@ -641,10 +649,13 @@ function RegisterInformationServiceLayout({ setProgress, languageSelected }) {
             serviceData.receptionHallPhoto.length == 0 || serviceData.outdoorPhoto.length == 0) {
             toast.warning(languageList[3])
         }
-        else if (serviceData.propertyName !== '' && serviceData.address !== '' && (serviceData.website === '' || serviceData.website.match(regexWebsite))
-            && serviceData.taxCode !== '' && serviceData.phoneNumberContact.match(/\d/g).length === 10 && serviceData.emailContact !== ''
+        else if (serviceData.propertyName !== '' && serviceData.address !== ''
+            && (serviceData.website === '' || serviceData.website.match(regexWebsite))
+            && (/^[0-9]{10}$/.test(serviceData.taxCode) || /^[0-9]{13}$/.test(serviceData.taxCode))
+            && serviceData.phoneNumberContact.match(/\d/g).length === 10 && serviceData.emailContact !== ''
             && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(serviceData.emailContact)) {
             setShowLoading(true)
+            setProgress(70)
 
             //Submit
             const utilitiesServiceDTOList = [].concat(serviceData.utilitiesAccomodationService,
@@ -758,10 +769,12 @@ function RegisterInformationServiceLayout({ setProgress, languageSelected }) {
             serviceData.timeOpen === '' || serviceData.timeClose === '' || serviceData.receptionHallPhoto.length == 0) {
             toast.warning(languageList[3])
         }
-        else if (serviceData.propertyName !== '' && serviceData.address !== '' && (serviceData.website === '' || serviceData.website.match(regexWebsite))
+        else if (serviceData.propertyName !== '' && serviceData.address !== ''
+            && (serviceData.website === '' || serviceData.website.match(regexWebsite))
             && serviceData.typeOfCuisine.length > 0
-            && serviceData.taxCode !== '' && serviceData.phoneNumberContact.match(/\d/g).length === 10 && serviceData.emailContact !== ''
-            && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(serviceData.emailContact) && checkInformationRooms) {
+            && (/^[0-9]{10}$/.test(serviceData.taxCode) || /^[0-9]{13}$/.test(serviceData.taxCode))
+            && /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(serviceData.phoneNumberContact)
+            && /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(serviceData.emailContact)) {
             setShowLoading(true)
             //Submit
             const utilitiesServiceDTOList = [].concat(serviceData.utilitiesAccomodationService,

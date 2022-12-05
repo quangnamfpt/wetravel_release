@@ -24,7 +24,7 @@ function EditProfile({ languageSelected, isDisabled, customer, setCustomer }) {
 
     const handleClickBlock = () => {
         setGetDataCompleted(false)
-        axios.delete(API_BLOCK_ACCOUNT + customer.id).then(() => {
+        axios.put(API_BLOCK_ACCOUNT + customer.id).then(() => {
             setCustomer({ ...customer, status: true })
             toast.success(languageList.txtBlocked)
             setGetDataCompleted(true)
@@ -49,27 +49,36 @@ function EditProfile({ languageSelected, isDisabled, customer, setCustomer }) {
     }
 
     const handleClickSave = () => {
-        setGetDataCompleted(false)
-        const customerRaw = {
-            isPrivate: 1,
-            firstName: customer.firstName,
-            lastName: customer.lastName,
-            gender: customer.gender,
-            city: customer.city,
-            birthDate: customer.birthDate,
-            address: customer.address,
-            phone: customer.phone
+        if (customer.firstName === '' || customer.lastName === '') {
+            toast.error(languageList.txtWarningFullInformation)
         }
-        axios.post(API_EDIT_PROFILE_CUSTOMER + sessionStorage.getItem('id'), customerRaw)
-            .then(() => {
-                toast.success(languageSelected === 'EN' ? 'Profile update successful' : 'Cập nhật hồ sơ thành công')
-                setGetDataCompleted(true)
-            })
-            .catch(err => {
-                setGetDataCompleted(true)
-                toast.error('error')
-            })
-        setShowConfirm(false)
+        else if (!/^[A-Za-z ]/.test(customer.firstName) || !/^[A-Za-z ]/.test(customer.lastName)
+            || (customer.phone !== '' && !/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(customer.phone))) {
+            toast.error(languageList.txtInvalid)
+        }
+        else {
+            setGetDataCompleted(false)
+            const customerRaw = {
+                isPrivate: 1,
+                firstName: customer.firstName,
+                lastName: customer.lastName,
+                gender: customer.gender,
+                city: customer.city,
+                birthDate: customer.birthDate,
+                address: customer.address,
+                phone: customer.phone
+            }
+            axios.post(API_EDIT_PROFILE_CUSTOMER + sessionStorage.getItem('id'), customerRaw)
+                .then(() => {
+                    toast.success(languageSelected === 'EN' ? 'Profile update successful' : 'Cập nhật hồ sơ thành công')
+                    setGetDataCompleted(true)
+                })
+                .catch(err => {
+                    setGetDataCompleted(true)
+                    toast.error('error')
+                })
+            setShowConfirm(false)
+        }
     }
 
     const handleClickShowConfig = (title, content, callback, isRed, textOk, textCancel) => {

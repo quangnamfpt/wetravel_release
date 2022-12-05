@@ -48,6 +48,8 @@ function InformationCustomerRegisterTourPrivate({ languageSelected, customerRegi
         return true
     }
 
+    console.log(tour)
+
     const handleClickCreateTour = () => {
         if (tour.code === '' || tour.name === '' || (tour.mode == 0 && (tour.startTime === '' || tour.endTime === ''))
             || tour.introduce === '' || tour.totalPrice === '' || (tour.type == 2 && tour.deposit === '')
@@ -58,8 +60,12 @@ function InformationCustomerRegisterTourPrivate({ languageSelected, customerRegi
             setShowLoading(false)
             toast.warning(languageList.txtNotFullInformation)
         }
-        else if (customerRegisted.phone.length !== 10 || (customerRegisted.idCard.length !== 9 && customerRegisted.idCard.length !== 12)) {
-            console.log(customerRegisted.idCard.length)
+        else if (!/^[A-Za-z ]/.test(customerRegisted.fullName)
+            || !/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(customerRegisted.phone)
+            || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(customerRegisted.emailContact)
+            || (!/^[0-9]{9}$/.test(customerRegisted.idCard) && !/^[0-9]{12}$/.test(customerRegisted.idCard))
+            || parseInt(tour.totalPrice) < 1000 || (tour.type == 2 && parseInt(tour.deposit) < 1000)) {
+            console.log(!/^[A-Za-z]\w+$/.test(customerRegisted.fullName))
             setShowLoading(false)
             toast.warning(languageList.txtInvalid)
         }
@@ -116,28 +122,13 @@ function InformationCustomerRegisterTourPrivate({ languageSelected, customerRegi
                         {
                             "tourScheduleName": tourScheduleItem.name,
                             "content": tourScheduleItem.content,
-                            "toPlace": tourScheduleItem.toPlace,
-                            "tourServiceOfScheduleDTOList":
-
-                                [...tourScheduleItem.serviceTour].map((serviceTourItem) => (
-                                    {
-                                        "serviceId": serviceTourItem.value
-                                    }
-                                )
-                                )
+                            "toPlace": tourScheduleItem.toPlace
                         }
                     )
                     ) : [{
                         "tourScheduleName": [...tourSchedule][0].name,
                         "content": [...tourSchedule][0].content,
-                        "toPlace": [...tourSchedule][0].toPlace,
-                        "tourServiceOfScheduleDTOList":
-                            [...[...tourSchedule][0].serviceTour].map((serviceTourItem) => (
-                                {
-                                    "serviceId": serviceTourItem.value
-                                }
-                            )
-                            )
+                        "toPlace": [...tourSchedule][0].toPlace
                     }]
             }
             setShowLoading(true)

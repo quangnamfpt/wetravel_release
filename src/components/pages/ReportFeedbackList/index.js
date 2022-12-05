@@ -11,126 +11,15 @@ import '@szhsin/react-menu/dist/transitions/slide.css';
 import { BiTrashAlt } from 'react-icons/bi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { GrStatusGood } from 'react-icons/gr'
+import Question from '../../images/question.png'
+import { Scrollbars } from 'react-custom-scrollbars-2';
 
 function ReportFeedbackList({ languageSelected }) {
     const navigate = useNavigate()
 
     const reasonReport = languageSelected === 'EN' ? english : vietnamese
 
-    const [listReportFeedback, setListReportFeedback] = useState([
-        {
-            tourId: 1,
-            tourName: 'Tour Tam Dao',
-            feedbackId: 1,
-            content: 'Nhìn chung là ổn, tuy nhiên không thật sự vượt trội chất lượng với các tour công ty du lịch lữ hành khác',
-            report: [
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                },
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                },
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                },
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                },
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                },
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                },
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                }
-            ]
-        },
-        {
-            tourId: 1,
-            tourName: 'Tour Tam Dao',
-            feedbackId: 1,
-            content: 'Nhìn chung là ổn, tuy nhiên không thật sự vượt trội chất lượng với các tour công ty du lịch lữ hành khác',
-            report: [
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                },
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                },
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                }
-            ]
-        },
-        {
-            tourId: 1,
-            tourName: 'Tour Tam Dao',
-            feedbackId: 1,
-            content: 'Nhìn chung là ổn, tuy nhiên không thật sự vượt trội chất lượng với các tour công ty du lịch lữ hành khác',
-            report: [
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                },
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                },
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                }
-            ]
-        },
-        {
-            tourId: 1,
-            tourName: 'Tour Tam Dao',
-            feedbackId: 1,
-            content: 'Nhìn chung là ổn, tuy nhiên không thật sự vượt trội chất lượng với các tour công ty du lịch lữ hành khác',
-            report: [
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                },
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                },
-                {
-                    name: 'Gia Bẻo',
-                    date: '2022-01-01',
-                    content: 'Có ngôn từ bạo lực'
-                }
-            ]
-        }
-    ])
+    const [listReportFeedback, setListReportFeedback] = useState([])
 
     const [numberPage, setNumberPage] = useState(1)
     const [numberOfPages, setNumberOfPages] = useState([1, 2])
@@ -173,40 +62,52 @@ function ReportFeedbackList({ languageSelected }) {
     return (
         <div>
             <div className='d-flex'>
-                {listReportFeedback.map((feedback) => (
-                    <div className='bg-white box-shadow-common br-10 w-22 mlr-2-5-per tab-report'>
-                        <div className='bd-bottom'>
-                            <div className='p-10 d-flex space-between pb-0'>
-                                <div className='d-flex center-vertical link-to-tour'>
-                                    <div className='text-bold font-18'
-                                        onClick={() => navigate('/admin/preview', { state: { id: feedback.tourId } })}>
-                                        {feedback.tourName}
+                {listReportFeedback.length > 0 ?
+                    <>
+                        {listReportFeedback.map((feedback) => (
+                            <div className='bg-white box-shadow-common br-10 w-22 mlr-2-5-per tab-report'>
+                                <div className='bd-bottom'>
+                                    <div className='p-10 d-flex space-between pb-0'>
+                                        <div className='d-flex center-vertical link-to-tour'>
+                                            <div className='text-bold font-18'
+                                                onClick={() => navigate('/admin/preview', { state: { id: feedback.tourId } })}>
+                                                {feedback.tourName.substring(0, 25)}{feedback.tourName.length > 25 && '...'}
+                                            </div>
+                                            <AiFillCaretRight />
+                                        </div>
+                                        <div>
+                                            <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
+                                                <MenuItem>
+                                                    <BiTrashAlt />{languageSelected === 'EN' ? 'Delete' : 'Xoá'}
+                                                </MenuItem>
+                                                <MenuItem>
+                                                    <GrStatusGood />{languageSelected === 'EN' ? 'Keep it' : 'Giữ lại'}
+                                                </MenuItem>
+                                            </Menu>
+                                        </div>
                                     </div>
-                                    <AiFillCaretRight />
+                                    <div className='p-10 text-bold pb-0'>{languageSelected === 'EN' ? 'Content' : 'Nội dung'}:</div>
+                                    <div className='p-10'>{feedback.content}</div>
                                 </div>
-                                <div>
-                                    <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
-                                        <MenuItem>
-                                            <BiTrashAlt />{languageSelected === 'EN' ? 'Delete' : 'Xoá'}
-                                        </MenuItem>
-                                        <MenuItem>
-                                            <GrStatusGood />{languageSelected === 'EN' ? 'Keep it' : 'Giữ lại'}
-                                        </MenuItem>
-                                    </Menu>
+                                <div className='list-overflow'>
+                                    <Scrollbars>
+                                        {feedback.report.map((report) => (
+                                            <div className='bg-white box-shadow-common br-10 p-20 m-10'>
+                                                <div className='text-bold'>{report.name}</div>
+                                                <input type='date' disabled className='fake-label color-gray font-14' value={report.date} />
+                                                <div>{reasonReport[report.reason - 1]}</div>
+                                            </div>
+                                        ))}
+                                    </Scrollbars>
                                 </div>
-                            </div>
-                            <div className='p-10 text-bold pb-0'>Content:</div>
-                            <div className='p-10'>{feedback.content}</div>
-                        </div>
-                        {feedback.report.map((report) => (
-                            <div className='bg-white box-shadow-common br-10 p-20 m-10'>
-                                <div className='text-bold'>{report.name}</div>
-                                <input type='date' disabled className='fake-label color-gray font-14' value={report.date} />
-                                <div>{reasonReport[report.reason - 1]}</div>
                             </div>
                         ))}
+                    </>
+                    :
+                    <div className='d-flex center-screen mt-nega-54'>
+                        <img src={Question} />
                     </div>
-                ))}
+                }
             </div>
             <div className='d-flex float-end paging mt-20'>
                 {numberPage > 1 && <label onClick={() => setNumberPage(pre => pre - 1)} className='btn-paging unseleted'>

@@ -20,6 +20,7 @@ export const english = {
     txtSearchAddress: 'Search address...',
     txtCreateTour: 'Create tour',
     txtAddSuccess: 'Added new tour',
+    txtEditSuccess: 'Edit success',
     txtNotFullInformation: 'Please enter all required information',
     txtInvalid: 'The information entered is not valid, please check again'
 }
@@ -46,6 +47,7 @@ export const vietnamese = {
     txtSearchAddress: 'Tìm kiếm địa chỉ...',
     txtCreateTour: 'Tạo tour',
     txtAddSuccess: 'Đã thêm tour mới',
+    txtEditSuccess: 'Đã sửa thành công',
     txtNotFullInformation: 'Vui lòng nhập đủ thông tin bắt buộc',
     txtInvalid: 'Thông tin đã nhập không hợp lệ, vui lòng kiểm tra lại'
 }

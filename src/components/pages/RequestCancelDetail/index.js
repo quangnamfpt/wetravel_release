@@ -4,15 +4,18 @@ import { english as englishRequestCancelDetail, vietnamese as vietnameseRequestC
 import { english, vietnamese } from '../../Languages/DetailBookingCustomer'
 import './RequestCancelDetail.scss'
 import ConfirmDialog from '../../Layout/ConfirmDialog'
+import { cancelReasonEnglish, cancelReasonVietnamese } from '../../Languages/CancelReason'
 import { AiFillCaretLeft } from 'react-icons/ai'
 
 function RequestCancelDetail({ languageSelected }) {
     const request = useLocation().state.request
+    console.log(request)
     const bookingRaw = request.booking
     const navigate = useNavigate()
 
     const languageRequestCancelDetail = languageSelected === 'EN' ? englishRequestCancelDetail : vietnameseRequestCancelDetail
     const languageList = languageSelected == 'EN' ? english : vietnamese
+    const cancelReason = languageSelected === 'EN' ? cancelReasonEnglish : cancelReasonVietnamese
 
     const [tabOption, setTabOption] = useState(0)
 
@@ -47,15 +50,15 @@ function RequestCancelDetail({ languageSelected }) {
                         <div className='fade-in'>
                             <div className='item-main-information-detail-booking-customer'>
                                 <label className='title-item-main-information-detail-booking-customer'>{languageRequestCancelDetail.txtReason}</label>
-                                <label>{bookingRaw.invoidceCode}</label>
+                                <label>{cancelReason[parseInt(request.request.reasonId) - 1].label}</label>
                             </div>
                             <div className='item-main-information-detail-booking-customer'>
                                 <label className='title-item-main-information-detail-booking-customer'>{languageRequestCancelDetail.txtRequestDate}</label>
-                                <input type='date' value={bookingRaw.bookingDate} className='fake-label' disabled />
+                                <input type='date' value={request.request.requestDate} className='fake-label' disabled />
                             </div>
                             <div className='item-main-information-detail-booking-customer  bd-none'>
                                 <label className='title-item-main-information-detail-booking-customer'>{languageRequestCancelDetail.txtDescription}</label>
-                                <label>{bookingRaw.invoidceCode}</label>
+                                <label>{request.request.description}</label>
                             </div>
                         </div>
                     }

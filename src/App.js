@@ -81,6 +81,7 @@ function App() {
           <LoadingBar
             height={2}
             loaderSpeed={500}
+            onLoaderFinished={() => setProgress(0)}
             color='#4874E8'
             progress={progress}
           />

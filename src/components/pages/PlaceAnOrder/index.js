@@ -101,7 +101,7 @@ function PlaceAnOrder({ languageList, languageSelected, tour, countAdult, setCou
                 </div>
             </div>
             {!open &&
-                <button onClick={() => setOptionSelected(80)} className='d-block btn btn-warning btn-next-place-order'>{languageList.txtNext}</button>
+                <button onClick={() => setOptionSelected(80)} className='float-end btn btn-warning btn-next-place-order'>{languageList.txtNext}</button>
             }
             {open &&
                 <div className={`box-select-people mb-20 box-select-people-open`}>

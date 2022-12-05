@@ -2,11 +2,9 @@ import { memo, useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import Order from '../../images/order.png'
 import Detail from '../../images/detail.png'
-import Payment from '../../images/payment.png'
 import { english, vietnamese } from '../../Languages/BookingTour'
 import PlaceAnOrder from '../PlaceAnOrder'
 import BookingDetail from '../BookingDetail'
-import BookingPayment from '../BookingPayment'
 import './BookingTour.scss'
 
 function BookingTour({ languageSelected }) {
@@ -63,10 +61,7 @@ function BookingTour({ languageSelected }) {
                         promoCode={promoCode} setPromoCode={setPromoCode} request={request} setRequest={setRequest}
                         idCard={idCard} setIdCard={setIdCard} dateOfIssue={dateOfIssue} setDateOfIssue={setDateOfIssue}
                         placeOfIssue={placeOfIssue} setPlaceOfIssue={setPlaceOfIssue}
-                    />) ||
-                    (optionSelected === 80 && <BookingPayment languageList={languageList} languageSelected={languageSelected} tour={tour}
-                        countAdult={countAdult} countChildren={countChildren} priceOrigin={priceOrigin} fullName={fullName} phone={phone} email={email}
-                        promoCode={promoCode} request={request} idCard={idCard} dateOfIssue={dateOfIssue} placeOfIssue={placeOfIssue} startDate={startDate} />)
+                    />)
                 }
             </div>
         </div>

@@ -293,7 +293,7 @@ function ViewTour({ languageSelected }) {
             count.current = -1;
             setLeng(0)
             setShowLoading(false)
-            toast.success(languageList.txtAddSuccess)
+            toast.success(window.location.pathname === '/admin/edit-tour' ? languageList.txtEditSuccess : languageList.txtAddSuccess)
             navigate('/admin/services/tour-product')
         }
     }, [leng])
@@ -342,7 +342,6 @@ function ViewTour({ languageSelected }) {
         if (tour.code === '' || tour.name === '' || (tour.mode == 0 && (tour.startTime === '' || tour.endTime === ''))
             || tour.introduce === '' || tour.introduce === '<p><br></p>' || tour.addressStart === '' || !checkTourSchedule
             || tour.images.length === 0) {
-            console.log('thieu')
             setShowLoading(false)
             toast.warning(languageList.txtNotFullInformation)
         }
@@ -403,27 +402,13 @@ function ViewTour({ languageSelected }) {
                         {
                             "tourScheduleName": tourScheduleItem.name,
                             "content": tourScheduleItem.content,
-                            "toPlace": tourScheduleItem.toPlace,
-                            "tourServiceOfScheduleDTOList":
-                                [...tourScheduleItem.serviceTour].map((serviceTourItem) => (
-                                    {
-                                        "serviceId": serviceTourItem.value
-                                    }
-                                )
-                                )
+                            "toPlace": tourScheduleItem.toPlace
                         }
                     )
                     ) : [{
                         "tourScheduleName": [...tourSchedule][0].name,
                         "content": [...tourSchedule][0].content,
-                        "toPlace": [...tourSchedule][0].toPlace,
-                        "tourServiceOfScheduleDTOList":
-                            [...[...tourSchedule][0].serviceTour].map((serviceTourItem) => (
-                                {
-                                    "serviceId": serviceTourItem.value
-                                }
-                            )
-                            )
+                        "toPlace": [...tourSchedule][0].toPlace
                     }]
             }
             setShowLoading(true)
@@ -446,7 +431,6 @@ function ViewTour({ languageSelected }) {
                             ++lengthDelete
                             console.log(lengthDelete)
                             if (lengthDelete == countDelete) {
-                                console.log('upload')
                                 UploadImage(tour.images, 'tour', count, setLeng, tour.id, 'information', 0, 'images')
                             }
                         })

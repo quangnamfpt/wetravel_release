@@ -8,7 +8,9 @@ export const english = {
     txtPhone: 'Phone',
     txtEmail: 'Email',
     txtBlocked: 'Blocked',
-    txtUnblocked: 'Unblocked'
+    txtUnblocked: 'Unblocked',
+    txtWarningFullInformation: 'Please enter full information',
+    txtInvalid: 'Invalid data, please check again',
 }
 
 export const vietnamese = {
@@ -21,5 +23,7 @@ export const vietnamese = {
     txtPhone: 'Số điện thoại',
     txtEmail: 'Email',
     txtBlocked: 'Đã khoá',
-    txtUnblocked: 'Đã mở khoá'
+    txtUnblocked: 'Đã mở khoá',
+    txtWarningFullInformation: 'Vui lòng nhập đủ thông tin',
+    txtInvalid: 'Dữ liệu không hợp lệ, vui lòng kiểm tra lại',
 }

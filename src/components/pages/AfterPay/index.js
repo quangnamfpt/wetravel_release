@@ -24,7 +24,7 @@ function AfterPay() {
         cookie[key.trim()] = value;
     })
 
-    const language = cookie['languageSelected'] ? 'EN' : cookie['languageSelected']
+    const language = !cookie['languageSelected'] ? 'EN' : cookie['languageSelected']
 
     const booking = {
         tourId: urlParams.get('tourId'),

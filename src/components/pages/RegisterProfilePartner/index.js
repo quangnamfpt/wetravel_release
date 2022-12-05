@@ -55,9 +55,16 @@ function RegisterProfilePartner({ languageSelected, role, setProgress }) {
             toast.warning(languageList.txtWarningFullInformation)
         }
         else {
-            if ((/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailCompany)) &&
-                (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailPartner)) && parseInt(phone) && parseInt(phoneCompany)
-                && (numberIdCard === '' || parseInt(numberIdCard)) && parseInt(taxCode)) {
+            if (/^[A-Za-z ]/.test(firstName) && /^[A-Za-z ]/.test(lastName) &&
+                (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailCompany)) &&
+                (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailPartner)) &&
+                /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(phone) &&
+                /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(phoneCompany)
+                && (numberIdCard === '' || /^[0-9]{9}$/.test(numberIdCard) || /^[0-9]{12}$/.test(numberIdCard))
+                && (/^[0-9]{10}$/.test(taxCode) || /^[0-9]{13}$/.test(taxCode))
+                && (website === '' || /^[a-zA-Z0-9]+([-][a-zA-Z0-9]+)*\.[a-zA-Z0-9]+([-][a-zA-Z0-9]+)*$/.test(website)
+                    && (fax === '' || /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(fax)))
+                && /^[0-9]{5}$/.test(businessCode)) {
                 setShowLoading(true)
                 setProgress(70)
                 let data = {

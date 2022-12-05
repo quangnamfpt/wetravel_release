@@ -457,7 +457,7 @@ function ListPostForum({ languageSelected }) {
         setShowConfirm(false)
     }
 
-    const handleClickReprot = (callback) => {
+    const handleClickReport = (callback) => {
         setShowReport(true)
         callbackConfirm.current = callback
     }
@@ -481,7 +481,7 @@ function ListPostForum({ languageSelected }) {
 
     return (
         <div className='container home-main'>
-            {showReport && <PopupReport setShowReport={setShowReport} languageSelected={languageSelected} idReason={idReasonReport} setIdReason={setIdReasonReport} callback={callbackConfirm} />}
+            {showReport && <PopupReport setShowReport={setShowReport} languageSelected={languageSelected} idReason={idReasonReport} setIdReason={setIdReasonReport} callback={callbackConfirm.current} />}
             {showConfirm &&
                 <PopupCreateAlert textOk={textOk} textCancel={textCancel} title={titleConfirm} shortReason={shortReason} fullReason={fullReason} callback={callbackConfirm.current} isRed={isRed} setShowDialog={setShowConfirm} />
             }
@@ -523,7 +523,7 @@ function ListPostForum({ languageSelected }) {
                                                                     </MenuItem>
                                                                     :
                                                                     <MenuItem className='requird-star'
-                                                                        onClick={() => handleClickReprot(() => createReportPost(post.id))}>
+                                                                        onClick={() => handleClickReport(() => createReportPost(post.id))}>
                                                                         <CgDanger /><label className='ml-5'>{languageDisplay.txtReport}</label>
                                                                     </MenuItem>
                                                                 }

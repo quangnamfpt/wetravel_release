@@ -9,6 +9,7 @@ export const vietnamese = {
     txtAddress: 'Địa chỉ',
     btnRegister: 'Đăng ký',
     txtWarningFullInformation: 'Vui lòng nhập đủ thông tin',
+    txtInvalid: 'Dữ liệu không hợp lệ, vui lòng kiểm tra lại',
     txtSuccess: 'Đăng ký thành công',
     txtError: 'Lỗi không xác định, thử lại sau'
 }
@@ -23,6 +24,7 @@ export const english = {
     txtAddress: 'Address',
     btnRegister: 'Register',
     txtWarningFullInformation: 'Please enter full information',
+    txtInvalid: 'Invalid data, please check again',
     txtSuccess: 'Sign Up Success',
     txtError: 'Unknown error, try again later'
 }

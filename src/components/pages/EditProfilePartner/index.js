@@ -152,48 +152,70 @@ function EditProfilePartner({ languageSelected }) {
     }, [])
 
     const handleClickSave = () => {
-        setShowLoading(true)
-        let newInformation = {
-            "partnerInfor": {
-                "firstName": partner.firstName,
-                "lastName": partner.lastName,
-                "gender": partner.gender,
-                "address": partner.addressContact,
-                "city": partner.cityContact,
-                "birthDate": partner.birthDate,
-                "phone": partner.phone,
-                "email": partner.emailContact,
-                "position": partner.position,
-                "department": partner.department,
-                "numberIdCard": partner.numberIdCard,
-                "placeIssue": partner.placeIssue,
-                "dateIssue": partner.dateIssue
-            },
-            "companyPartnerInfor": {
-                "companyName": partner.companyName,
-                "shortName": partner.shortName,
-                "address": partner.addressCompany,
-                "city": partner.cityCompany,
-                "email": partner.emailContactCompany,
-                "fax": partner.fax,
-                "phone": partner.phoneCompany,
-                "website": partner.website,
-                "businessCode": partner.businessLicenseCode,
-                "taxCode": partner.taxCode,
-                "registrationDate": partner.registrationDate,
-                "incorporationDate": partner.incorporationDate
+        if (partner.companyName === '' || partner.emailContactCompany === '' || partner.phoneCompany === ''
+            || partner.addressCompany === '' || partner.taxCode === '' || partner.businessLicenseCode === ''
+            || partner.registrationDate === '' || partner.incorporationDate === '' || partner.firstName === '' || partner.lastName === ''
+            || partner.phone === '') {
+            toast.warning(languageList.txtWarningFullInformation)
+        }
+        else {
+            if (/^[A-Za-z ]/.test(partner.firstName) && /^[A-Za-z ]/.test(partner.lastName) &&
+                (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(partner.emailContactCompany)) &&
+                /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(partner.emailContact) &&
+                /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(partner.phone) &&
+                /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(partner.phoneCompany)
+                && (partner.numberIdCard === '' || /^[0-9]{9}$/.test(partner.numberIdCard) || /^[0-9]{12}$/.test(partner.numberIdCard))
+                && (/^[0-9]{10}$/.test(partner.taxCode) || /^[0-9]{13}$/.test(partner.taxCode))
+                && (partner.website === '' || /^[a-zA-Z0-9]+([-][a-zA-Z0-9]+)*\.[a-zA-Z0-9]+([-][a-zA-Z0-9]+)*$/.test(partner.website)
+                    && (partner.fax === '' || /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(partner.fax)))
+                && /^[0-9]{5}$/.test(partner.businessLicenseCode)) {
+                setShowLoading(true)
+                let newInformation = {
+                    "partnerInfor": {
+                        "firstName": partner.firstName,
+                        "lastName": partner.lastName,
+                        "gender": partner.gender,
+                        "address": partner.addressContact,
+                        "city": partner.cityContact,
+                        "birthDate": partner.birthDate,
+                        "phone": partner.phone,
+                        "email": partner.emailContact,
+                        "position": partner.position,
+                        "department": partner.department,
+                        "numberIdCard": partner.numberIdCard,
+                        "placeIssue": partner.placeIssue,
+                        "dateIssue": partner.dateIssue
+                    },
+                    "companyPartnerInfor": {
+                        "companyName": partner.companyName,
+                        "shortName": partner.shortName,
+                        "address": partner.addressCompany,
+                        "city": partner.cityCompany,
+                        "email": partner.emailContactCompany,
+                        "fax": partner.fax,
+                        "phone": partner.phoneCompany,
+                        "website": partner.website,
+                        "businessCode": partner.businessLicenseCode,
+                        "taxCode": partner.taxCode,
+                        "registrationDate": partner.registrationDate,
+                        "incorporationDate": partner.incorporationDate
+                    }
+                }
+
+                axios.post(API_EDIT_PROFILE_PARTNER + sessionStorage.getItem('id'), newInformation)
+                    .then(() => {
+                        toast.success(languageSelected === 'EN' ? 'Profile has been updated' : 'Hồ sơ đã được cập nhật')
+                        setShowLoading(false)
+                        setShowConfirm(false)
+                    }).catch((e) => {
+                        toast.error('error')
+                        setShowLoading(false)
+                    })
+            }
+            else {
+                toast.warning(languageList.txtInvalid)
             }
         }
-
-        axios.post(API_EDIT_PROFILE_PARTNER + sessionStorage.getItem('id'), newInformation)
-            .then(() => {
-                toast.success(languageSelected === 'EN' ? 'Profile has been updated' : 'Hồ sơ đã được cập nhật')
-                setShowLoading(false)
-                setShowConfirm(false)
-            }).catch((e) => {
-                toast.error('error')
-                setShowLoading(false)
-            })
     }
 
     const handleClickShowConfig = (title, content, callback, isRed, textOk, textCancel) => {
