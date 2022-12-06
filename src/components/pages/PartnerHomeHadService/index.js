@@ -17,7 +17,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify'
 import { english, vietnamese, englishStatus, vietnameseStatus, englishTypeAccomadation, vietnameseTypeAccomadation, englishTypeEntertainment, vietnameseTypeEntertainment, englishTypeRestaurant, vietnameseTypeRestaurant } from '../../Languages/PartnerHome'
 
-function PartnerHomeHadService({ services, languageSelected }) {
+function PartnerHomeHadService({ services, languageSelected, numberPage, setNumberPage, numberOfPages }) {
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -27,7 +27,6 @@ function PartnerHomeHadService({ services, languageSelected }) {
     const [searchName, setSearchName] = useState('')
     const [searchStatus, setSearchStatus] = useState(0)
     const [searchAccomodation, setSearchAccomodation] = useState(0)
-    const [numberPage, setNumberPage] = useState(1)
 
     const [sortByName, setSortByName] = useState(0)
     const [sortByType, setSortByType] = useState(0)
@@ -139,12 +138,6 @@ function PartnerHomeHadService({ services, languageSelected }) {
         return 0;
     });
 
-    let numberOfPage = []
-
-    for (let i = 0; i < listServiceShow.length / 10; i++) {
-        numberOfPage.push(i + 1)
-    }
-
     return (
         <div className='home-partner-main d-flex'>
             <Sidebar className='menu-sidebar'>
@@ -232,10 +225,10 @@ function PartnerHomeHadService({ services, languageSelected }) {
                     {numberPage > 1 && <label onClick={() => setNumberPage(pre => pre - 1)} className='btn-paging unseleted'>
                         <AiOutlineLeft />
                     </label>}
-                    {numberOfPage.map((item) => (
+                    {numberOfPages.map((item) => (
                         <label className={`btn-paging ${numberPage === item ? 'selected-paging' : 'unseleted'}`} onClick={() => setNumberPage(item)}>{item}</label>
                     ))}
-                    {numberPage === 1 && numberOfPage.length > 1 && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
+                    {numberPage < numberOfPages.length && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
                         <AiOutlineRight />
                     </label>}
                 </div>

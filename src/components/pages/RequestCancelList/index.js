@@ -1,4 +1,4 @@
-import { memo, useState, useEffect } from 'react'
+import { memo, useState, useEffect, useLayoutEffect } from 'react'
 import { AiOutlineSearch, AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import { english, vietnamese } from '../../Languages/RequestCancelList'
 import { cancelReasonEnglish, cancelReasonVietnamese } from '../../Languages/CancelReason'
@@ -8,6 +8,8 @@ import '@szhsin/react-menu/dist/transitions/slide.css';
 import { HiOutlineEye } from 'react-icons/hi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { API_GET_LIST_CANCEL_REQUEST } from '../../API';
 
 function RequestCancelList({ languageSelected }) {
     const languageList = languageSelected === 'EN' ? english : vietnamese
@@ -16,100 +18,33 @@ function RequestCancelList({ languageSelected }) {
     const navigate = useNavigate()
 
     const [searchEmail, setSearchEmail] = useState('')
-    const [listRequestCancel, setListRequestCancel] = useState([
-        {
-            emailAccount: 'a@gmail.com',
-            "request": {
-                requestId: 1,
-                description: 'Chán',
-                requestDate: '2022-12-01',
-                status: 0,
-                reasonId: 1,
-                bookingId: 123
-            },
-            "booking": {
-                // bookingId: bookingItem.userBookingId,
-                // tourId: bookingItem.tourId,
-                // tourName: bookingItem.tourName,
-                // startDate: bookingItem.startDate,
-                // numberOfAdult: bookingItem.numberOfAdult,
-                // numberOfChildren: bookingItem.numberOfChildren,
-                // tourType: bookingItem.tourType,
-                // status: bookingItem.status,
-                // deposit: bookingItem.deposit,
-                // price: bookingItem.totalPrice,
-                // statusDeposit: bookingItem.statusDeposit,
-                // invoidceCode: bookingItem.orderId,
-                // bookingDate: bookingItem.bookingDate,
-                // fullName: bookingItem.fullName,
-                // phone: bookingItem.phone,
-                // email: bookingItem.email,
-                // idCard: bookingItem.idCard,
-                // dateOfIssue: bookingItem.dateOfIssue,
-                // placeOfIssue: bookingItem.placeOfIssue,
-                // request: bookingItem.request
-                bookingId: 123,
-                tourId: 1,
-                tourName: 'Tour Sầm Sơn 3 ngày 2 đêm',
-                startDate: '2022-01-03',
-                numberOfAdult: 2,
-                numberOfChildren: 1,
-                tourType: 3,
-                status: 3,
-                deposit: 2000,
-                price: 5000,
-                statusDeposit: true,
-                invoidceCode: 123,
-                bookingDate: '2022-11-11',
-                fullName: 'Nguyen Van A',
-                phone: '0987654321',
-                email: 'a@gmail.com',
-                idCard: '123456789',
-                dateOfIssue: '2021-11-12',
-                placeOfIssue: 'Tru so cong an',
-                request: 'oi doi oi'
-            }
-        },
-        {
-            emailAccount: 'b@gmail.com',
-            "request": {
-                requestId: 2,
-                description: 'Chán',
-                requestDate: '2022-12-01',
-                status: 0,
-                reasonId: 2,
-                bookingId: 123
-            },
-            "booking": {
-                bookingId: 123,
-                tourId: 1,
-                tourName: 'Vip pro',
-                startDate: '2022-01-03',
-                numberOfAdult: 2,
-                numberOfChildren: 1,
-                tourType: 3,
-                status: 3,
-                deposit: 2000,
-                price: 5000,
-                statusDeposit: true,
-                invoidceCode: 123,
-                bookingDate: '2022-11-11',
-                fullName: 'Nguyen Van A',
-                phone: '0987344321',
-                email: 'a@gmail.com',
-                idCard: '123456789',
-                dateOfIssue: '2021-11-12',
-                placeOfIssue: 'Tru so cong an',
-                request: 'oi doi oi'
-            }
-        }
-    ])
+    const [listRequestCancel, setListRequestCancel] = useState([])
     const [numberPage, setNumberPage] = useState(1)
-    const [numberOfPages, setNumberOfPages] = useState([1, 2])
+    const [numberOfPages, setNumberOfPages] = useState([])
+
+    useLayoutEffect(() => {
+        setNumberPage(1)
+    }, [searchEmail])
 
     useEffect(() => {
-
-    }, [])
+        axios.get(API_GET_LIST_CANCEL_REQUEST, {
+            params: {
+                page: numberPage,
+                size: 10
+            }
+        }).then((res) => {
+            const totalPages = res.data.data.totalPages
+            let numberOfPagesRaw = []
+            for (let i = 0; i < totalPages; i++) {
+                numberOfPagesRaw.push(i + 1)
+            }
+            setNumberOfPages(numberOfPagesRaw)
+            setListRequestCancel(res.data.data.content)
+        }).catch((e) => {
+            console.log(e)
+            setListRequestCancel([])
+        })
+    }, [numberPage, searchEmail])
 
     return (
         <div>
@@ -137,10 +72,10 @@ function RequestCancelList({ languageSelected }) {
                         {[...listRequestCancel].map((request, index) => (
                             <tr>
                                 <td>{index + 1}</td>
-                                <td>{request.emailAccount}</td>
-                                <td>{request.booking.phone}</td>
-                                <td>{cancelReason[parseInt(request.request.reasonId) - 1].label}</td>
-                                <td>{`${request.booking.numberOfAdult} ${languageList.txtAdult}, ${request.booking.numberOfChildren} ${languageList.txtChildren}`}</td>
+                                <td>Chua co du lieu</td>
+                                <td>{request.userBookingDTO.phone}</td>
+                                <td>{cancelReason[request.reasonCancelId - 1].label}</td>
+                                <td>{`${request.userBookingDTO.numberOfAdult} ${languageList.txtAdult}, ${request.userBookingDTO.numberOfChildren} ${languageList.txtChildren}`}</td>
                                 <td>
                                     <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
                                         <MenuItem onClick={() => navigate('/admin/view-detail-request-cancel', { state: { request: request } })}>

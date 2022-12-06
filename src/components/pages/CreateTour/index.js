@@ -142,7 +142,7 @@ function CreateTour({ languageSelected }) {
     }, [])
 
     const today = new Date();
-    const tomorow = new Date(today.setDate(today.getDate() + 7)).toISOString().split('T')[0];
+    const tomorow = new Date(today.setDate(today.getDate() + 1)).toISOString().split('T')[0];
 
     const [tour, setTour] = useState({
         code: '',

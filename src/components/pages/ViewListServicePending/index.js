@@ -18,13 +18,20 @@ function ViewListServicePending({ languageSelected }) {
     const [services, setServices] = useState([])
     const navigate = useNavigate()
 
+    const [searchName, setSearchName] = useState('')
+    const [numberPage, setNumberPage] = useState(1)
+    const [numberOfPages, setNumberOfPages] = useState([])
+    const [sortByName, setSortByName] = useState(0)
+
     useEffect(() => {
         axios.get(API_GET_SERVICE_BY_CONDITION, {
             params: {
-                isActive: 0
+                isActive: 0,
+                page: numberPage,
+                size: 10
             }
         }).then((response) => {
-            const data = response.data.data
+            const data = response.data.data.content
             let servicesRaw = []
             data.map((service) => {
                 const serviceItem = {
@@ -39,15 +46,16 @@ function ViewListServicePending({ languageSelected }) {
                 }
                 servicesRaw.push(serviceItem)
                 if (servicesRaw.length === data.length) {
+                    let listPages = []
+                    for (let i = 0; i < response.data.data.totalPages; i++) {
+                        listPages.push(i + 1)
+                    }
+                    setNumberOfPages(listPages)
                     setServices(servicesRaw)
                 }
             })
         })
-    }, [])
-
-    const [searchName, setSearchName] = useState('')
-    const [numberPage, setNumberPage] = useState(1)
-    const [sortByName, setSortByName] = useState(0)
+    }, [numberPage])
 
     const listServiceShow = []
 
@@ -89,12 +97,6 @@ function ViewListServicePending({ languageSelected }) {
         }
         return 0;
     });
-
-    let numberOfPage = []
-
-    for (let i = 0; i < services.length / 10; i++) {
-        numberOfPage.push(i + 1)
-    }
 
     return (
         <>
@@ -153,10 +155,10 @@ function ViewListServicePending({ languageSelected }) {
                 {numberPage > 1 && <label onClick={() => setNumberPage(pre => pre - 1)} className='btn-paging unseleted'>
                     <AiOutlineLeft />
                 </label>}
-                {numberOfPage.map((item) => (
+                {numberOfPages.map((item) => (
                     <label className={`btn-paging ${numberPage === item ? 'selected-paging' : 'unseleted'}`} onClick={() => setNumberPage(item)}>{item}</label>
                 ))}
-                {numberPage < numberOfPage.length && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
+                {numberPage < numberOfPages.length && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
                     <AiOutlineRight />
                 </label>}
             </div>

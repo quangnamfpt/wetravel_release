@@ -20,7 +20,7 @@ import { API_CREATE_REPORT_FEEDBACK, API_GET_DETAIL_TOUR, API_GET_LIST_FEEDBACK 
 import LoadingDialog from '../../Layout/LoadingDialog'
 import axios from 'axios'
 import { ref, listAll, getDownloadURL } from 'firebase/storage'
-import { storage } from "../../../firebase/Upload";
+import { storage } from "../../../firebase/Config";
 
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';

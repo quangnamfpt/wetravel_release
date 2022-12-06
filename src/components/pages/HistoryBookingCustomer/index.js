@@ -111,9 +111,6 @@ function HistoryBookingCustomer({ languageSelected, listBooking, setListBooking,
     }
 
     const handleClickSubmitCancelBooking = () => {
-        console.log('Booking ID: ', idBookingCancel)
-        console.log('reasonCancel: ', reasonCancel)
-        console.log('descriptionCancel: ', descriptionCancel)
         setShowLoading(true)
         const request = {
             "userBookingId": idBookingCancel,
@@ -259,10 +256,14 @@ function HistoryBookingCustomer({ languageSelected, listBooking, setListBooking,
                                                     (item.tourType == 1 && item.status == 1 && today < item.startDate && (isDisabled ? <label className='waiting-history-booking'>{languageList.txtWaiting}</label> : <button className='btn-cancel-history-booking' onClick={() => handleCancelBooking(item.bookingId)}>{languageList.txtCancel}</button>)) ||
                                                     (item.tourType == 1 && item.status == 1 && today >= item.startDate && <div className='price-payed-history-booking'>{languageList.txtPaid} {formatter.format(item.price)}{!isDisabled && <button className='btn-feedback-history-booking' onClick={() => handleFeedbackTour(item, index)}>{languageList.txtFeedback}</button>}</div>) ||
                                                     (item.tourType == 1 && item.status == 2 && today >= item.startDate && <label className='canceled-history-booking'>{languageList.txtCanceled}</label>) ||
-                                                    (item.tourType == 2 && item.status == 0 && !item.statusDeposit && today < item.startDate && (isDisabled ? <label className='waiting-pay-history-booking'>{languageList.txtWaitPayDeposit}</label> : <button onClick={() => handleClickDeposit(`${item.tourName} ${item.numberOfAdult} Adult, ${item.numberOfChildren} Children`, item.deposit, item.tourId, item.bookingId)} className='btn-pay-history-booking'>{languageList.txtPayDeposit}</button>)) ||
+                                                    (item.tourType == 2 && item.status == 0 && item.statusDeposit && today < item.startDate && item.tourStatus === 3 && <label className='waiting-history-booking'>{languageList.txtWaitPayDeposit}</label>) ||
+                                                    (item.tourType == 2 && item.status == 0 && !item.statusDeposit && today < item.startDate && item.tourStatus === 1 && (isDisabled ? <label className='waiting-pay-history-booking'>{languageList.txtWaitPayDeposit}</label> : <button onClick={() => handleClickDeposit(`${item.tourName} ${item.numberOfAdult} Adult, ${item.numberOfChildren} Children`, item.deposit, item.tourId, item.bookingId)} className='btn-pay-history-booking'>{languageList.txtPayDeposit}</button>)) ||
+                                                    (item.tourType == 2 && item.status == 0 && !item.statusDeposit && today < item.startDate && item.tourStatus === 2 && <label className='canceled-history-booking'>{languageList.txtCanceled}</label>) ||
                                                     (item.tourType == 2 && item.status == 0 && !item.statusDeposit && today >= item.startDate && <label className='canceled-history-booking'>{languageList.txtCanceled}</label>) ||
-                                                    (item.tourType == 2 && item.status == 0 && item.statusDeposit && today >= item.startDate && (isDisabled ? <label className='waiting-pay-history-booking'>{languageList.txtWaitPay}</label> : <button onClick={() => handleClickPay(`${item.tourName} ${item.numberOfAdult} Adult, ${item.numberOfChildren} Children`, item.price, item.tourId, item.bookingId)} className='btn-pay-history-booking'>{languageList.txtPayNow}</button>)) ||
-                                                    (item.tourType == 2 && item.status == 0 && item.statusDeposit && today < item.startDate && <label className='waiting-history-booking'>{languageList.txtWaiting}</label>) ||
+                                                    (item.tourType == 2 && item.status == 0 && item.statusDeposit && today >= item.startDate && item.tourStatus !== 2 && <label className='waiting-pay-history-booking'>{languageList.txtWaitPay}</label>) ||
+                                                    (item.tourType == 2 && item.status == 0 && item.statusDeposit && today >= item.startDate && item.tourStatus === 2 && (isDisabled ? <label className='waiting-pay-history-booking'>{languageList.txtWaitPay}</label> : <button onClick={() => handleClickPay(`${item.tourName} ${item.numberOfAdult} Adult, ${item.numberOfChildren} Children`, item.price, item.tourId, item.bookingId)} className='btn-pay-history-booking'>{languageList.txtPayNow}</button>)) ||
+                                                    (item.tourType == 2 && item.status == 0 && item.statusDeposit && today < item.startDate && item.tourStatus === 2 && <label className='canceled-history-booking'>{languageList.txtCanceled}</label>) ||
+                                                    (item.tourType == 2 && item.status == 0 && item.statusDeposit && today < item.startDate && item.tourStatus === 1 && <label className='waiting-history-booking'>{languageList.txtWaiting}</label>) ||
                                                     (item.tourType == 2 && item.status == 1 && item.statusDeposit && today >= item.startDate && <div className='price-payed-history-booking'>{languageList.txtPaid} {formatter.format(item.price)}{!isDisabled && <button className='btn-feedback-history-booking' onClick={() => handleFeedbackTour(item, index)}>{languageList.txtFeedback}</button>}</div>) ||
                                                     (item.tourType == 2 && item.status == 2 && <label className='canceled-history-booking'>{languageList.txtCanceled}</label>)}
                                             </div>
@@ -275,20 +276,12 @@ function HistoryBookingCustomer({ languageSelected, listBooking, setListBooking,
                         :
                         <div className='image-no-booking br-top-left-none'>
                             <img src={Question} className='image-question' />
-                            <div className='text-no-booking'>{languageList.txtNoBooking} {!isDisabled && <Link to='/tours' className='link-no-booking'>{languageList.txtBookNow}</Link>}</div>
+                            <div className='text-no-booking'>
+                                {languageList.txtNoBooking} {!isDisabled && <Link to='/tours' className='link-no-booking'>
+                                    {languageList.txtBookNow}</Link>}
+                            </div>
                         </div>
                     }
-                    <div className='d-flex float-end paging'>
-                        {numberPage > 1 && <label onClick={() => setNumberPage(pre => pre - 1)} className='btn-paging unseleted'>
-                            <AiOutlineLeft />
-                        </label>}
-                        {numberOfPages.map((item) => (
-                            <label className={`btn-paging ${numberPage === item ? 'selected-paging' : 'unseleted'}`} onClick={() => setNumberPage(item)}>{item}</label>
-                        ))}
-                        {numberPage < numberOfPages.length && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
-                            <AiOutlineRight />
-                        </label>}
-                    </div>
                 </div>
             </>
         }

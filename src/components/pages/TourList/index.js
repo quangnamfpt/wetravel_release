@@ -10,7 +10,7 @@ import { API_GET_ALL_TOUR } from '../../API';
 import LoadingDialog from '../../Layout/LoadingDialog'
 import axios from 'axios'
 import { ref, listAll, getDownloadURL } from 'firebase/storage'
-import { storage } from "../../../firebase/Upload";
+import { storage } from "../../../firebase/Config";
 
 function TourList({ languageSelected }) {
     const [getDataComplete, setGetDataComplete] = useState(false)

@@ -28,7 +28,12 @@ export const english = {
     txtSuccess: 'Sign up success',
     txtInvalid: 'Invalid information, please check again',
     txtNoneService: 'No service yet?',
-    txtAddNow: 'Add now'
+    txtAddNow: 'Add now',
+    txtCategory: 'Category',
+    txtType: 'Type',
+    txtPending: 'Pending',
+    txtBlocked: 'Blocked',
+    txtActive: 'Active'
 }
 
 export const vietnamese = {
@@ -61,5 +66,10 @@ export const vietnamese = {
     txtSuccess: 'Đăng ký thành công',
     txtInvalid: 'Thông tin không hợp lệ, vui lòng kiểm tra lại',
     txtNoneService: 'Chưa có dịch vụ?',
-    txtAddNow: 'Thêm ngay'
+    txtAddNow: 'Thêm ngay',
+    txtCategory: 'Loại',
+    txtType: 'Loại hình',
+    txtPending: 'Chờ duyệt',
+    txtBlocked: 'Đã khoá',
+    txtActive: 'Kích hoạt'
 }

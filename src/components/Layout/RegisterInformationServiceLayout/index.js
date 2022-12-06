@@ -14,7 +14,7 @@ import { toast } from 'react-toastify'
 import { UploadImage } from "../../../firebase/UploadImage";
 import { API_PUT_UPDATE_SERVICEACCOMMODATION, API_SERVICE_DETAIL_INFORMATION, API_PUT_UPDATE_SERVICEENTERTAIMENT, API_PUT_UPDATE_SERVICERESTAURANT } from "../../API"
 import { ref, listAll, getDownloadURL, deleteObject } from 'firebase/storage'
-import { storage } from "../../../firebase/Upload";
+import { storage } from "../../../firebase/Config";
 import { StickyContainer, Sticky } from 'react-sticky'
 
 function RegisterInformationServiceLayout({ setProgress, languageSelected }) {

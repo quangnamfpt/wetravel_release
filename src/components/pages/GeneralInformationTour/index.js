@@ -11,7 +11,7 @@ function GeneralInformationTour({ languageSelected, tour, setTour, tourSchedule,
     const categorys = (languageSelected === 'EN' ? englishCategory : vietnameseCategory)
 
     const today = new Date();
-    const tomorow = new Date(today.setDate(today.getDate() + 7)).toISOString().split('T')[0];
+    const tomorow = new Date(today.setDate(today.getDate() + 1)).toISOString().split('T')[0];
 
     useEffect(() => {
         if (!tour.minAdult) {

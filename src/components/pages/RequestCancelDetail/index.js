@@ -1,4 +1,4 @@
-import { memo, useState } from 'react'
+import { memo, useState, useRef } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { english as englishRequestCancelDetail, vietnamese as vietnameseRequestCancelDetail } from '../../Languages/RequestCancelDetail'
 import { english, vietnamese } from '../../Languages/DetailBookingCustomer'
@@ -9,13 +9,20 @@ import { AiFillCaretLeft } from 'react-icons/ai'
 
 function RequestCancelDetail({ languageSelected }) {
     const request = useLocation().state.request
-    console.log(request)
-    const bookingRaw = request.booking
+    const bookingRaw = request.userBookingDTO
     const navigate = useNavigate()
 
     const languageRequestCancelDetail = languageSelected === 'EN' ? englishRequestCancelDetail : vietnameseRequestCancelDetail
     const languageList = languageSelected == 'EN' ? english : vietnamese
     const cancelReason = languageSelected === 'EN' ? cancelReasonEnglish : cancelReasonVietnamese
+
+    const [showConfirm, setShowConfirm] = useState(false)
+    const [titleConfirm, setTitleConfirm] = useState('asd')
+    const [contentConfirm, setContentConfirm] = useState('asd')
+    const callbackConfirm = useRef(() => { })
+    const [isRed, setIsRed] = useState(true)
+    const [textOk, setTextOk] = useState('Ok')
+    const [textCancel, setTextCancel] = useState('Cancel')
 
     const [tabOption, setTabOption] = useState(0)
 
@@ -41,8 +48,8 @@ function RequestCancelDetail({ languageSelected }) {
                 </div>
                 <div className='p-20 mt-20'>
                     <div className='d-flex space-between header-center-all-item'>
-                        <header className='title m-0 font-20'>{request.booking.tourName}</header>
-                        <label onClick={() => navigate('/admin/preview', { state: { id: request.booking.tourId } })} className='link-detail-tour'>{languageList.txtViewTour}</label>
+                        <header className='title m-0 font-20'>{request.userBookingDTO.tourName}</header>
+                        <label onClick={() => navigate('/admin/preview', { state: { id: request.userBookingDTO.tourId } })} className='link-detail-tour'>{languageList.txtViewTour}</label>
                     </div>
                 </div>
                 <div className='main-information-detail-booking-customer p-20'>
@@ -50,15 +57,15 @@ function RequestCancelDetail({ languageSelected }) {
                         <div className='fade-in'>
                             <div className='item-main-information-detail-booking-customer'>
                                 <label className='title-item-main-information-detail-booking-customer'>{languageRequestCancelDetail.txtReason}</label>
-                                <label>{cancelReason[parseInt(request.request.reasonId) - 1].label}</label>
+                                <label>{cancelReason[parseInt(request.reasonCancelId) - 1].label}</label>
                             </div>
                             <div className='item-main-information-detail-booking-customer'>
                                 <label className='title-item-main-information-detail-booking-customer'>{languageRequestCancelDetail.txtRequestDate}</label>
-                                <input type='date' value={request.request.requestDate} className='fake-label' disabled />
+                                <input type='date' value={request.requestDate} className='fake-label' disabled />
                             </div>
                             <div className='item-main-information-detail-booking-customer  bd-none'>
                                 <label className='title-item-main-information-detail-booking-customer'>{languageRequestCancelDetail.txtDescription}</label>
-                                <label>{request.request.description}</label>
+                                <label>{request.description}</label>
                             </div>
                         </div>
                     }
@@ -88,7 +95,7 @@ function RequestCancelDetail({ languageSelected }) {
                             }
                             <div className='item-main-information-detail-booking-customer bd-none'>
                                 <label className='title-item-main-information-detail-booking-customer'>{languageList.txtTotalPrice}</label>
-                                <label className='text-red'>{formatter.format(bookingRaw.price)}</label>
+                                <label className='text-red'>{formatter.format(bookingRaw.totalPrice)}</label>
                             </div>
                         </div>
                     }

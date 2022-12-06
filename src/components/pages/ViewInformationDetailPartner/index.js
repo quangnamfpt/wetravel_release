@@ -14,6 +14,8 @@ import { API_LIST_BOOKING_BY_ACCOUNTID, API_GET_SERVICE_BY_CONDITION, API_ACTIVE
 import HistoryBookingCustomer from "../HistoryBookingCustomer";
 import ConfirmDialog from '../../Layout/ConfirmDialog'
 import { toast } from 'react-toastify'
+import { ref, getDownloadURL } from 'firebase/storage'
+import { storage } from "../../../firebase/Config";
 
 function ViewInformationDetailPartner({ languageSelected }) {
     const navigate = useNavigate()
@@ -92,22 +94,38 @@ function ViewInformationDetailPartner({ languageSelected }) {
     useEffect(() => {
         axios.get(API_GET_SERVICE_BY_CONDITION, {
             params: {
-                emailPartner: partner.email
+                emailPartner: partner.email,
+                page: 1,
+                size: 99999
             }
         }).then((res) => {
-            const data = res.data.data
+            const data = res.data.data.content
             let servicesRaw = []
+            let leng = 0
             data.map((service) => {
-                const serviceItem = {
-                    id: service.serviceId,
-                    name: service.serviceName,
-                    category: parseInt(service.serviceCategory),
-                    type: service.typeOfServiceCategory
+                let serviceRaw = service
+                const refAccommodation = ref(storage, `/service/accomodation/${service.serviceId}/information/receptionHallPhoto/image-0`)
+                const refEntertainment = ref(storage, `/service/entertainment/${service.serviceId}/information/receptionHallPhoto/image-0`)
+                const refRestaurant = ref(storage, `/service/restaurant/${service.serviceId}/information/receptionHallPhoto/image-0`)
+                let refData
+                if (service.serviceCategory === 1) {
+                    refData = refAccommodation
+                } else if (service.serviceCategory === 2) {
+                    refData = refEntertainment
+                } else {
+                    refData = refRestaurant
                 }
-                servicesRaw.push(serviceItem)
+                getDownloadURL(refData)
+                    .then((url) => {
+                        serviceRaw.image = url
+                        servicesRaw.push(service)
+                        leng++
+                        if (leng == data.length) {
+                            setListService(servicesRaw)
+                            getListBookingByAccountId()
+                        }
+                    })
             })
-            setListService([...servicesRaw])
-            getListBookingByAccountId()
         }).catch((e) => {
             getListBookingByAccountId()
         })
@@ -384,17 +402,17 @@ function ViewInformationDetailPartner({ languageSelected }) {
                                     <div className="mb-20 item-service br-bottom-5">
                                         <div className="item-service-partner d-flex space-between">
                                             <label className='short-information-detail txt-14 m-top-auto short-information-service-partner'>
-                                                <div>{service.name}</div>
-                                                <div>{languageService[service.category - 1].txtCategory}</div>
-                                                <div>{languageService[service.category - 1].txtType[service.type - 1]}</div>
+                                                <div>{service.serviceName}</div>
+                                                <div>{languageService[service.serviceCategory - 1].txtCategory}</div>
+                                                <div>{languageService[service.serviceCategory - 1].txtType[parseInt(service.typeOfServiceCategory)]}</div>
                                             </label>
                                             <div className='w-75 image-hide-animation'>
-                                                <img src={Bg} className='image-side-hide' />
+                                                <img src={service.image} className='image-side-hide' />
                                                 <div className='liner-white' />
                                             </div>
                                         </div>
                                         <div className=" item-service font-14 br-bottom-5 text-center text-link"
-                                            onClick={() => navigate('/admin/view-service', { state: { serviceId: service.id } })}>{languageMore.txtSeeDetail}</div>
+                                            onClick={() => navigate('/admin/view-service', { state: { serviceId: service.serviceId } })}>{languageMore.txtSeeDetail}</div>
                                     </div>
                                 )) :
                                     <div className='image-no-booking br-top-left-none'>

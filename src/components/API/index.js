@@ -1,7 +1,7 @@
 //const DOMAIN = 'http://35.186.146.185:8100/'
-const DOMAIN = 'http://34.142.231.60:31000/wetravel/'
+//const DOMAIN = 'http://34.142.231.60:31000/wetravel/'
 
-// const DOMAIN = 'http://localhost:8081/wetravel/'
+const DOMAIN = 'http://localhost:8081/wetravel/'
 
 export const API_LOGIN = `${DOMAIN}login`
 export const API_VERIFY = `${DOMAIN}verify`
@@ -48,3 +48,4 @@ export const API_UPDATE_STATUS_BOOKING = `${DOMAIN}update/status`
 export const API_CHANGE_PASSWORD_FORGOT = `${DOMAIN}forgot/password`
 export const API_GET_LIST_FEEDBACK = `${DOMAIN}get-list-feedback/by-tour`
 export const API_GET_LIST_FEEDBACK_REPORT = `${DOMAIN}get-list-feedback/reported`
+export const API_GET_LIST_CANCEL_REQUEST = `${DOMAIN}get/list/request/cancel/booking`

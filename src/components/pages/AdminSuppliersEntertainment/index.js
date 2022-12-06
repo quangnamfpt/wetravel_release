@@ -10,13 +10,11 @@ import '@szhsin/react-menu/dist/transitions/slide.css';
 import { API_GET_SERVICE_BY_CONDITION, API_DELETE_SERVICE, API_UNBLOCK_SERVICE } from '../../API'
 import axios from 'axios'
 import { english, vietnamese } from '../../Languages/AdminSuppliers'
-import './AdminSuppliers.scss'
 import { toast } from 'react-toastify'
 import { englishTypeService, vietnameseTypeService } from '../../Languages/ServiceType'
 import ConfirmDialog from '../../Layout/ConfirmDialog'
 
-function AdminSuppliers({ languageSelected }) {
-    let serviceCategory = 0;
+function AdminSuppliersEntertainment({ languageSelected }) {
     const pathName = window.location.pathname
 
     const [showConfirm, setShowConfirm] = useState(false)
@@ -36,34 +34,26 @@ function AdminSuppliers({ languageSelected }) {
 
     const maxItemInPage = 10
     const [numberPage, setNumberPage] = useState(1)
-    const [arrayNumberOfPages, setArrayNumberOfPages] = useState([])
-
-    if (pathName.includes('accommodation')) {
-        serviceCategory = 1
-    }
-    else if (pathName.includes('entertainment')) {
-        serviceCategory = 2
-    }
-    else {
-        serviceCategory = 3
-    }
+    const [numberOfPages, setNumberOfPages] = useState([])
 
     useEffect(() => {
         axios.get(API_GET_SERVICE_BY_CONDITION, {
             params: {
-                serviceCategoryId: serviceCategory,
+                serviceCategoryId: 2,
+                page: numberPage,
+                size: 10,
                 isActive: 1
             }
         }).then((response) => {
-            const data = response.data.data
+            const data = response.data.data.content
             let servicesRaw = []
             data.map((service) => {
                 const serviceItem = {
                     serviceId: service.serviceId,
                     serviceName: service.serviceName,
                     serviceCategory: parseInt(service.serviceCategory),
-                    serviceAddress: service.address,
-                    serviceCity: service.city,
+                    address: service.address,
+                    city: service.city,
                     partnerEmail: service.partnerEmail,
                     status: service.status,
                     typeOfServiceCategory: service.typeOfServiceCategory,
@@ -77,7 +67,7 @@ function AdminSuppliers({ languageSelected }) {
             for (let i = 0; i < numberOfPages; i++) {
                 arrayPage.push(i + 1)
             }
-            setArrayNumberOfPages(arrayPage)
+            setNumberOfPages(arrayPage)
             setServices([...servicesRaw])
             setGetDataComplete(true)
         }).catch(() => {
@@ -85,11 +75,6 @@ function AdminSuppliers({ languageSelected }) {
             setGetDataComplete(true)
         })
     }, [pathName])
-
-    let numberOfPages = [1, 2]
-    // for (let i = 0; i < totlePage; i++) {
-    //     numberOfPages.push(i + 1)
-    // }
 
     if (!getDataComplete) {
         return (
@@ -163,8 +148,8 @@ function AdminSuppliers({ languageSelected }) {
                             <tr>
                                 <td>{index + 1}</td>
                                 <td>{service.serviceName}</td>
-                                <td>{typeService[serviceCategory - 1][parseInt(service.typeOfServiceCategory)].title}</td>
-                                <td>{`${service.serviceAddress}, ${service.serviceCity}`}</td>
+                                <td>{typeService[1][parseInt(service.typeOfServiceCategory)].title}</td>
+                                <td>{`${service.address}, ${service.city}`}</td>
                                 <td>{(!service.isActive && <label className='status status-pause'>{languageSelected === 'EN' ? 'Waiting' : 'Chờ duyệt'}</label>) ||
                                     (service.isBlock && <label className='status status-close'>{languagesList.txtDeleted}</label>) ||
                                     (service.status === 1 && <label className='status status-active'>{languagesList.txtActive}</label>) ||
@@ -173,7 +158,7 @@ function AdminSuppliers({ languageSelected }) {
                                 </td>
                                 <td>
                                     <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
-                                        <MenuItem>
+                                        <MenuItem onClick={() => navigate('/admin/detail-service', { state: { service: service } })}>
                                             <HiOutlineEye /> {languagesList.txtPreview}
                                         </MenuItem>
                                         {service.isBlock ?
@@ -213,4 +198,4 @@ function AdminSuppliers({ languageSelected }) {
     )
 }
 
-export default memo(AdminSuppliers)
+export default memo(AdminSuppliersEntertainment)

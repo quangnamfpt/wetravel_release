@@ -23,10 +23,8 @@ function ListCustomer({ languageSelected }) {
     const [textOk, setTextOk] = useState('Ok')
     const [textCancel, setTextCancel] = useState('Cancel')
 
-    const [count, setCount] = useState(0)
-    const totlePage = Math.ceil(count / 10)
     const [searchName, setSearchName] = useState('')
-    let numberOfPages = []
+    const [numberOfPages, setNumberOfPages] = useState([])
     const [numberPage, setNumberPage] = useState(1)
 
     const [customers, setCustomers] = useState([])
@@ -64,7 +62,6 @@ function ListCustomer({ languageSelected }) {
                 size: 10,
             }
         }).then((res) => {
-            setCount(res.data.data.totalElements)
             let listCustomerData = []
             for (let i = 0; i < res.data.data.content.length; i++) {
                 const listCus = {
@@ -81,15 +78,19 @@ function ListCustomer({ languageSelected }) {
                 }
                 listCustomerData.push(listCus)
             }
+            const totalPages = res.data.data.totalPages
+            let numberOfPagesRaw = []
+            for (let i = 0; i < totalPages; i++) {
+                numberOfPagesRaw.push(i + 1)
+            }
+            setNumberOfPages(numberOfPagesRaw)
             setCustomers(listCustomerData)
         }).catch((e) => {
-            console.log(e)
+            setNumberOfPages([])
+            setCustomers([])
         })
     }, [numberPage])
 
-    for (let i = 0; i < totlePage; i++) {
-        numberOfPages.push(i + 1)
-    }
 
     const handleClickShowConfig = (title, content, callback, isRed, textOk, textCancel) => {
         setShowConfirm(true)
@@ -173,7 +174,7 @@ function ListCustomer({ languageSelected }) {
                 {numberOfPages.map((item) => (
                     <label className={`btn-paging ${numberPage === item ? 'selected-paging' : 'unseleted'}`} onClick={() => setNumberPage(item)}>{item}</label>
                 ))}
-                {numberPage === 1 && numberOfPages.length > 1 && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
+                {numberPage < numberOfPages.length && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
                     <AiOutlineRight />
                 </label>}
             </div>

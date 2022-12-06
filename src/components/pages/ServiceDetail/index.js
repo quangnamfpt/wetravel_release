@@ -1,7 +1,7 @@
 import { memo, useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { ref, getDownloadURL, listAll } from 'firebase/storage'
-import { storage } from "../../../firebase/Upload";
+import { storage } from "../../../firebase/Config";
 import LoadingDialog from '../../Layout/LoadingDialog';
 import { API_SERVICE_DETAIL_INFORMATION } from '../../API';
 import axios from 'axios';
@@ -85,24 +85,18 @@ function ServicesDetail({ languageSelected }) {
         return (<LoadingDialog />)
     }
 
-    console.log(service)
-    console.log(serviceRaw)
+    let utilityShowShort = []
+    if (service.utilitiesServiceDTOList.length > 2) {
+        for (let i = 0; i < 2; i++) {
+            utilityShowShort.push(service.utilitiesServiceDTOList[i])
+        }
+    }
 
     return (
         <div className='container'>
             <div className='d-flex center-horizontal'>
                 <div className='bg-white br-10 plr-20 box-shadow-common mt-20 mb-20 w-75 ptb-20'>
-                    <div className='text-bold font-20'>{service.serviceDTO.serviceName}</div>
-                    <div className='d-flex center-vertical mt-10'>
-                        <div className='type-service-detail'>
-                            {languageDisplay[service.serviceDTO.serviceCategory - 1][parseInt(serviceRaw.typeOfServiceCategory)].title}
-                        </div>
-                        {service.serviceDTO.serviceCategory != 2 &&
-                            <Rating className='star-rating-service-detail' allowHover={false} readonly initialValue={service.rate} />
-                        }
-                    </div>
-                    <div className='color-gray font-16 pb-20 bd-bottom'><MdLocationOn />{`${serviceRaw.address}, ${serviceRaw.city}`}</div>
-                    <div className='mt-20'>
+                    <div>
                         <Carousel autoPlay={true}
                             autoPlaySpeed={3000}
                             swipeable={false}
@@ -118,59 +112,120 @@ function ServicesDetail({ languageSelected }) {
                         </Carousel>
                     </div>
                     <div className='d-flex space-between mt-10'>
-                        <div className='color-gray font-14'>
-                            <div className='d-flex center-vertical'><MdVerifiedUser className='mr-10' />{languageDisplayMain.txtVerifiedByWeTravel}</div>
-                        </div>
-                        <div className='w-50'>
-                            {service.serviceDTO.link !== "" &&
-                                <div className='float-end'>
-                                    <div className='font-20 text-bold text-right'>{languageDisplayMain.txtDirectContact}</div>
-                                    <div>
-                                        <a className='btn btn-go-to-website' href={service.serviceDTO.link}>{languageDisplayMain.txtGoToWebsite}</a>
-                                    </div>
+                        <div className='w-75'>
+                            <div className='text-bold font-24'>{service.serviceDTO.serviceName}</div>
+                            <div className='d-flex center-vertical'>
+                                <div className='type-service-detail'>
+                                    {languageDisplay[service.serviceDTO.serviceCategory - 1][parseInt(serviceRaw.typeOfServiceCategory)].title}
                                 </div>
-                            }
+                                {service.serviceDTO.serviceCategory != 2 &&
+                                    <Rating className='star-rating-service-detail' allowHover={false} readonly initialValue={service.rate} />
+                                }
+                            </div>
+                            <div className='color-gray font-16 mt-5-import'><MdLocationOn />{`${serviceRaw.address}, ${serviceRaw.city}`}</div>
+                            <div className='utility-service-detail mt-5-import'>
+                                {service.utilitiesServiceDTOList.length > 2 && !openUtility ?
+                                    <>
+                                        {utilityShowShort.map((utiliti) => (
+                                            <>
+                                                {utiliti.utilitiesCategoryId === 1 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[0][utiliti.utilitiesSubcategoryId - 1].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 2 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[1][utiliti.utilitiesSubcategoryId - 4].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 3 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[2][utiliti.utilitiesSubcategoryId - 9].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 4 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[3][utiliti.utilitiesSubcategoryId - 14].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 5 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[4][utiliti.utilitiesSubcategoryId - 18].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 6 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[5][utiliti.utilitiesSubcategoryId - 26].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 7 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[6][utiliti.utilitiesSubcategoryId - 32].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 8 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[7][utiliti.utilitiesSubcategoryId - 35].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 9 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[8][utiliti.utilitiesSubcategoryId - 39].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 10 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[9][utiliti.utilitiesSubcategoryId - 44].label}</label>
+                                                )}
+                                            </>
+                                        ))}
+                                        <label className='font-14 color-gray p-5-import show-hide-utility'
+                                            onClick={() => setOpenUtility(true)}>
+                                            {languageSelected === 'EN' ? 'Show all' : 'Tất cả'}
+                                        </label>
+                                    </>
+                                    :
+                                    <>
+                                        {service.utilitiesServiceDTOList.map((utiliti) => (
+                                            <>
+                                                {utiliti.utilitiesCategoryId === 1 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[0][utiliti.utilitiesSubcategoryId - 1].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 2 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[1][utiliti.utilitiesSubcategoryId - 4].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 3 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[2][utiliti.utilitiesSubcategoryId - 9].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 4 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[3][utiliti.utilitiesSubcategoryId - 14].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 5 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[4][utiliti.utilitiesSubcategoryId - 18].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 6 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[5][utiliti.utilitiesSubcategoryId - 26].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 7 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[6][utiliti.utilitiesSubcategoryId - 32].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 8 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[7][utiliti.utilitiesSubcategoryId - 35].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 9 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[8][utiliti.utilitiesSubcategoryId - 39].label}</label>
+                                                )}
+                                                {utiliti.utilitiesCategoryId === 10 && (
+                                                    <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[9][utiliti.utilitiesSubcategoryId - 44].label}</label>
+                                                )}
+                                            </>
+                                        ))}
+                                        {service.utilitiesServiceDTOList.length > 2 &&
+                                            <label className='font-14 color-gray p-5-import show-hide-utility'
+                                                onClick={() => setOpenUtility(false)}>
+                                                {languageSelected === 'EN' ? 'Hide less' : 'Ẩn bớt'}
+                                            </label>
+                                        }
+                                    </>
+                                }
+                            </div>
+                        </div>
+                        <div className='w-25 color-gray font-14'>
+                            <div className='text-right mb-30'><MdVerifiedUser className='mr-10' />
+                                {languageDisplayMain.txtVerifiedByWeTravel}
+                            </div>
+                            {/* {service.serviceDTO.link !== "" && */}
+                            <div>
+                                <div className='font-20 text-bold text-right'>{languageDisplayMain.txtDirectContact}</div>
+                                <div>
+                                    <a className='btn btn-go-to-website float-end' href={service.serviceDTO.link}>{languageDisplayMain.txtGoToWebsite}</a>
+                                </div>
+                            </div>
+                            {/* } */}
                         </div>
                     </div>
-                    <div className='mt-20'>
-                        <div className='font-20 text-bold'>{languageDisplayMain.txtTheAmenities}</div>
-                        <div className={`utility-service-detail`}>
-                            {service.utilitiesServiceDTOList.map((utiliti) => (
-                                <>
-                                    {utiliti.utilitiesCategoryId === 1 && (
-                                        <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[0][utiliti.utilitiesSubcategoryId - 1].label}</label>
-                                    )}
-                                    {utiliti.utilitiesCategoryId === 2 && (
-                                        <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[1][utiliti.utilitiesSubcategoryId - 4].label}</label>
-                                    )}
-                                    {utiliti.utilitiesCategoryId === 3 && (
-                                        <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[2][utiliti.utilitiesSubcategoryId - 9].label}</label>
-                                    )}
-                                    {utiliti.utilitiesCategoryId === 4 && (
-                                        <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[3][utiliti.utilitiesSubcategoryId - 14].label}</label>
-                                    )}
-                                    {utiliti.utilitiesCategoryId === 5 && (
-                                        <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[4][utiliti.utilitiesSubcategoryId - 18].label}</label>
-                                    )}
-                                    {utiliti.utilitiesCategoryId === 6 && (
-                                        <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[5][utiliti.utilitiesSubcategoryId - 26].label}</label>
-                                    )}
-                                    {utiliti.utilitiesCategoryId === 7 && (
-                                        <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[6][utiliti.utilitiesSubcategoryId - 32].label}</label>
-                                    )}
-                                    {utiliti.utilitiesCategoryId === 8 && (
-                                        <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[7][utiliti.utilitiesSubcategoryId - 35].label}</label>
-                                    )}
-                                    {utiliti.utilitiesCategoryId === 9 && (
-                                        <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[8][utiliti.utilitiesSubcategoryId - 39].label}</label>
-                                    )}
-                                    {utiliti.utilitiesCategoryId === 10 && (
-                                        <label className='tag-utility'>{languageListUtilitiesAndServicesDetail[9][utiliti.utilitiesSubcategoryId - 44].label}</label>
-                                    )}
-                                </>
-                            ))}
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>

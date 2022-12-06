@@ -1,4 +1,4 @@
-import { memo, useState, useEffect } from 'react'
+import { memo, useState, useEffect, useLayoutEffect } from 'react'
 import { english, vietnamese } from '../../Languages/ServicesList'
 import BackgroundHome from '../../images/bgHome.jpg'
 import { FaRegPaperPlane } from 'react-icons/fa'
@@ -6,7 +6,7 @@ import './ServicesList.scss'
 import axios from 'axios'
 import { API_GET_SERVICE_BY_CONDITION } from '../../API'
 import { ref, getDownloadURL } from 'firebase/storage'
-import { storage } from "../../../firebase/Upload";
+import { storage } from "../../../firebase/Config";
 import { useNavigate } from 'react-router-dom'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 
@@ -21,12 +21,17 @@ function ServicesList({ languageSelected }) {
     const [changeName, setChangeName] = useState(false)
 
     const [numberPage, setNumberPage] = useState(1)
-    const [numberOfPages, setNumberOfPages] = useState([1, 2])
+    const [numberOfPages, setNumberOfPages] = useState([])
+
+    useLayoutEffect(() => {
+        setNumberPage(1)
+        setNumberOfPages([])
+    }, [optionType])
 
     useEffect(() => {
         axios.get(`${API_GET_SERVICE_BY_CONDITION}?serviceCategoryId=${optionType}&isActive=1&isBlock=0`)
             .then((res) => {
-                let listServiceRaw = res.data.data
+                let listServiceRaw = res.data.data.content
                 let leng = 0
                 const count = listServiceRaw.length
                 listServiceRaw.forEach((service, index) => {
@@ -51,12 +56,20 @@ function ServicesList({ languageSelected }) {
                                 listServiceRaw[index].image = URL.createObjectURL(blob.data)
                                 leng++
                                 if (leng == count) {
+                                    const totalPages = res.data.data.totalPages
+                                    let numberOfPagesRaw = []
+                                    for (let i = 0; i < totalPages; i++) {
+                                        numberOfPagesRaw.push(i + 1)
+                                    }
+                                    setNumberOfPages(numberOfPagesRaw)
                                     setListService(listServiceRaw)
                                 }
                             })
                         })
                 })
-            }).catch(() => setListService([]))
+            }).catch(() => {
+                setListService([])
+            })
     }, [optionType, numberPage, changeName])
 
     return (

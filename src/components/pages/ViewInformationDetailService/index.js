@@ -8,7 +8,7 @@ import ViewUtilitiesAndServices from '../ViewUtilitiesAndServices'
 import ViewPhotos from '../ViewPhotos'
 import axios from 'axios'
 import { ref, listAll, getDownloadURL } from 'firebase/storage'
-import { storage } from "../../../firebase/Upload";
+import { storage } from "../../../firebase/Config";
 import { API_SERVICE_DETAIL_INFORMATION, API_SERVICE_CONFIRM } from '../../API'
 import LoadingDialog from '../../Layout/LoadingDialog'
 import { toast } from 'react-toastify'

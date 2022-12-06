@@ -3,7 +3,6 @@ import { useNavigate, Link } from "react-router-dom";
 import City from '../../Data/city.json'
 import axios from "axios";
 import LoadingDialog from "../../Layout/LoadingDialog";
-import Bg from '../../images/bgHome.jpg'
 import { english, vietnamese } from "../../Languages/RegisterProfilePartner";
 import { english as englishConfirm, vietnamese as vietnameseConfirm } from '../../Languages/TableListCustomer'
 import { english as englishDetailPartner, vietnamese as vietnameseDetailPartner, englishService, vietnameseService } from "../../Languages/ViewInformationDetailPartner"
@@ -13,6 +12,8 @@ import './EditProfilePartner.scss'
 import Question from '../../images/question.png'
 import { toast } from 'react-toastify'
 import ConfirmDialog from "../../Layout/ConfirmDialog";
+import { ref, getDownloadURL } from 'firebase/storage'
+import { storage } from "../../../firebase/Config";
 
 function EditProfilePartner({ languageSelected }) {
     const navigate = useNavigate()
@@ -45,9 +46,8 @@ function EditProfilePartner({ languageSelected }) {
         axios.get(API_LIST_BOOKING_BY_ACCOUNTID, {
             params: {
                 accountId: sessionStorage.getItem('id'),
-                page: numberPage,
-                size: 10,
-                isBlock: 0
+                page: 1,
+                size: 99999
             }
         }).then((response) => {
             let totalPage = response.data.data.totalPages
@@ -78,7 +78,8 @@ function EditProfilePartner({ languageSelected }) {
                     dateOfIssue: bookingItem.dateOfIssue,
                     placeOfIssue: bookingItem.placeOfIssue,
                     request: bookingItem.request,
-                    isFeedback: bookingItem.isFeedback
+                    isFeedback: bookingItem.isFeedback,
+                    tourStatus: bookingItem.tourStatus,
                 }
                 listBookingRaw.push(bookingItemRaw)
             })
@@ -126,30 +127,48 @@ function EditProfilePartner({ languageSelected }) {
             }
             axios.get(API_GET_SERVICE_BY_CONDITION, {
                 params: {
-                    emailPartner: partnerRaw.email
+                    emailPartner: partnerRaw.email,
+                    page: 1,
+                    size: 99999
                 }
             }).then((res) => {
-                const data = res.data.data
+                const data = res.data.data.content
                 let servicesRaw = []
+                let leng = 0
                 data.map((service) => {
-                    const serviceItem = {
-                        id: service.serviceId,
-                        name: service.serviceName,
-                        category: parseInt(service.serviceCategory),
-                        type: service.typeOfServiceCategory
+                    let serviceRaw = service
+                    const refAccommodation = ref(storage, `/service/accomodation/${service.serviceId}/information/receptionHallPhoto/image-0`)
+                    const refEntertainment = ref(storage, `/service/entertainment/${service.serviceId}/information/receptionHallPhoto/image-0`)
+                    const refRestaurant = ref(storage, `/service/restaurant/${service.serviceId}/information/receptionHallPhoto/image-0`)
+                    let refData
+                    if (service.serviceCategory === 1) {
+                        refData = refAccommodation
+                    } else if (service.serviceCategory === 2) {
+                        refData = refEntertainment
+                    } else {
+                        refData = refRestaurant
                     }
-                    servicesRaw.push(serviceItem)
+                    getDownloadURL(refData)
+                        .then((url) => {
+                            serviceRaw.image = url
+                            servicesRaw.push(service)
+                            leng++
+                            if (leng == data.length) {
+                                setListService(servicesRaw)
+                                setPartner({ ...partnerRaw })
+                                getListBookingByAccountId()
+                            }
+                        })
                 })
-                setListService([...servicesRaw])
-                setPartner({ ...partnerRaw })
-                getListBookingByAccountId()
             }).catch((e) => {
                 setPartner({ ...partnerRaw })
                 getListBookingByAccountId()
             })
         }
         )
-    }, [])
+    }, [numberPage])
+
+    const role = sessionStorage.getItem('role')
 
     const handleClickSave = () => {
         if (partner.companyName === '' || partner.emailContactCompany === '' || partner.phoneCompany === ''
@@ -495,19 +514,35 @@ function EditProfilePartner({ languageSelected }) {
                                         <div className="mb-20 item-service br-bottom-5">
                                             <div className="item-service-partner d-flex space-between">
                                                 <label className='short-information-detail txt-14 m-top-auto short-information-service-partner'>
-                                                    <div>{service.name}</div>
-                                                    <div>{languageService[service.category - 1].txtCategory}</div>
-                                                    <div>{languageService[service.category - 1].txtType[service.type - 1]}</div>
+                                                    <table>
+                                                        <tr>
+                                                            <td>{languageList.txtName}: </td>
+                                                            <td className="pl-10">{service.serviceName}
+                                                                <label className="text-danger"> {service.isBlock && `(${languageList.txtBlocked})`}</label>
+                                                                <label className="text-pause"> {!service.isActive && `(${languageList.txtPending})`}</label>
+                                                                <label className="text-active"> {service.isActive && `(${languageList.txtActive})`}</label>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{languageList.txtCategory}: </td>
+                                                            <td className="pl-10">{languageService[service.serviceCategory - 1].txtCategory}</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>{languageList.txtType}: </td>
+                                                            <td className="pl-10">{languageService[service.serviceCategory - 1].txtType[parseInt(service.typeOfServiceCategory)]}</td>
+                                                        </tr>
+                                                    </table>
                                                 </label>
-                                                <div className='w-75 image-hide-animation'>
-                                                    <img src={Bg} className='image-side-hide' />
+                                                <div className='w-50 image-hide-animation'>
+                                                    <img src={service.image} className='image-side-hide' />
                                                     <div className='liner-white' />
                                                 </div>
                                             </div>
-                                            <div className=" item-service font-14 br-bottom-5 text-center text-link"
-                                                onClick={() => navigate(`/admin/view-service?serviceId=${service.id}`)}>{languageMore.txtSeeDetail}</div>
+                                            <div className="item-service font-14 br-bottom-5 text-center text-link"
+                                                onClick={() => navigate(`${role == 1 ? `/admin/view-service?serviceId=${service.serviceId}` : `/service-detail`}`, { state: { service: service } })}>{languageMore.txtSeeDetail}</div>
                                         </div>
-                                    )) :
+                                    ))
+                                        :
                                         <div className='image-no-booking br-top-left-none'>
                                             <img src={Question} className='image-question' />
                                             <div className='text-no-booking'>{languageList.txtNoneService} <Link to='/partner/select-detail-service' className='link-no-booking'>{languageList.txtAddNow}</Link></div>

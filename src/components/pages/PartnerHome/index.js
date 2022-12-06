@@ -11,23 +11,41 @@ function PartnerHome({ languageSelected }) {
     const [services, setServices] = useState([])
     const email = sessionStorage.getItem('email')
 
+    const [numberPage, setNumberPage] = useState(1)
+    const [numberOfPages, setNumberOfPages] = useState([])
+
     useEffect(() => {
         axios.get(API_GET_SERVICE_BY_CONDITION, {
-            params: { emailPartner: email }
+            params: {
+                emailPartner: email,
+                page: 1,
+                size: 10
+            }
         }).then((response) => {
-            setServices(response.data.data)
+            setServices(response.data.data.content)
+            const totalPages = response.data.data.totalPages
+            let listPages = []
+            for (let i = 0; i < totalPages; i++) {
+                listPages.push(i + 1)
+            }
+            setNumberOfPages(listPages)
             setGetDataComplete(true)
         }).catch(() => {
             setGetDataComplete(true)
         })
-    }, [])
+    }, [numberPage])
 
     if (!getDataComplete) {
         return (<LoadingDialog />)
     }
 
     return (<div className='container home-main'>
-        {services.length > 0 ? <PartnerHomeHadService languageSelected={languageSelected} services={services} /> : <PartnerHomeNoneService languageSelected={languageSelected} />}
+        {services.length > 0 ?
+            <PartnerHomeHadService languageSelected={languageSelected} services={services} numberPage={numberPage}
+                setNumberPage={setNumberPage} numberOfPages={numberOfPages} />
+            :
+            <PartnerHomeNoneService languageSelected={languageSelected} />
+        }
     </div>)
 }
 

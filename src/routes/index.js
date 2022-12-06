@@ -13,7 +13,9 @@ import SelectDetailService from '../components/pages/SelectDetailService';
 import RegisterInformationServiceLayout from '../components/Layout/RegisterInformationServiceLayout';
 import HeaderOnly from '../components/Layout/HeaderOnly';
 import AdminHome from '../components/Layout/AdminHome';
-import AdminSuppliers from '../components/pages/AdminSuppliers';
+import AdminSuppliersAccommodation from '../components/pages/AdminSuppliersAccommodation';
+import AdminSuppliersEntertainment from '../components/pages/AdminSuppliersEntertainment';
+import AdminSuppliersRestaurant from '../components/pages/AdminSuppliersRestaurant';
 import ViewInformationDetailService from '../components/pages/ViewInformationDetailService';
 import ViewListServicePending from '../components/pages/ViewListServicePending';
 import ListTourProduct from '../components/pages/ListTourProduct';
@@ -61,9 +63,9 @@ const publicRoute = [
     { path: '/partner/register-information-service', component: RegisterInformationServiceLayout, layout: HeaderOnly },
     { path: '/partner/edit-service', component: RegisterInformationServiceLayout, layout: HeaderOnly },
     { path: '/admin/dashboard', component: AdminDashboard, layout: HeaderOnly, secondLayout: AdminHome },
-    { path: '/admin/suppliers/accommodation', component: AdminSuppliers, layout: HeaderOnly, secondLayout: AdminHome },
-    { path: '/admin/suppliers/entertainment', component: AdminSuppliers, layout: HeaderOnly, secondLayout: AdminHome },
-    { path: '/admin/suppliers/restaurant', component: AdminSuppliers, layout: HeaderOnly, secondLayout: AdminHome },
+    { path: '/admin/suppliers/accommodation', component: AdminSuppliersAccommodation, layout: HeaderOnly, secondLayout: AdminHome },
+    { path: '/admin/suppliers/entertainment', component: AdminSuppliersEntertainment, layout: HeaderOnly, secondLayout: AdminHome },
+    { path: '/admin/suppliers/restaurant', component: AdminSuppliersRestaurant, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/service-confirm', component: ViewListServicePending, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/view-service-confirm', component: ViewInformationDetailService, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/view-service', component: ViewInformationDetailService, layout: HeaderOnly, secondLayout: AdminHome },
@@ -98,7 +100,8 @@ const publicRoute = [
     { path: '/admin/report/feedback', component: ReportFeedbackList, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/report/post', component: ReportPostList, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/services', component: ServicesList },
-    { path: '/service-detail', component: ServiceDetail }
+    { path: '/service-detail', component: ServiceDetail },
+    { path: '/admin/detail-service', component: ServiceDetail }
 ]
 
 const privateRoute = [

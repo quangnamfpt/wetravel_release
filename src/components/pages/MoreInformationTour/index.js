@@ -199,16 +199,11 @@ function MoreInformationTour({ languageSelected, tour, setTour, tourSchedule, is
         if (!parseInt(tour.adultPrice)) {
             setTour({ ...tour, adultPrice: 1000 })
         }
-        else if (parseInt(tour.adultPrice) > 20000000) {
-            setTour({ ...tour, adultPrice: 20000000 })
-        }
     }, [tour.adultPrice])
 
     useEffect(() => {
         if (!parseInt(tour.childrenPrice)) {
             setTour({ ...tour, childrenPrice: 1000 })
-        } else if (parseInt(tour.childrenPrice) > 20000000) {
-            setTour({ ...tour, childrenPrice: 20000000 })
         }
     }, [tour.childrenPrice])
 
@@ -216,16 +211,11 @@ function MoreInformationTour({ languageSelected, tour, setTour, tourSchedule, is
         if (!parseInt(tour.totalPrice)) {
             setTour({ ...tour, totalPrice: 1000 })
         }
-        else if (parseInt(tour.totalPrice) > 20000000) {
-            setTour({ ...tour, totalPrice: 20000000 })
-        }
     }, [tour.totalPrice])
 
     useEffect(() => {
         if (!parseInt(tour.deposit)) {
             setTour({ ...tour, deposit: 1000 })
-        } else if (parseInt(tour.deposit) > 20000000) {
-            setTour({ ...tour, deposit: 20000000 })
         }
     }, [tour.deposit])
 

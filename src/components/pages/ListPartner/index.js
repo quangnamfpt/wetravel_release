@@ -20,10 +20,8 @@ function ListParner({ languageSelected }) {
 
     const navigate = useNavigate()
 
-    const [count, setCount] = useState(0)
-    const totlePage = Math.ceil(count / 10)
     const [searchName, setSearchName] = useState('')
-    let numberOfPages = []
+    const [numberOfPages, setNumberOfPages] = useState([])
     const [numberPage, setNumberPage] = useState(1)
     const [partners, setPartners] = useState([])
 
@@ -42,7 +40,6 @@ function ListParner({ languageSelected }) {
                 size: 10
             }
         }).then((res) => {
-            setCount(res.data.data.totalElements)
             let listPartnerData = []
             for (let i = 0; i < res.data.data.content.length; i++) {
                 const listPartner = {
@@ -79,14 +76,20 @@ function ListParner({ languageSelected }) {
                 }
                 listPartnerData.push(listPartner)
             }
+            const totalPages = res.data.data.totalPages
+            let numberOfPagesRaw = []
+            for (let i = 0; i < totalPages; i++) {
+                numberOfPagesRaw.push(i + 1)
+            }
+            setNumberOfPages(numberOfPagesRaw)
             setPartners(listPartnerData)
         }).catch((e) => {
+            setNumberOfPages([])
+            setPartners([])
         })
     }, [numberPage, searchName])
 
-    for (let i = 0; i < totlePage; i++) {
-        numberOfPages.push(i + 1)
-    }
+
 
     const handleClickBlock = (partner, index) => {
         axios.delete(API_BLOCK_ACCOUNT + partner.accountId).then(() => {
@@ -187,7 +190,7 @@ function ListParner({ languageSelected }) {
                 {numberOfPages.map((item) => (
                     <label className={`btn-paging ${numberPage === item ? 'selected-paging' : 'unseleted'}`} onClick={() => setNumberPage(item)}>{item}</label>
                 ))}
-                {numberPage === 1 && numberOfPages.length > 1 && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
+                {numberPage < numberOfPages.length && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
                     <AiOutlineRight />
                 </label>}
             </div>

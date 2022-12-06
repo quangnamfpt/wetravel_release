@@ -8,7 +8,7 @@ import axios from 'axios';
 import { API_GET_SERVICE_BY_CONDITION, API_GET_DETAIL_TOUR, API_GET_CUSTOMER, API_GET_PARTNER, API_DELETE_TOUR, API_ACTIVE_TOUR, API_UPDATE_TOUR } from "../../API"
 import LoadingDialog from '../../Layout/LoadingDialog'
 import { ref, listAll, getDownloadURL, deleteObject } from 'firebase/storage'
-import { storage } from "../../../firebase/Upload";
+import { storage } from "../../../firebase/Config";
 import InformationCustomerRegisterTourPrivate from '../InformationCustomerRegisterTourPrivate'
 import './ViewTour.scss'
 import ConfirmDialog from '../../Layout/ConfirmDialog'

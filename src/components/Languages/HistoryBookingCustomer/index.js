@@ -20,7 +20,7 @@ export const english = {
     txtFeebackAboutTour: 'Feedback about this tour',
     txtAddFeedbackSuccess: 'Add feedback success',
     txtWaitingCancel: 'Wait for cancellation',
-    txtRequestCancelSuccess: 'Cancellation request was success'
+    txtRequestCancelSuccess: 'Cancellation request was success',
 }
 
 export const vietnamese = {

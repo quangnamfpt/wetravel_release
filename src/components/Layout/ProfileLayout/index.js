@@ -41,8 +41,8 @@ function ProfileLayout({ languageSelected }) {
                 axios.get(API_LIST_BOOKING_BY_ACCOUNTID, {
                     params: {
                         accountId: id,
-                        page: numberPage,
-                        size: 10
+                        page: 1,
+                        size: 99999
                     }
                 }).then((response) => {
                     let totalPage = response.data.data.totalPages
@@ -73,7 +73,8 @@ function ProfileLayout({ languageSelected }) {
                             dateOfIssue: bookingItem.dateOfIssue,
                             placeOfIssue: bookingItem.placeOfIssue,
                             request: bookingItem.request,
-                            isFeedback: bookingItem.isFeedback
+                            isFeedback: bookingItem.isFeedback,
+                            tourStatus: bookingItem.tourStatus,
                         }
                         listBookingRaw.push(bookingItemRaw)
                     })
@@ -82,7 +83,7 @@ function ProfileLayout({ languageSelected }) {
                 })
             })
         }
-    }, [sessionStorage.getItem('role')])
+    }, [numberPage])
 
     return (
         <>
