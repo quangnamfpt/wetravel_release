@@ -7,7 +7,11 @@ export const english = {
     txtPublish: 'Publish',
     txtTopic: 'Topic',
     txtAddImage: 'Add image',
-    txtPost: 'Post'
+    txtPost: 'Post',
+    txtWarningPost: 'Are you sure you want to post this?',
+    txtCancel: 'Cancel',
+    txtWarningFullInformation: 'Please enter all required information',
+    txtPostSuccess: 'Post successfully'
 }
 
 export const vietnamese = {
@@ -19,5 +23,9 @@ export const vietnamese = {
     txtPublish: 'Công khai',
     txtTopic: 'Chủ đề',
     txtAddImage: 'Thêm ảnh',
-    txtPost: 'Đăng bài'
+    txtPost: 'Đăng bài',
+    txtWarningPost: 'Bạn chắc chắn muốn đăng bài viết này chứ?',
+    txtCancel: 'Huỷ',
+    txtWarningFullInformation: 'Vui lòng nhập đủ thông tin bắt buộc',
+    txtPostSuccess: 'Đăng bài thành công'
 }

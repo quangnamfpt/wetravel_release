@@ -64,7 +64,7 @@ function App() {
   return (
     <LanguageShowing.Provider value={languageSelected}>
       <ProSidebarProvider>
-        <div className="App">
+        <div className="fade-in App">
           <ToastContainer
             transition={Slide}
             position="top-right"

@@ -6,6 +6,10 @@ import './RequestCancelDetail.scss'
 import ConfirmDialog from '../../Layout/ConfirmDialog'
 import { cancelReasonEnglish, cancelReasonVietnamese } from '../../Languages/CancelReason'
 import { AiFillCaretLeft } from 'react-icons/ai'
+import axios from 'axios'
+import { toast } from 'react-toastify'
+import { API_ADD_ALERT, API_DELETE_REQUEST_CANCEL, API_UPDATE_STATUS_BOOKING } from '../../API'
+import PopupCreateAlert from '../../Layout/PopupCreateAlert'
 
 function RequestCancelDetail({ languageSelected }) {
     const request = useLocation().state.request
@@ -24,6 +28,8 @@ function RequestCancelDetail({ languageSelected }) {
     const [textOk, setTextOk] = useState('Ok')
     const [textCancel, setTextCancel] = useState('Cancel')
 
+    const [showAddAlert, setShowAddAlert] = useState(false)
+
     const [tabOption, setTabOption] = useState(0)
 
     const formatter = new Intl.NumberFormat('en-US', {
@@ -31,13 +37,71 @@ function RequestCancelDetail({ languageSelected }) {
         currency: 'VND'
     });
 
+    const handleClickShowConfig = (title, content, callback, isRed, textOk, textCancel) => {
+        setShowConfirm(true)
+        setTitleConfirm(title)
+        setContentConfirm(content)
+        callbackConfirm.current = callback
+        setIsRed(isRed)
+        setTextOk(textOk)
+        setTextCancel(textCancel)
+    }
+
+    const handleDeleteRequest = (message) => {
+        axios.delete(`${API_DELETE_REQUEST_CANCEL}${request.userBookingId}`)
+            .then(() => {
+                toast.success(message)
+                navigate(-1)
+            }).catch((e) => {
+                console.log('xoa request failed', e)
+            })
+    }
+
+    const handleCancelBooking = () => {
+        axios.post(`${API_UPDATE_STATUS_BOOKING}?userBookingId=${request.userBookingId}&status=2`).then(() => {
+            handleDeleteRequest(languageRequestCancelDetail.txtAccessRequest)
+        }).catch((e) => {
+            console.log(e)
+        })
+    }
+
+    const handleRefuseCancelBooking = () => {
+        axios.post(`${API_UPDATE_STATUS_BOOKING}?userBookingId=${request.userBookingId}&status=1`).then(() => {
+            handleDeleteRequest(languageRequestCancelDetail.txtRefuseCancel)
+        }).catch((e) => {
+            console.log(e)
+        })
+    }
+
+    const handleClickShowAddAlert = () => {
+        setShowAddAlert(true)
+        callbackConfirm.current = () => handleRefuseCancelBooking()
+    }
+
     return (
         <div>
+            {showConfirm &&
+                <ConfirmDialog textOk={textOk} textCancel={textCancel} title={titleConfirm} content={contentConfirm} callback={callbackConfirm.current} isRed={isRed} setShowDialog={setShowConfirm} />
+            }
+            {showAddAlert &&
+                <PopupCreateAlert callback={callbackConfirm.current} textOk={languageRequestCancelDetail.txtRefuse}
+                    textCancel={languageRequestCancelDetail.txtCancel} title={languageRequestCancelDetail.txtRefuse}
+                    shortReason={languageRequestCancelDetail.txtShortReason}
+                    fullReason={languageRequestCancelDetail.txtFullReason} accountId={bookingRaw.accountId}
+                    isRed={false} setShowDialog={setShowAddAlert} />
+            }
             <div className='bg-white br-10 box-shadow-common p-20 d-flex space-between center-vertical'>
                 <div onClick={() => navigate(-1)} className='back-link back-link-request-cancel-detail'><AiFillCaretLeft /></div>
                 <div className='d-flex w-25'>
-                    <button className='btn btn-success btn-access'>{languageRequestCancelDetail.txtAccept}</button>
-                    <button className='btn btn-danger btn-block btn-refuse'>{languageRequestCancelDetail.txtRefuse}</button>
+                    <button className='btn btn-success btn-access'
+                        onClick={() => handleClickShowConfig(languageRequestCancelDetail.txtAccept, languageRequestCancelDetail.txtWarningAccept,
+                            handleCancelBooking, true, languageRequestCancelDetail.txtAccept, languageRequestCancelDetail.txtCancel)}>
+                        {languageRequestCancelDetail.txtAccept}
+                    </button>
+                    <button className='btn btn-danger btn-block btn-refuse'
+                        onClick={handleClickShowAddAlert}>
+                        {languageRequestCancelDetail.txtRefuse}
+                    </button>
                 </div>
             </div>
             <div className='mt-20 bg-white br-10 box-shadow-common'>

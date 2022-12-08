@@ -1,4 +1,4 @@
-import { memo, useState } from 'react'
+import { memo, useState, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { StickyContainer, Sticky } from 'react-sticky'
 import { typePostVietnamese, typePostEnglish } from '../../Languages/ListPostForum'
@@ -10,10 +10,26 @@ import 'react-quill/dist/quill.bubble.css'
 import { TbCameraPlus } from 'react-icons/tb'
 import Switch from 'react-switch'
 import ConfirmDialog from '../../Layout/ConfirmDialog'
+import axios from 'axios'
+import { API_ADD_POST } from '../../API'
+import { toast } from 'react-toastify'
+import LoadingDialog from '../../Layout/LoadingDialog'
 
 function CreatePost({ languageSelected }) {
     const languageDisplay = languageSelected === 'EN' ? english : vietnamese
     const topicPost = languageSelected === 'EN' ? typePostEnglish : typePostVietnamese
+
+    const navigate = useNavigate()
+
+    const [showLoading, setShowLoading] = useState(false)
+
+    const [showConfirm, setShowConfirm] = useState(false)
+    const [titleConfirm, setTitleConfirm] = useState('asd')
+    const [contentConfirm, setContentConfirm] = useState('asd')
+    const callbackConfirm = useRef(() => { })
+    const [isRed, setIsRed] = useState(true)
+    const [textOk, setTextOk] = useState('Ok')
+    const [textCancel, setTextCancel] = useState('Cancel')
 
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
@@ -21,6 +37,46 @@ function CreatePost({ languageSelected }) {
     const [image, setImage] = useState()
     const [isPublish, setIsPublish] = useState(true)
     const [topic, setTopic] = useState(1)
+
+    const role = sessionStorage.getItem('role')
+
+    const handleClickShowConfig = (title, content, callback, isRed, textOk, textCancel) => {
+        if (title === '' || description === '' || content === '' || content === '<p><br></p>' || content.replace(/ /g, '') === '<p></p>'
+            || !image) {
+            toast.error(languageDisplay.txtWarningFullInformation)
+        }
+        else {
+            setShowConfirm(true)
+            setTitleConfirm(title)
+            setContentConfirm(content)
+            callbackConfirm.current = callback
+            setIsRed(isRed)
+            setTextOk(textOk)
+            setTextCancel(textCancel)
+        }
+    }
+
+    const handlePost = () => {
+        setShowLoading(true)
+        const data = {
+            "topicId": topic,
+            "accountId": sessionStorage.getItem('id'),
+            "title": title,
+            "description": description,
+            "content": content,
+            "isPublic": isPublish
+        }
+        console.log(data)
+        axios.post(API_ADD_POST, data).then(() => {
+            setShowLoading(false)
+            toast.success(languageDisplay.txtPostSuccess)
+            navigate(`${role == 1 ? '/admin/forum' : '/forum'}`)
+        }).catch((err) => {
+            setShowLoading(false)
+            console.error(err)
+        })
+        setShowConfirm(false)
+    }
 
     const modules = {
         toolbar: [
@@ -48,7 +104,12 @@ function CreatePost({ languageSelected }) {
     ]
 
     return (
-        <div className='container container-create-post'>
+        <div className='fade-in container container-create-post'>
+            {showLoading &&
+                <LoadingDialog />}
+            {showConfirm &&
+                <ConfirmDialog textOk={textOk} textCancel={textCancel} title={titleConfirm} content={contentConfirm} callback={callbackConfirm.current} isRed={isRed} setShowDialog={setShowConfirm} />
+            }
             <StickyContainer>
                 <div className='d-flex'>
                     <div className='w-75 min-100-vh bg-common mr-20'>
@@ -62,7 +123,7 @@ function CreatePost({ languageSelected }) {
                         </div>
                         <div className="d-flex line-input">
                             <div className="input-alone">
-                                <label className="d-block text-bold">{languageDisplay.txtDescription}</label>
+                                <label className="d-block text-bold">{languageDisplay.txtDescription}<span className="requird-star">*</span></label>
                                 <textarea value={description} rows={4} onChange={(e) => setDescription(e.target.value)}
                                     className="input-inline input-title-post" type='text' />
                             </div>
@@ -127,7 +188,11 @@ function CreatePost({ languageSelected }) {
                                             </div>
                                         </div>
                                     </div>
-                                    <button className='btn btn-warning w-100 btn-submit-post'>{languageDisplay.txtPost}</button>
+                                    <button className='btn btn-warning w-100 btn-submit-post'
+                                        onClick={() => handleClickShowConfig(languageDisplay.txtPost, languageDisplay.txtWarningPost,
+                                            () => handlePost(), false, languageDisplay.txtPost, languageDisplay.txtCancel)}>
+                                        {languageDisplay.txtPost}
+                                    </button>
                                 </div>
                             )}
                         </Sticky>

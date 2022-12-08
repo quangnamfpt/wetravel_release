@@ -54,7 +54,7 @@ const publicRoute = [
     { path: '/register-information-customer', component: RegisterInformation, layout: RegisterInfomationLayout, image: Camping1, role: 3 },
     { path: '/register-information-partner', component: RegisterInformation, layout: RegisterInfomationLayout, image: Hiring, role: 2 },
     { path: '/register-profile-partner', role: 2, component: RegisterProfilePartner, layout: HeaderOnly },
-    { path: '/change-password', component: ChangePassword, layout: RegisterInfomationLayout, changePassword: true },
+    { path: '/forgot-password', component: ChangePassword, layout: RegisterInfomationLayout, changePassword: true },
     { path: '/change-password-account', component: ChangePasswordAccount, layout: RegisterInfomationLayout, changePassword: true, needAccount: true },
     { path: '/admin/change-password-account', component: ChangePasswordAccount, layout: RegisterInfomationLayout, changePassword: true, needAccount: true },
     { path: '/select-service', component: CreateService, layout: HeaderOnly },

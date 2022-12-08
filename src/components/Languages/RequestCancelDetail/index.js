@@ -7,7 +7,11 @@ export const english = {
     txtReason: 'Cancellation reason',
     txtRequestDate: 'Request date',
     txtDescription: 'Description',
-    txtCancellationTnformation: 'Cancellation information'
+    txtCancellationTnformation: 'Cancellation information',
+    txtAccessRequest: 'Cancellation request accepted',
+    txtShortReason: 'Summary of reasons',
+    txtFullReason: 'Full reason',
+    txtRefuseCancel: 'Request canceled'
 }
 
 export const vietnamese = {
@@ -19,5 +23,9 @@ export const vietnamese = {
     txtReason: 'Lý do huỷ',
     txtRequestDate: 'Ngày yêu cầu',
     txtDescription: 'Mô tả',
-    txtCancellationTnformation: 'Thông tin huỷ'
+    txtCancellationTnformation: 'Thông tin huỷ',
+    txtAccessRequest: 'Đã cháp nhận yêu cầu huỷ',
+    txtShortReason: 'Lý do ngắn gọn',
+    txtFullReason: 'Lý do đầy đủ',
+    txtRefuseCancel: 'Đã huỷ yêu cầu'
 }

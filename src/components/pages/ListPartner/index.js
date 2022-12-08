@@ -92,7 +92,7 @@ function ListParner({ languageSelected }) {
 
 
     const handleClickBlock = (partner, index) => {
-        axios.delete(API_BLOCK_ACCOUNT + partner.accountId).then(() => {
+        axios.put(API_BLOCK_ACCOUNT + partner.accountId).then(() => {
             let partnersRaw = [...partners]
             let partnerRaw = { ...partnersRaw[index], isBlock: true }
             partnersRaw[index] = partnerRaw

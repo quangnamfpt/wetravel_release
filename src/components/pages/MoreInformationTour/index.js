@@ -313,6 +313,7 @@ function MoreInformationTour({ languageSelected, tour, setTour, tourSchedule, is
                                             onChange={(e) => setTour({ ...tour, adultPrice: e.target.value })}
                                             onFocus={(e) => handleFocus(e.target)}
                                             onBlur={(e) => handleBlur(e.target)}
+                                            min={1000}
                                             className="input-inline" />
                                     </div>
                                 </div>
@@ -324,6 +325,7 @@ function MoreInformationTour({ languageSelected, tour, setTour, tourSchedule, is
                                             onChange={(e) => setTour({ ...tour, childrenPrice: e.target.value })}
                                             onFocus={(e) => handleFocus(e.target)}
                                             onBlur={(e) => handleBlur(e.target)}
+                                            min={1000}
                                             className="input-inline" />
                                     </div>
                                 </div>
@@ -337,6 +339,7 @@ function MoreInformationTour({ languageSelected, tour, setTour, tourSchedule, is
                                         onChange={(e) => setTour({ ...tour, totalPrice: e.target.value })}
                                         onFocus={(e) => handleFocus(e.target)}
                                         onBlur={(e) => handleBlur(e.target)}
+                                        min={1000}
                                         className="input-inline" />
                                 </div>
                             </div>
@@ -350,6 +353,7 @@ function MoreInformationTour({ languageSelected, tour, setTour, tourSchedule, is
                                         onChange={(e) => setTour({ ...tour, deposit: e.target.value })}
                                         onFocus={(e) => handleFocus(e.target)}
                                         onBlur={(e) => handleBlur(e.target)}
+                                        min={1000}
                                         className="input-inline" />
                                 </div>
                             </div>}

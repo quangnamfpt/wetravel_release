@@ -1,10 +1,11 @@
-import { memo, useState, useEffect } from 'react'
+import { memo, useState, useEffect, useRef } from 'react'
 import './ReportFeedbackList.scss'
 import { AiFillCaretRight, AiOutlineRight, AiOutlineLeft } from 'react-icons/ai'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { API_GET_LIST_FEEDBACK_REPORT } from '../../API'
+import { API_BLOCK_FEEDBACK, API_DELETE_REPORT_FEEDBACK, API_GET_LIST_FEEDBACK_REPORT } from '../../API'
 import { english, vietnamese } from '../../Languages/ReasonReport'
+import { english as englishDisplay, vietnamese as vietnameseDisplay } from '../../Languages/ReportFeedbackList'
 import { Menu, MenuItem, MenuButton } from '@szhsin/react-menu';
 import '@szhsin/react-menu/dist/index.css';
 import '@szhsin/react-menu/dist/transitions/slide.css';
@@ -13,11 +14,29 @@ import { BsThreeDotsVertical } from 'react-icons/bs'
 import { GrStatusGood } from 'react-icons/gr'
 import Question from '../../images/question.png'
 import { Scrollbars } from 'react-custom-scrollbars-2';
+import { toast } from 'react-toastify'
+import ConfirmDialog from '../../Layout/ConfirmDialog'
+import PopupCreateAlert from '../../Layout/PopupCreateAlert'
 
 function ReportFeedbackList({ languageSelected }) {
     const navigate = useNavigate()
 
     const reasonReport = languageSelected === 'EN' ? english : vietnamese
+    const languageDisplay = languageSelected === 'EN' ? englishDisplay : vietnameseDisplay
+
+    const [showConfirm, setShowConfirm] = useState(false)
+    const [titleConfirm, setTitleConfirm] = useState('asd')
+    const [contentConfirm, setContentConfirm] = useState('asd')
+    const callbackConfirm = useRef(() => { })
+    const [isRed, setIsRed] = useState(true)
+    const [textOk, setTextOk] = useState('Ok')
+    const [textCancel, setTextCancel] = useState('Cancel')
+
+    const [showConfirmAlert, setShowConfirmAlert] = useState(false)
+    const [shortReason, setShortReason] = useState(languageDisplay.txtShortReason)
+    const [fullReason, setFullReason] = useState(languageDisplay.txtFullReason)
+
+    const [accountId, setAccountId] = useState(0)
 
     const [listReportFeedback, setListReportFeedback] = useState([])
 
@@ -31,16 +50,17 @@ function ReportFeedbackList({ languageSelected }) {
                 let feedbackReportRaw = []
                 data.forEach((item) => {
                     let feedback = {
-                        tourId: 1,
+                        tourId: item.tourId,
                         tourName: 'Tour Tam Dao',
                         feedbackId: item.feedbackId,
-                        content: item.content
+                        content: item.content,
+                        accountId: item.accountId
                     }
                     let reportsRaw = []
                     item.reportFeedbackDTOList.forEach((report) => {
                         let reportRaw = {
-                            name: 'Gia Bẻo',
-                            date: '2022-01-01',
+                            name: report.firstName + report.lastName,
+                            date: report.createDate,
                             reason: report.reasonReportFeedbackId
                         }
                         reportsRaw.push(reportRaw)
@@ -59,12 +79,66 @@ function ReportFeedbackList({ languageSelected }) {
             })
     }, [numberPage])
 
+    const handleClickShowConfig = (title, content, callback, isRed, textOk, textCancel) => {
+        setShowConfirm(true)
+        setTitleConfirm(title)
+        setContentConfirm(content)
+        callbackConfirm.current = callback
+        setIsRed(isRed)
+        setTextOk(textOk)
+        setTextCancel(textCancel)
+    }
+
+    const handleBlockFeedback = (id, index) => {
+        setShowConfirm(false)
+        axios.put(`${API_BLOCK_FEEDBACK}${id}`).then(() => {
+            handleDeleteReport(id, index, true)
+        }).catch((err) => {
+            console.error(err)
+        })
+    }
+
+    const handleClickBlock = (callback, accountId) => {
+        console.log(accountId)
+        setShowConfirmAlert(true)
+        callbackConfirm.current = callback
+        setAccountId(accountId)
+    }
+
+    const handleDeleteReport = (id, index, isBlock) => {
+        axios.delete(`${API_DELETE_REPORT_FEEDBACK}${id}`).then(() => {
+            {
+                isBlock ?
+                    toast.success(languageSelected === 'En' ? 'Block feedback success' : 'Đã khoá đánh giá')
+                    :
+                    toast.success(languageSelected === 'En' ? 'Feedback has been withheld' : 'Đánh giá đã được giữ lại.')
+            }
+            let listReportFeedbackRaw = [...listReportFeedback]
+            listReportFeedbackRaw.splice(index, 1)
+            setListReportFeedback(listReportFeedbackRaw)
+        }).catch(err => {
+            console.error(err)
+        })
+        setShowConfirmAlert(false)
+        setShowConfirm(false)
+    }
+
     return (
         <div>
+            {showConfirmAlert &&
+                <PopupCreateAlert callback={callbackConfirm.current} textOk={languageDisplay.txtBlock}
+                    textCancel={languageDisplay.txtCancel} title={languageDisplay.txtBlockeedback}
+                    shortReason={shortReason}
+                    fullReason={fullReason} accountId={accountId}
+                    isRed={true} setShowDialog={setShowConfirmAlert} />
+            }
+            {showConfirm &&
+                <ConfirmDialog textOk={textOk} textCancel={textCancel} title={titleConfirm} content={contentConfirm} callback={callbackConfirm.current} isRed={isRed} setShowDialog={setShowConfirm} />
+            }
             <div className='d-flex'>
                 {listReportFeedback.length > 0 ?
                     <>
-                        {listReportFeedback.map((feedback) => (
+                        {listReportFeedback.map((feedback, index) => (
                             <div className='bg-white box-shadow-common br-10 w-22 mlr-2-5-per tab-report'>
                                 <div className='bd-bottom'>
                                     <div className='p-10 d-flex space-between pb-0'>
@@ -77,10 +151,12 @@ function ReportFeedbackList({ languageSelected }) {
                                         </div>
                                         <div>
                                             <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
-                                                <MenuItem>
-                                                    <BiTrashAlt />{languageSelected === 'EN' ? 'Delete' : 'Xoá'}
+                                                <MenuItem
+                                                    onClick={() => handleClickBlock(() => handleBlockFeedback(feedback.feedbackId, index), feedback.accountId)}>
+                                                    <BiTrashAlt />{languageSelected === 'EN' ? 'Block' : 'Khoá'}
                                                 </MenuItem>
-                                                <MenuItem>
+                                                <MenuItem onClick={() => handleClickShowConfig(languageDisplay.txtKeepFeedback, languageDisplay.txtWarningKeep,
+                                                    () => handleDeleteReport(feedback.feedbackId, index, false), false, languageDisplay.txtTextKeep, languageDisplay.txtCancel)}>
                                                     <GrStatusGood />{languageSelected === 'EN' ? 'Keep it' : 'Giữ lại'}
                                                 </MenuItem>
                                             </Menu>

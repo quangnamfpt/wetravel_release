@@ -29,7 +29,7 @@ function ServicesList({ languageSelected }) {
     }, [optionType])
 
     useEffect(() => {
-        axios.get(`${API_GET_SERVICE_BY_CONDITION}?serviceCategoryId=${optionType}&isActive=1&isBlock=0`)
+        axios.get(`${API_GET_SERVICE_BY_CONDITION}?serviceCategoryId=${optionType}&isActive=1&isBlock=0&serviceName=${searchName}`)
             .then((res) => {
                 let listServiceRaw = res.data.data.content
                 let leng = 0
@@ -119,7 +119,7 @@ function ServicesList({ languageSelected }) {
                             {numberOfPages.map((item) => (
                                 <label className={`btn-paging ${numberPage === item ? 'selected-paging' : 'unseleted'}`} onClick={() => setNumberPage(item)}>{item}</label>
                             ))}
-                            {numberPage < numberOfPages.length && numberOfPages.length > 1 && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
+                            {numberPage < numberOfPages.length && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
                                 <AiOutlineRight />
                             </label>}
                         </div>

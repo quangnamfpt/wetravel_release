@@ -426,7 +426,7 @@ function MyPost({ languageSelected }) {
     const role = sessionStorage.getItem('role')
 
     return (
-        <div className='container bg-all-my-post'>
+        <div className='fade-in container bg-all-my-post'>
             <div className='bg-white bg-my-post m-20 mt-20'>
                 <div className='header-my-post'>
                     <label className='text-bold font-20'>{languageSelected === 'EN' ? 'My post' : 'Bài viết của tôi'}</label>

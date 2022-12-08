@@ -294,7 +294,7 @@ function ViewTour({ languageSelected }) {
             setLeng(0)
             setShowLoading(false)
             toast.success(window.location.pathname === '/admin/edit-tour' ? languageList.txtEditSuccess : languageList.txtAddSuccess)
-            navigate('/admin/services/tour-product')
+            navigate(-1)
         }
     }, [leng])
 
@@ -346,7 +346,6 @@ function ViewTour({ languageSelected }) {
             toast.warning(languageList.txtNotFullInformation)
         }
         else if (parseInt(tour.priceAdult) < 1000 || parseInt(tour.priceChildren) < 1000) {
-            console.log('sai')
             setShowLoading(false)
             toast.warning(languageList.txtInvalid)
         }
@@ -459,7 +458,7 @@ function ViewTour({ languageSelected }) {
     }
 
     return (
-        <div className='main-content-view-service-admin right-content-create-tour'>
+        <div className='fade-in main-content-view-service-admin right-content-create-tour'>
             {showLoading &&
                 <LoadingDialog />}
             {showConfirm &&
@@ -488,12 +487,25 @@ function ViewTour({ languageSelected }) {
                 <label className='title-admin-view-service'>{titleLanguage}</label>
                 {pathname !== '/admin/edit-tour' ?
                     <>
-                        {tour.status == 1 ?
+                        {tour.status == 1 &&
                             <button className='btn btn-active-close-tour btn-danger'
                                 onClick={() => handleClickCloseOrActive(table.txtTitleClose, table.txtContentClose, closeTour, true, table.txtClose, table.txtCancel)}>
                                 {languageSelected == 'EN' ? 'Close' : 'Đóng'}
                             </button>
-                            :
+                        }
+                        {tour.status == 2 &&
+                            <div className='d-flex w-20'>
+                                <button className='btn btn-active-close-tour btn-success w-50'
+                                    onClick={() => handleClickCloseOrActive(table.txtTitleActive, table.txtContentActive, activeTour, false, table.txtActive, table.txtCancel)}>
+                                    {languageSelected == 'EN' ? 'Active' : 'Kích hoạt'}
+                                </button>
+                                <button className='btn btn-active-close-tour btn-primary ml-20-px w-50'
+                                    onClick={() => navigate('/admin/edit-tour', { state: { id: id } })}>
+                                    {languageSelected == 'EN' ? 'Edit' : 'Sửa'}
+                                </button>
+                            </div>
+                        }
+                        {tour.status == 3 &&
                             <button className='btn btn-active-close-tour btn-success'
                                 onClick={() => handleClickCloseOrActive(table.txtTitleActive, table.txtContentActive, activeTour, false, table.txtActive, table.txtCancel)}>
                                 {languageSelected == 'EN' ? 'Active' : 'Kích hoạt'}
@@ -502,8 +514,8 @@ function ViewTour({ languageSelected }) {
                     </>
                     :
                     <button className='btn btn-active-close-tour btn-primary'
-                        onClick={() => handleClickCloseOrActive(table.txtEdit, table.txtContentEdit, updateTour, false, table.txtEdit, table.txtCancel)}>
-                        {languageSelected == 'EN' ? 'Edit' : 'Sửa'}
+                        onClick={() => handleClickCloseOrActive(table.txtEdit, table.txtContentEdit, updateTour, false, table.txtSave, table.txtCancel)}>
+                        {languageSelected == 'EN' ? 'Save' : 'Lưu'}
                     </button>
                 }
             </div>

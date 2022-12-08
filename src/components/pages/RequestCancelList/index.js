@@ -30,7 +30,8 @@ function RequestCancelList({ languageSelected }) {
         axios.get(API_GET_LIST_CANCEL_REQUEST, {
             params: {
                 page: numberPage,
-                size: 10
+                size: 10,
+                email: searchEmail
             }
         }).then((res) => {
             const totalPages = res.data.data.totalPages
@@ -72,7 +73,7 @@ function RequestCancelList({ languageSelected }) {
                         {[...listRequestCancel].map((request, index) => (
                             <tr>
                                 <td>{index + 1}</td>
-                                <td>Chua co du lieu</td>
+                                <td>{request.accountEmail}</td>
                                 <td>{request.userBookingDTO.phone}</td>
                                 <td>{cancelReason[request.reasonCancelId - 1].label}</td>
                                 <td>{`${request.userBookingDTO.numberOfAdult} ${languageList.txtAdult}, ${request.userBookingDTO.numberOfChildren} ${languageList.txtChildren}`}</td>

@@ -146,7 +146,7 @@ function PostDetailForum({ languageSelected }) {
                 <div className='content-post-detail title-post-detail mb-20'>{post.title}</div>
                 <div className='content-post-detail d-flex center-horizontal mb-20'>
                     <label className='text-bold mr-20'>{post.accountName}</label>
-                    <label className='date-create-post-detail'>{post.dateCreate}</label>
+                    <input type='date' disabled className='fake-label date-create-post-detail' value={post.dateCreate} />
                 </div>
                 <div className='content-post-detail text-bold'>{post.description}</div>
                 <div className='content-post-detail text-left' dangerouslySetInnerHTML={{ __html: post.content }}></div>

@@ -10,7 +10,10 @@ export const vietnamese = {
     txtEditProfile: 'Hồ sơ',
     txtHistoryBooking: 'Lịch sử đặt tour',
     txtMyPost: 'Bài viết của tôi',
-    txtLogout: 'Đăng xuất'
+    txtLogout: 'Đăng xuất',
+    txtSecondAgo: ' giây trước',
+    txtMinuteAgo: ' phút trước',
+    txtHoursAgo: ' giờ trước',
 }
 
 export const english = {
@@ -25,5 +28,8 @@ export const english = {
     txtEditProfile: 'Profile',
     txtHistoryBooking: 'History Booking',
     txtMyPost: 'My Post',
-    txtLogout: 'Logout'
+    txtLogout: 'Logout',
+    txtSecondAgo: ' second ago',
+    txtMinuteAgo: ' minute ago',
+    txtHoursAgo: ' hours ago',
 }

@@ -118,9 +118,9 @@ function AdminDashboard({ languageSelected }) {
                 listCustomerData.push(listCus)
             }
             setCustomers(listCustomerData)
-            getDataSuppliers()
+            getDataSuppliers(1)
         }).catch((e) => {
-            getDataSuppliers()
+            getDataSuppliers(1)
         })
     }
 
@@ -130,20 +130,24 @@ function AdminDashboard({ languageSelected }) {
                 serviceCategoryId: id
             }
         }).then((count) => {
-            if (id == 1) {
-                setCountAccommodation(count.data.data.length)
+            if (id === 1) {
+                setCountAccommodation(count.data.data.content.length)
                 getDataSuppliers(2)
-            } else if (id == 2) {
-                setCountEntertainment(count.data.data.length)
+            } else if (id === 2) {
+                setCountEntertainment(count.data.data.content.length)
                 getDataSuppliers(3)
             } else {
-                setCountRestaurant(count.data.data.length)
+                setCountRestaurant(count.data.data.content.length)
             }
         }).catch(() => {
-            if (id == 1) {
+            if (id === 1) {
+                setCountAccommodation(0)
                 getDataSuppliers(2)
-            } else if (id == 2) {
+            } else if (id === 2) {
+                setCountEntertainment(0)
                 getDataSuppliers(3)
+            } else {
+                setCountRestaurant(0)
             }
         })
     }
@@ -152,10 +156,12 @@ function AdminDashboard({ languageSelected }) {
         axios.get(API_GET_SERVICE_BY_CONDITION, {
             params: {
                 isActive: 0,
-                isBlock: 0
+                isBlock: 0,
+                page: 1,
+                size: 5
             }
         }).then((response) => {
-            const data = response.data.data
+            const data = response.data.data.content
             let servicesRaw = []
             data.map((service) => {
                 const serviceItem = {
@@ -286,7 +292,11 @@ function AdminDashboard({ languageSelected }) {
                             {services.map((sv) => (
                                 <div className='bd-bottom p-5-import'>
                                     <div className='font-16'>{sv.serviceName}</div>
-                                    <div className='color-gray font-14'>{languageList.txtAccommodations}</div>
+                                    <div className='color-gray font-14'>
+                                        {sv.serviceCategory === 1 && languageList.txtAccommodations}
+                                        {sv.serviceCategory === 2 && languageList.txtEntertainments}
+                                        {sv.serviceCategory === 3 && languageList.txtRestaurants}
+                                    </div>
                                 </div>
                             ))}
                         </div>

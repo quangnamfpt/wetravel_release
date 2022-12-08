@@ -18,7 +18,7 @@ function Login({ languageSelected, handleForgotPassword, setShowLoading, toast, 
     const [password, setPassword] = useState('');
     const [rememberMe, setRememberMe] = useState(false);
 
-    const handleClickLogin = async () => {
+    const handleClickLogin = () => {
         if (emailLogin !== '' && password !== '') {
             if (rememberMe) {
                 document.cookie = `email="${emailLogin}"`;
@@ -36,19 +36,20 @@ function Login({ languageSelected, handleForgotPassword, setShowLoading, toast, 
             setProgress(70)
 
             //call api from server
-            await axios.post(API_LOGIN, account)
+            axios.post(API_LOGIN, account)
                 .then((res) => {
                     sessionStorage.setItem('email', emailLogin);
                     const account = res.data.data
+                    sessionStorage.setItem('id', account.information.accountId)
 
-                    if (account.information) {
+                    if (account.information.roleId) {
                         if (account.information.isBlock) {
                             toast.error(languageList[12])
                             setShowLoading(false)
                             setShowLogin(false)
                         }
                         else {
-                            sessionStorage.setItem('id', account.information.accountId)
+
                             if (account.information.roleId > 1) {
                                 sessionStorage.setItem('role', account.information.roleId)
                                 sessionStorage.setItem('firstName', account.information.firstName)
@@ -79,12 +80,14 @@ function Login({ languageSelected, handleForgotPassword, setShowLoading, toast, 
                         navigate('/admin/dashboard')
                     }
 
+                    setProgress(100)
                 })
                 .catch(() => {
                     toast.error(languageList[5])
                     setShowLoading(false)
+                    setProgress(100)
                 })
-            setProgress(100)
+
         }
         else if (emailLogin === '' || password === '') {
             toast.error(languageList[10])

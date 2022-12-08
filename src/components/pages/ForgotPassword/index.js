@@ -16,7 +16,7 @@ function ForgotPassword({ languageSelected, setShowLoading, toast, setProgress }
             setShowLoading(true)
             setProgress(70)
             let email = emailForgot
-            await axios.post('http://localhost:8081/wetravel/reset/password', null, {
+            await axios.post('http://localhost:8081/wetravel/send/mail/forgot-password', null, {
                 params: {
                     email
                 }

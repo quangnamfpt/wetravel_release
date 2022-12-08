@@ -266,10 +266,6 @@ function TourDetail({ languageSelected }) {
     }
 
     const createReportFeedback = () => {
-        console.log('Reason: ', idReasonReport + 1)
-        console.log('feedbackId: ', idFeedbackReport)
-        console.log('accountId: ', sessionStorage.getItem('id'))
-
         const feedbackData = {
             "accountId": sessionStorage.getItem('id'),
             "feedbackId": idFeedbackReport,

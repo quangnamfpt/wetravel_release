@@ -32,7 +32,7 @@ function ListCustomer({ languageSelected }) {
     const table = languageSelected === 'EN' ? englishTableCustomer : vietnameseTableCustomer
 
     const handleClickBlock = (customer, index) => {
-        axios.delete(API_BLOCK_ACCOUNT + customer.id).then(() => {
+        axios.put(API_BLOCK_ACCOUNT + customer.id).then(() => {
             let customersRaw = [...customers]
             let customerRaw = { ...customersRaw[index], status: true }
             customersRaw[index] = customerRaw
