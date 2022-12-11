@@ -142,29 +142,34 @@ function HistoryBookingCustomer({ languageSelected, listBooking, setListBooking,
     }
 
     const handleClickSubmitFeedbackTour = () => {
-        setShowLoading(true)
-        const feedbackDTO = {
-            "accountId": parseInt(sessionStorage.getItem('id')),
-            "tourId": tourId,
-            "userbookingId": bookingId,
-            "content": feedback,
-            "isBlock": false
+        if (feedback === '') {
+            toast.error(languageSelected === 'EN' ? 'Please enter feedback' : 'Vui lòng nhập đánh giá')
         }
+        else {
+            setShowLoading(true)
+            const feedbackDTO = {
+                "accountId": parseInt(sessionStorage.getItem('id')),
+                "tourId": tourId,
+                "userbookingId": bookingId,
+                "content": feedback,
+                "isBlock": false
+            }
 
-        axios.post(API_CREATE_FEEDBACK, feedbackDTO)
-            .then(() => {
-                let bookingRaw = [...listBooking]
-                bookingRaw[indexBooking].isFeedback = true
-                setListBooking(bookingRaw)
-                toast.success(languageList.txtAddFeedbackSuccess)
-                setShowPopupFeedback(false)
-                setShowLoading(false)
-            })
-            .catch((e) => {
-                console.log(e)
-                setShowPopupFeedback(false)
-                setShowLoading(false)
-            })
+            axios.post(API_CREATE_FEEDBACK, feedbackDTO)
+                .then(() => {
+                    let bookingRaw = [...listBooking]
+                    bookingRaw[indexBooking].isFeedback = true
+                    setListBooking(bookingRaw)
+                    toast.success(languageList.txtAddFeedbackSuccess)
+                    setShowPopupFeedback(false)
+                    setShowLoading(false)
+                })
+                .catch((e) => {
+                    console.log(e)
+                    setShowPopupFeedback(false)
+                    setShowLoading(false)
+                })
+        }
     }
 
     return (
