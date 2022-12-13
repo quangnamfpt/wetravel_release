@@ -21,7 +21,7 @@ COPY . /usr/src/app
 # Port to listener
 EXPOSE 3000
 
-RUN npm run start:build
+RUN npm run build
 
 # Main command
-CMD [ "npm", "run", "start:server" ]
+CMD [ "npm", "run", "start" ]
