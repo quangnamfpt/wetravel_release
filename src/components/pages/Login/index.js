@@ -45,11 +45,8 @@ function Login({ languageSelected, handleForgotPassword, setShowLoading, toast, 
                     if (account.information.roleId) {
                         if (account.information.isBlock) {
                             toast.error(languageList[12])
-                            setShowLoading(false)
-                            setShowLogin(false)
                         }
                         else {
-
                             if (account.information.roleId > 1) {
                                 sessionStorage.setItem('role', account.information.roleId)
                                 sessionStorage.setItem('firstName', account.information.firstName)
@@ -68,9 +65,10 @@ function Login({ languageSelected, handleForgotPassword, setShowLoading, toast, 
 
                             }
                             toast.success(languageList[11])
-                            setShowLoading(false)
-                            setShowLogin(false)
                         }
+                        setShowLoading(false)
+                        setShowLogin(false)
+                        navigate('/')
                     }
                     else {
                         sessionStorage.setItem('role', 1)

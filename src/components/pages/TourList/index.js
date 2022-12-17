@@ -81,25 +81,16 @@ function TourList({ languageSelected }) {
                     minToActive: res.data.data.tourDTO[i].minToStart,
                     totalPrice: res.data.data.tourDTO[i].totalPrice
                 }
-                listAll(ref(storage, `tour/${res.data.data.tourDTO[i].tourId}/information/images`)).then((res) => {
-                    console.log(res.items[0].fullPath)
-                    getDownloadURL(ref(storage, res.items[0].fullPath))
-                        .then((url) => {
-                            axios({
-                                url: url,
-                                method: 'GET',
-                                responseType: 'blob',
-                            }).then(blob => {
-                                tourDTO.image = URL.createObjectURL(blob.data)
-                                tourRaw.push(tourDTO)
-                                leng++
-                                if (leng == count) {
-                                    setTours(tourRaw)
-                                    setGetDataComplete(true)
-                                }
-                            })
-                        })
-                })
+                getDownloadURL(ref(storage, `tour/${res.data.data.tourDTO[i].tourId}/information/images/image-0`))
+                    .then((url) => {
+                        tourDTO.image = url
+                        tourRaw.push(tourDTO)
+                        leng++
+                        if (leng === count) {
+                            setTours(tourRaw)
+                            setGetDataComplete(true)
+                        }
+                    })
             }
         }).catch((e) => {
             setTours([])
@@ -204,7 +195,7 @@ function TourList({ languageSelected }) {
                                     <label key={index} className='tour-item' onClick={() => navigate('/tour-detail', { state: { id: tour.id } })}>
                                         <img src={tour.image} className='image-main-tour' />
                                         <div className='short-information-tour pd-short-information-tour'>
-                                            <div className='tour-name'>{tour.name}</div>
+                                            <div className='tour-name'>{tour.name.substring(0, 30)}{tour.name.length > 20 && '...'}</div>
                                             {tour.type === 1 ?
                                                 <div className='tour-price'>{formatter.format(tour.price)}</div>
                                                 :

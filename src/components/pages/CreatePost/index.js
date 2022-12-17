@@ -1,5 +1,5 @@
-import { memo, useState, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { memo, useState, useRef, useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
 import { StickyContainer, Sticky } from 'react-sticky'
 import { typePostVietnamese, typePostEnglish } from '../../Languages/ListPostForum'
 import { english, vietnamese } from '../../Languages/CreatePost'
@@ -14,12 +14,15 @@ import axios from 'axios'
 import { API_ADD_POST } from '../../API'
 import { toast } from 'react-toastify'
 import LoadingDialog from '../../Layout/LoadingDialog'
+import { UploadImage } from '../../../firebase/UploadImage'
 
 function CreatePost({ languageSelected }) {
     const languageDisplay = languageSelected === 'EN' ? english : vietnamese
     const topicPost = languageSelected === 'EN' ? typePostEnglish : typePostVietnamese
 
     const navigate = useNavigate()
+
+    const postParam = useLocation().state
 
     const [showLoading, setShowLoading] = useState(false)
 
@@ -39,6 +42,36 @@ function CreatePost({ languageSelected }) {
     const [topic, setTopic] = useState(1)
 
     const role = sessionStorage.getItem('role')
+
+    const editPost = window.location.pathname.includes('edit-post')
+
+    useEffect(() => {
+        if (editPost) {
+            const post = postParam.post
+            setTitle(post.title)
+            setDescription(post.description)
+            setContent(post.content)
+            setIsPublish(post.isPublic)
+            setTopic(parseInt(post.topic))
+
+            axios({
+                url: post.image,
+                method: 'GET',
+                responseType: 'blob',
+            }).then(blob => {
+                setImage(blob.data)
+            })
+        }
+    }, [])
+
+    const [leng, setLeng] = useState(0)
+    useEffect(() => {
+        if (leng === 1) {
+            setShowLoading(false)
+            toast.success(languageDisplay.txtPostSuccess)
+            navigate(`${role == 1 ? '/admin/my-post' : '/my-post'}`)
+        }
+    }, [leng])
 
     const handleClickShowConfig = (title, content, callback, isRed, textOk, textCancel) => {
         if (title === '' || description === '' || content === '' || content === '<p><br></p>' || content.replace(/ /g, '') === '<p></p>'
@@ -66,16 +99,17 @@ function CreatePost({ languageSelected }) {
             "content": content,
             "isPublic": isPublish
         }
-        console.log(data)
-        axios.post(API_ADD_POST, data).then(() => {
-            setShowLoading(false)
-            toast.success(languageDisplay.txtPostSuccess)
-            navigate(`${role == 1 ? '/admin/forum' : '/forum'}`)
+        axios.post(API_ADD_POST, data).then((res) => {
+            UploadImage([image], 'forum', 1, setLeng, res.data.data.postId, 'post', 0, 'images')
         }).catch((err) => {
             setShowLoading(false)
             console.error(err)
         })
         setShowConfirm(false)
+    }
+
+    const handleEditPost = () => {
+
     }
 
     const modules = {
@@ -102,6 +136,8 @@ function CreatePost({ languageSelected }) {
         'list', 'bullet', 'indent', 'script', 'align', 'direction',
         'link', 'image', 'code-block', 'formula', 'video'
     ]
+
+    console.log(image)
 
     return (
         <div className='fade-in container container-create-post'>
@@ -132,6 +168,7 @@ function CreatePost({ languageSelected }) {
                             <div className="input-alone">
                                 <label className="d-block text-bold">{languageDisplay.txtContent}<span className="requird-star">*</span></label>
                                 <ReactQuill
+                                    value={content}
                                     defaultValue={content}
                                     onChange={setContent}
                                     className="input-inline border-none quill-create-tour"
@@ -179,6 +216,7 @@ function CreatePost({ languageSelected }) {
                                                 <Select className='input-inline basic-multi-select'
                                                     onChange={(e) => setTopic(e.value)}
                                                     defaultValue={topicPost[parseInt(topic - 1)]}
+                                                    value={topicPost[parseInt(topic - 1)]}
                                                     options={topicPost}
                                                     isSearchable={false}
                                                     hideSelectedOptions={false}
@@ -189,9 +227,13 @@ function CreatePost({ languageSelected }) {
                                         </div>
                                     </div>
                                     <button className='btn btn-warning w-100 btn-submit-post'
-                                        onClick={() => handleClickShowConfig(languageDisplay.txtPost, languageDisplay.txtWarningPost,
-                                            () => handlePost(), false, languageDisplay.txtPost, languageDisplay.txtCancel)}>
-                                        {languageDisplay.txtPost}
+                                        onClick={() => editPost ?
+                                            handleClickShowConfig(languageDisplay.txtEditPost, languageDisplay.txtWarningEditPost,
+                                                () => handleEditPost(), false, languageDisplay.txtEdit, languageDisplay.txtCancel)
+                                            :
+                                            handleClickShowConfig(languageDisplay.txtPost, languageDisplay.txtWarningPost,
+                                                () => handlePost(), false, languageDisplay.txtPost, languageDisplay.txtCancel)}>
+                                        {editPost ? languageDisplay.txtEditPost : languageDisplay.txtPost}
                                     </button>
                                 </div>
                             )}

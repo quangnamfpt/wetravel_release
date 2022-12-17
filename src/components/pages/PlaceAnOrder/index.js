@@ -13,6 +13,7 @@ function PlaceAnOrder({ languageList, languageSelected, tour, countAdult, setCou
     setCountChildren, priceOrigin, setPriceOrigin, startDate, setStartDate, setOptionSelected }) {
     const today = new Date()
     const tomorowRaw = new Date(today.setDate(today.getDate() + 1)).toISOString().split('T')[0];
+    const next2Month = new Date(today.setDate(today.getDate() + 60)).toISOString().split('T')[0];
     const [open, setOpen] = useState(false)
 
     languageSelected === 'EN' ? registerLocale('format', en) : registerLocale('format', vi)
@@ -50,7 +51,7 @@ function PlaceAnOrder({ languageList, languageSelected, tour, countAdult, setCou
     const afterInputAdult = (value) => {
         if (value < tour.minAdult) {
             setCountAdult(tour.minAdult)
-            toast.warning(languageSelected === 'EB' ? `At least ${tour.minAdult} adults are required for this tour` : `Cần ít nhất ${tour.minAdult} người lớn cho tour này`)
+            toast.warning(languageSelected === 'EN' ? `At least ${tour.minAdult} adults are required for this tour` : `Cần ít nhất ${tour.minAdult} người lớn cho tour này`)
         }
     }
 
@@ -69,7 +70,13 @@ function PlaceAnOrder({ languageList, languageSelected, tour, countAdult, setCou
     const afterInputChildren = (value) => {
         if (value < tour.minChildren) {
             setCountChildren(tour.minChildren)
-            toast.warning(languageSelected === 'EB' ? `At least ${tour.minAdult} childrens are required for this tour` : `Cần ít nhất ${tour.minAdult} trẻ em cho tour này`)
+            toast.warning(languageSelected === 'EN' ? `At least ${tour.minChildren} childrens are required for this tour` : `Cần ít nhất ${tour.minChildren} trẻ em cho tour này`)
+        }
+    }
+
+    const handleCheckStartDate = () => {
+        if (startDate !== '' && (startDate < tomorowRaw || startDate > next2Month)) {
+            setStartDate(tomorowRaw)
         }
     }
 
@@ -83,9 +90,10 @@ function PlaceAnOrder({ languageList, languageSelected, tour, countAdult, setCou
                         <input type='date' locale="format"
                             value={tour.type === 1 ? startDate : tour.startDate}
                             disabled={tour.type !== 1}
-                            onFocus={(e) => handleFocus(e.target)} onBlur={(e) => handleBlur(e.target)}
+                            onBlur={handleCheckStartDate}
                             className='date-picker-booking-tour'
                             min={tomorowRaw}
+                            max={next2Month}
                             onChange={(e) => setStartDate(e.target.value)} />
                     </div>
                 </div>

@@ -2,23 +2,34 @@ import axios from 'axios'
 import { memo, useState } from 'react'
 import { API_ADD_ALERT } from '../../API'
 import './PopupCreateAlert.scss'
+import { english, vietnamese } from '../../Languages/PopupCreateAlert'
+import { toast } from 'react-toastify'
 
 function PopupCreateAlert({ title, shortReason, fullReason, accountId, setShowDialog, isRed, textOk, textCancel, callback }) {
     const [shortContent, setShortContent] = useState('')
     const [fullContent, setFullFContent] = useState('')
 
-    const handleAddAlert = () => {
-        const data = {
-            accountId: accountId,
-            title: shortContent,
-            content: fullContent
-        }
+    const cokkieArr = document.cookie;
+    const languageSelected = cokkieArr.split("languageSelected=")[1] ? cokkieArr.split("languageSelected=")[1].split(';')[0] : 'EN'
+    const languageDisplay = languageSelected === 'EN' ? english : vietnamese
 
-        axios.post(API_ADD_ALERT, data)
-            .then(() => {
-                callback()
-            })
-            .catch(err => console.error(err))
+    const handleAddAlert = () => {
+        if (shortContent === '' || fullContent === '') {
+            toast.error(languageDisplay.txtWarningFullInformation)
+        }
+        else {
+            const data = {
+                accountId: accountId,
+                title: shortContent,
+                content: fullContent
+            }
+
+            axios.post(API_ADD_ALERT, data)
+                .then(() => {
+                    callback()
+                })
+                .catch(err => console.error(err))
+        }
     }
 
     return (

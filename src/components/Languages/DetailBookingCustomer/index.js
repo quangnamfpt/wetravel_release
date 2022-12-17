@@ -1,5 +1,5 @@
 export const english = {
-    txtOrderDetail: 'Order details',
+    txtOrderDetail: 'Booking details',
     txtInvoiceInformation: 'Invoice information',
     txtViewTour: 'View tour',
     txtInvoiceCode: 'Invoice coded',

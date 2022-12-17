@@ -1,7 +1,6 @@
 import { memo, useState, useEffect, useRef } from 'react'
 import BackgroundForum from '../../images/bg_forum.jpg'
 import Forum1 from '../../images/forum (1).jpg'
-import Forum2 from '../../images/forum (2).jpg'
 import { FaRegPaperPlane } from 'react-icons/fa'
 import './ListPostForum.scss'
 import { english, typePostEnglish, typePostVietnamese, vietnamese } from '../../Languages/ListPostForum'
@@ -16,8 +15,11 @@ import { CgDanger } from 'react-icons/cg'
 import { FiTrash } from 'react-icons/fi'
 import PopupCreateAlert from '../../Layout/PopupCreateAlert'
 import PopupReport from '../../Layout/PopupReport';
-import { API_GET_LIST_POST } from '../../API'
+import { API_CREATE_REPORT_POST, API_GET_LIST_POST } from '../../API'
 import axios from 'axios'
+import { ref, getDownloadURL } from 'firebase/storage'
+import { storage } from "../../../firebase/Config";
+import { toast } from 'react-toastify'
 
 function ListPostForum({ languageSelected }) {
     const languageDisplay = languageSelected === 'EN' ? english : vietnamese
@@ -38,7 +40,7 @@ function ListPostForum({ languageSelected }) {
     const [changeSearch, setChangeSearch] = useState(true)
 
     const [showReport, setShowReport] = useState(false)
-    const [idReasonReport, setIdReasonReport] = useState(0)
+    const [idReasonReport, setIdReasonReport] = useState(1)
 
     const [topicSelected, setTopicSelected] = useState([])
     const [listPost, setListPost] = useState([])
@@ -59,49 +61,38 @@ function ListPostForum({ languageSelected }) {
         }).then((res) => {
             const data = res.data.data.content
             let listPostRaw = []
+            if (data.length === 0) {
+                setListPost([])
+            }
             data.forEach((item) => {
                 const postRaw = {
-                    id: 1,
+                    id: item.postId,
                     topic: item.topicId,
                     accountId: item.accountId,
-                    accountName: 'Nguyen Van A',
+                    accountName: `${item.firstName} ${item.lastName !== null ? item.lastName : ''}`,
                     dateCreate: item.timePost.split('T')[0],
                     title: item.title,
                     description: item.description,
                     content: item.content,
                     image: Forum1,
-                    comment: [
-                        {
-                            id: 1,
-                            name: 'Xuan Quy',
-                            createDate: '2022-03-08',
-                            content: 'Thông tin của anh bạn đưa ra hay quá, tôi cũng sẽ làm thử.',
-                            isUploaded: true,
-                            status: true,
-                            reply: [
-                                {
-                                    id: 1,
-                                    name: 'Quang Nam',
-                                    createDate: '2022-03-08',
-                                    content: 'Đó là một trải nghiệm tuyệt vời',
-                                    isUploaded: true,
-                                    status: true
-                                },
-                                {
-                                    id: 1,
-                                    name: 'Xuan Quy',
-                                    createDate: '2022-03-08',
-                                    content: 'Cảm ơn',
-                                    isUploaded: true,
-                                    status: true
-                                }
-                            ]
-                        }
-                    ]
+                    comment: []
                 }
-                listPostRaw.push(postRaw)
+
+                getDownloadURL(ref(storage, `forum/${postRaw.id}/post/images/image-0`)).then((url) => {
+                    postRaw.image = url
+                    listPostRaw.push(postRaw)
+                    if (listPostRaw.length === data.length) {
+                        setListPost(listPostRaw)
+                    }
+                })
             })
-            setListPost(listPostRaw)
+
+            const totalPage = res.data.data.totalPages
+            let numberOfPagesRaw = []
+            for (let i = 0; i < totalPage; i++) {
+                numberOfPagesRaw.push(i + 1)
+            }
+            setNumberOfPages(numberOfPagesRaw)
         }).catch(err => console.error(err))
     }, [numberPage, topicSelected, changeSearch])
 
@@ -122,17 +113,12 @@ function ListPostForum({ languageSelected }) {
     }
 
     const handleBlockPost = (idPost) => {
-        console.log('idPost: ', idPost)
         setShowConfirm(false)
     }
 
     const handleClickReport = (callback) => {
         setShowReport(true)
         callbackConfirm.current = callback
-    }
-
-    const createReportPost = (idPost) => {
-        console.log('createReportPost: ', idPost)
     }
 
     let listPostShow = []
@@ -148,6 +134,24 @@ function ListPostForum({ languageSelected }) {
 
     const role = useRef(sessionStorage.getItem('role'))
 
+    const createReportPost = (idPost) => {
+        const postData = {
+            "postId": idPost,
+            "accountId": sessionStorage.getItem('id'),
+            "reasonReportPostId": idReasonReport + 1
+        }
+
+        console.log(postData)
+
+        axios.post(API_CREATE_REPORT_POST, postData)
+            .then(() => {
+                toast.success(languageSelected === 'EN' ? 'Report post success' : 'Báo cáo thành công')
+            })
+            .catch((e) => {
+                console.log(e)
+            })
+    }
+
     return (
         <div className='container home-main'>
             {showReport && <PopupReport setShowReport={setShowReport} languageSelected={languageSelected} idReason={idReasonReport} setIdReason={setIdReasonReport} callback={callbackConfirm.current} />}
@@ -160,7 +164,7 @@ function ListPostForum({ languageSelected }) {
                 <input className='input-search' placeholder={languageDisplay.txtSearchByName}
                     onChange={(e) => setSearchTitle(e.target.value)} />
                 <button className='btn-search'
-                    onClick={() => setChangeSearch(!changeSearch)}>{languageDisplay.txtSearch}</button>
+                    onClick={() => setChangeSearch(pre => !pre)}>{languageDisplay.txtSearch}</button>
             </div>
             <div className='container'>
                 <div className='bg-white bg-list-post'>
@@ -178,45 +182,55 @@ function ListPostForum({ languageSelected }) {
                                     }
                                 </div>
                                 {listPostShow.map((post, index) => (
-                                    <div className='d-flex mb-20 mr-20'>
-                                        <img src={post.image} className='image-list-port-forum' />
+                                    <div className='d-flex mb-20 mr-20 each-post'>
+                                        <img src={post.image} className='image-list-port-forum'
+                                            onClick={() => navigate(role.current != 1 ? '/forum/post' : '/admin/forum/post', { state: { post: post, listPost: listPost, index: index } })} />
                                         <div className='pl-20 short-information-post w-100'>
                                             <div>
                                                 <div className='d-flex space-between'>
-                                                    <div className='topic-post-in-list font-14 mb-10'>{languageTypePost[parseInt(post.topic) - 1].label.toUpperCase()}</div>
+                                                    <div className='topic-post-in-list font-14 mb-10'
+                                                        onClick={() => navigate(role.current != 1 ? '/forum/post' : '/admin/forum/post', { state: { post: post, listPost: listPost, index: index } })}>
+                                                        {languageTypePost[parseInt(post.topic) - 1].label.toUpperCase()}
+                                                    </div>
                                                     <div>
-                                                        {role.current !== null &&
-                                                            <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
-                                                                {role.current == 1 ?
-                                                                    <MenuItem
-                                                                        onClick={() => handleClickBlock(() => handleBlockPost(post.id))}>
-                                                                        <FiTrash /><label className='ml-5'>{languageDisplay.txtDelete}</label>
-                                                                    </MenuItem>
-                                                                    :
-                                                                    <>
-                                                                        {post.accountId != sessionStorage.getItem('id') &&
-                                                                            <MenuItem className='requird-star'
-                                                                                onClick={() => handleClickReport(() => createReportPost(post.id))}>
-                                                                                <CgDanger /><label className='ml-5'>{languageDisplay.txtReport}</label>
+                                                        {post.accountId != sessionStorage.getItem('id') &&
+                                                            <>
+                                                                {
+                                                                    role.current !== null &&
+                                                                    <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
+                                                                        {role.current == 1 ?
+                                                                            <MenuItem
+                                                                                onClick={() => handleClickBlock(() => handleBlockPost(post.id))}>
+                                                                                <FiTrash /><label className='ml-5'>{languageDisplay.txtDelete}</label>
                                                                             </MenuItem>
+                                                                            :
+                                                                            <>
+
+                                                                                <MenuItem className='requird-star'
+                                                                                    onClick={() => handleClickReport(() => createReportPost(post.id))}>
+                                                                                    <CgDanger /><label className='ml-5'>{languageDisplay.txtReport}</label>
+                                                                                </MenuItem>
+
+                                                                            </>
                                                                         }
-                                                                    </>
+                                                                    </Menu>
                                                                 }
-                                                            </Menu>
+                                                            </>
                                                         }
                                                     </div>
                                                 </div>
-                                                <div className='title m-0 font-20 each-post' onClick={() => navigate(role.current != 1 ? '/forum/post' : '/admin/forum/post', { state: { post: post, listPost: listPost, index: index } })}>{post.title}</div>
-                                                <div>{post.contentShort}</div>
+                                                <div className='title m-0 font-20 title-post'
+                                                    onClick={() => navigate(role.current != 1 ? '/forum/post' : '/admin/forum/post', { state: { post: post, listPost: listPost, index: index } })}>
+                                                    {post.title}
+                                                </div>
+                                                <div onClick={() => navigate(role.current != 1 ? '/forum/post' : '/admin/forum/post', { state: { post: post, listPost: listPost, index: index } })}>
+                                                    {post.contentShort}
+                                                </div>
                                             </div>
-                                            <div className='d-flex space-between'>
+                                            <div className='d-flex space-between' onClick={() => navigate(role.current != 1 ? '/forum/post' : '/admin/forum/post', { state: { post: post, listPost: listPost, index: index } })}>
                                                 <div>
                                                     <label className='title m-0 font-14'>{post.accountName}</label>
                                                     <input type='date' className='fake-label pl-20' disabled value={post.dateCreate} />
-                                                </div>
-                                                <div>
-                                                    <BsChatLeftDots />
-                                                    <label className='pl-5'>{post.comment.length}</label>
                                                 </div>
                                             </div>
                                         </div>

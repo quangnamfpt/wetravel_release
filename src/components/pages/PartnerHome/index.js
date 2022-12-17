@@ -18,7 +18,7 @@ function PartnerHome({ languageSelected }) {
         axios.get(API_GET_SERVICE_BY_CONDITION, {
             params: {
                 emailPartner: email,
-                page: 1,
+                page: numberPage,
                 size: 10
             }
         }).then((response) => {

@@ -96,6 +96,8 @@ const publicRoute = [
     { path: '/admin/my-post', component: MyPost },
     { path: '/create-post', component: CreatePost },
     { path: '/admin/create-post', component: CreatePost },
+    { path: '/edit-post', component: CreatePost },
+    { path: '/admin/edit-post', component: CreatePost },
     { path: '/admin/view-detail-request-cancel', component: RequestCancelDetail, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/report/feedback', component: ReportFeedbackList, layout: HeaderOnly, secondLayout: AdminHome },
     { path: '/admin/report/post', component: ReportPostList, layout: HeaderOnly, secondLayout: AdminHome },

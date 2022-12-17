@@ -57,3 +57,7 @@ export const API_DELETE_REPORT_FEEDBACK = `${DOMAIN}delete/report-feedback/`
 export const API_UPDATE_SEEN_ALERT = `${DOMAIN}seen/alert/`
 export const API_ADD_POST = `${DOMAIN}create/post`
 export const API_GET_LIST_POST = `${DOMAIN}get-list/post`
+export const API_CREATE_COMMENT = `${DOMAIN}create/comment`
+export const API_GET_COMMENT = `${DOMAIN}get-list/comment/by-post`
+export const API_CREATE_REPORT_POST = `${DOMAIN}create/report-post`
+export const API_BLOCK_POST = `${DOMAIN}delete/post/`

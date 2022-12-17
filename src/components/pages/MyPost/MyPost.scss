@@ -54,3 +54,26 @@
 .p-0-50 {
     padding: 0px 50px;
 }
+
+.my-post-blank {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}
+
+.blocked-post {
+    color: red;
+}
+
+.public-post {
+    color: blue;
+}
+
+.private-post {
+    color: orange;
+}

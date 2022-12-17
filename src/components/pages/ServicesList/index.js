@@ -29,47 +29,58 @@ function ServicesList({ languageSelected }) {
     }, [optionType])
 
     useEffect(() => {
-        axios.get(`${API_GET_SERVICE_BY_CONDITION}?serviceCategoryId=${optionType}&isActive=1&isBlock=0&serviceName=${searchName}`)
-            .then((res) => {
-                let listServiceRaw = res.data.data.content
-                let leng = 0
-                const count = listServiceRaw.length
-                listServiceRaw.forEach((service, index) => {
-                    const refAccommodation = ref(storage, `/service/accomodation/${service.serviceId}/information/receptionHallPhoto/image-0`)
-                    const refEntertainment = ref(storage, `/service/entertainment/${service.serviceId}/information/receptionHallPhoto/image-0`)
-                    const refRestaurant = ref(storage, `/service/restaurant/${service.serviceId}/information/receptionHallPhoto/image-0`)
-                    let refData
-                    if (optionType === 1) {
-                        refData = refAccommodation
-                    } else if (optionType === 2) {
-                        refData = refEntertainment
-                    } else {
-                        refData = refRestaurant
-                    }
-                    getDownloadURL(refData)
-                        .then((url) => {
-                            axios({
-                                url: url,
-                                method: 'GET',
-                                responseType: 'blob',
-                            }).then(blob => {
-                                listServiceRaw[index].image = URL.createObjectURL(blob.data)
-                                leng++
-                                if (leng == count) {
-                                    const totalPages = res.data.data.totalPages
-                                    let numberOfPagesRaw = []
-                                    for (let i = 0; i < totalPages; i++) {
-                                        numberOfPagesRaw.push(i + 1)
-                                    }
-                                    setNumberOfPages(numberOfPagesRaw)
-                                    setListService(listServiceRaw)
+        axios.get(API_GET_SERVICE_BY_CONDITION, {
+            params: {
+                serviceCategoryId: optionType,
+                isActive: 1,
+                isBlock: 0,
+                serviceName: searchName,
+                page: numberPage,
+                size: 12
+            }
+        }).then((res) => {
+            console.log(res)
+            let listServiceRaw = res.data.data.content
+            let leng = 0
+            const count = listServiceRaw.length
+            listServiceRaw.forEach((service, index) => {
+                const refAccommodation = ref(storage, `/service/accomodation/${service.serviceId}/information/receptionHallPhoto/image-0`)
+                const refEntertainment = ref(storage, `/service/entertainment/${service.serviceId}/information/receptionHallPhoto/image-0`)
+                const refRestaurant = ref(storage, `/service/restaurant/${service.serviceId}/information/receptionHallPhoto/image-0`)
+                let refData
+                if (optionType === 1) {
+                    refData = refAccommodation
+                } else if (optionType === 2) {
+                    refData = refEntertainment
+                } else {
+                    refData = refRestaurant
+                }
+                getDownloadURL(refData)
+                    .then((url) => {
+                        axios({
+                            url: url,
+                            method: 'GET',
+                            responseType: 'blob',
+                        }).then(blob => {
+                            listServiceRaw[index].image = URL.createObjectURL(blob.data)
+                            leng++
+                            console.log(leng)
+                            if (leng === count) {
+                                console.log(listServiceRaw)
+                                const totalPages = res.data.data.totalPages
+                                let numberOfPagesRaw = []
+                                for (let i = 0; i < totalPages; i++) {
+                                    numberOfPagesRaw.push(i + 1)
                                 }
-                            })
+                                setNumberOfPages(numberOfPagesRaw)
+                                setListService(listServiceRaw)
+                            }
                         })
-                })
-            }).catch(() => {
-                setListService([])
+                    })
             })
+        }).catch(() => {
+            setListService([])
+        })
     }, [optionType, numberPage, changeName])
 
     return (
@@ -103,7 +114,7 @@ function ServicesList({ languageSelected }) {
                         <div className='grid-tour'>
                             {listService.map((service, index) => (
                                 <label key={index} className='tour-item pb-0'
-                                    onClick={() => navigate('/service-detail', { state: { service: service } })}>
+                                    onClick={() => navigate('/service-detail', { state: { service: service, index: index, listService: listService } })}>
                                     <img src={service.image} className='image-main-tour' />
                                     <div className='p-10'>
                                         <div className='font-18 text-bold'>{service.serviceName}</div>

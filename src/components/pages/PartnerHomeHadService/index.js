@@ -172,24 +172,24 @@ function PartnerHomeHadService({ services, languageSelected, numberPage, setNumb
                     <table className='table table-hover table-list-service mt-30 table-striped'>
                         <thead>
                             <tr>
-                                <td className='stt-column'>#</td>
-                                <td className='name-column' onClick={handleClickNameLabel}>{languageList.txtName}
+                                <td>#</td>
+                                <td onClick={handleClickNameLabel}>{languageList.txtName}
                                     {(sortByName === 0 && <FaSort className='icon-sort' />) ||
                                         (sortByName === 1 && <FaSortDown className='icon-sort' />) ||
                                         (sortByName === 2 && <FaSortUp className='icon-sort' />)}
                                 </td>
-                                <td className='type-column' onClick={handleClickTypeLabel}>{languageList.txtType}
+                                <td onClick={handleClickTypeLabel}>{languageList.txtType}
                                     {(sortByType === 0 && <FaSort className='icon-sort' />) ||
                                         (sortByType === 1 && <FaSortDown className='icon-sort' />) ||
                                         (sortByType === 2 && <FaSortUp className='icon-sort' />)}
                                 </td>
-                                <td className='address-column'>{languageList.txtAddress}</td>
-                                <td className='status-column' onClick={handleClickStatusLabel}>{languageList.txtStatus}
+                                <td>{languageList.txtAddress}</td>
+                                <td onClick={handleClickStatusLabel}>{languageList.txtStatus}
                                     {(sortByStatus === 0 && <FaSort className='icon-sort' />) ||
                                         (sortByStatus === 1 && <FaSortDown className='icon-sort' />) ||
                                         (sortByStatus === 2 && <FaSortUp className='icon-sort' />)}
                                 </td>
-                                <td className='action-column'>{languageList.txtAction}</td>
+                                <td>{languageList.txtAction}</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -199,7 +199,7 @@ function PartnerHomeHadService({ services, languageSelected, numberPage, setNumb
                                     <td>{index + 1}</td>
                                     <td>{service.serviceName}</td>
                                     <td>
-                                        {optionType[service.serviceCategory].label}
+                                        {optionType[parseInt(service.typeOfServiceCategory) + 1].label}
                                     </td>
                                     <td>{service.address}</td>
                                     <td>
@@ -211,7 +211,7 @@ function PartnerHomeHadService({ services, languageSelected, numberPage, setNumb
                                     </td>
                                     <td>
                                         <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
-                                            <MenuItem onClick={() => navigate(`/partner/edit-service?serviceId=${service.serviceId}`)}>
+                                            <MenuItem onClick={() => navigate(`/partner/edit-service`, { state: { serviceId: service.serviceId } })}>
                                                 <AiOutlineEdit /> {languageList.txtEdit}
                                             </MenuItem>
                                         </Menu>
@@ -221,14 +221,14 @@ function PartnerHomeHadService({ services, languageSelected, numberPage, setNumb
                         </tbody>
                     </table>
                 </div>
-                <div className='d-flex float-end paging'>
+                <div className='d-flex paging float-end mb-20'>
                     {numberPage > 1 && <label onClick={() => setNumberPage(pre => pre - 1)} className='btn-paging unseleted'>
                         <AiOutlineLeft />
                     </label>}
                     {numberOfPages.map((item) => (
                         <label className={`btn-paging ${numberPage === item ? 'selected-paging' : 'unseleted'}`} onClick={() => setNumberPage(item)}>{item}</label>
                     ))}
-                    {numberPage < numberOfPages.length && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
+                    {numberPage < numberOfPages.length && numberOfPages.length > 1 && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
                         <AiOutlineRight />
                     </label>}
                 </div>

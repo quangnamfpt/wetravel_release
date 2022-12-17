@@ -4,7 +4,7 @@ import { AiOutlineQuestionCircle } from 'react-icons/ai'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { HiOutlineEye } from 'react-icons/hi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
-import { MdReportGmailerrorred } from 'react-icons/md'
+import { MdReportGmailerrorred, MdLocationOn } from 'react-icons/md'
 
 import GoogleMapLayout from '../../Layout/GoogleMapLayout';
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
@@ -87,7 +87,7 @@ function TourDetail({ languageSelected }) {
         adultPrice: 0,
         childrenPrice: 0
     })
-    const [idReasonReport, setIdReasonReport] = useState(0)
+    const [idReasonReport, setIdReasonReport] = useState(1)
     const [idFeedbackReport, setIdFeedbackReport] = useState(0)
 
     const [numberPage, setNumberPage] = useState(1)
@@ -177,7 +177,8 @@ function TourDetail({ languageSelected }) {
                 generalTerms: generalTermsAdd,
                 moreDescription: moreDescriptionAdd,
                 latitude: data.tourDetailDTO.latitude,
-                longitude: data.tourDetailDTO.longitude
+                longitude: data.tourDetailDTO.longitude,
+                place: data.endPlace
             }
 
             axios.get(`${API_GET_LIST_FEEDBACK}?tourId=${tourRaw.id}&page=${numberPage}&size=4&isBlock=0`)
@@ -211,22 +212,16 @@ function TourDetail({ languageSelected }) {
                         res.items.forEach((item) => {
                             getDownloadURL(ref(storage, item.fullPath))
                                 .then((url) => {
-                                    axios({
-                                        url: url,
-                                        method: 'GET',
-                                        responseType: 'blob',
-                                    }).then(blob => {
-                                        tourImages.push(URL.createObjectURL(blob.data))
-                                        leng++
-                                        if (leng === count) {
-                                            setTour({
-                                                ...tour, images: tourImages, ...tourRaw
-                                            })
-                                            setOptionMoreInformationSelected([tourRaw.include, tourRaw.nonInclude,
-                                            tourRaw.generalTerms, tourRaw.moreDescription])
-                                            setGetDataComplete(true)
-                                        }
-                                    })
+                                    tourImages.push(url)
+                                    leng++
+                                    if (leng === count) {
+                                        setTour({
+                                            ...tour, images: tourImages, ...tourRaw
+                                        })
+                                        setOptionMoreInformationSelected([tourRaw.include, tourRaw.nonInclude,
+                                        tourRaw.generalTerms, tourRaw.moreDescription])
+                                        setGetDataComplete(true)
+                                    }
                                 })
                         })
                     })
@@ -306,6 +301,7 @@ function TourDetail({ languageSelected }) {
                     <div className='container d-flex'>
                         <div className='section-tour-detail w-75 mr-20'>
                             <div className='title name-tour-detail'>{tour.name}</div>
+                            <div className='color-gray d-flex center-vertical mb-10'><MdLocationOn /><label className='ml-10'>{tour.place}</label></div>
                             <div className='all-tag-tour-detail'>
                                 {tour.tag.map((id) => (<label className='tag-tour-detail'>{tagList[id - 1].label}</label>))}
                             </div>
@@ -403,7 +399,7 @@ function TourDetail({ languageSelected }) {
                                     {languageList.txtMoreDescription}
                                 </label>
                             </div>
-                            <div className='more-information-detail' dangerouslySetInnerHTML={{ __html: optionMoreInformationSelected[optionIndexMoreInformationSelected] }}></div>
+                            <div className='li-left more-information-detail' dangerouslySetInnerHTML={{ __html: optionMoreInformationSelected[optionIndexMoreInformationSelected] }}></div>
                         </div>
                         <div className='w-25' />
                     </div>

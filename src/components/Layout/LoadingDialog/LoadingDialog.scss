@@ -1,7 +1,14 @@
 .locationDialog {
+    width: 100vw;
+    height: 100vh;
     position: fixed;
-    top: 50%;
-    left: 50%;
-    z-index: 3;
-    background-color: transparent;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10;
 }

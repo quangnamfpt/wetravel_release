@@ -100,7 +100,7 @@ export const typePostVietnamese = [
     },
     {
         value: 6,
-        label: 'Ẩm thức'
+        label: 'Ẩm thực'
     },
     {
         value: 7,

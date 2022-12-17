@@ -41,9 +41,18 @@ function Header({ languageSelected, setLanguageSelected, setProgress }) {
     const [unSeen, setUnSeen] = useState(false)
     const alertRealTime = useRef()
 
+    useEffect(() => {
+        setFirstName(sessionStorage.getItem('firstName'))
+        setLastName(sessionStorage.getItem('lastName'))
+        setRole(sessionStorage.getItem('role'))
+        setEmail(sessionStorage.getItem('email'))
+    }, [sessionStorage.getItem('role')])
+
+
     const getAlert = () => {
         axios.get(`${API_GET_LIST_ALERT}?accountId=${sessionStorage.getItem('id')}`)
             .then((res) => {
+                console.log(res)
                 for (let i = 0; i < res.data.data.length; i++) {
                     if (!res.data.data[i].status) {
                         setUnSeen(true)
@@ -60,21 +69,14 @@ function Header({ languageSelected, setLanguageSelected, setProgress }) {
     useEffect(() => {
         if (role != 0 && role != 1 && role !== null) {
             getAlert()
-            //alertRealTime.current = setInterval(() => { getAlert() }, 5000)
+            alertRealTime.current = setInterval(() => { getAlert() }, 5000)
         }
-        // else {
-        //     clearInterval(alertRealTime.current)
-        // }
+        else {
+            clearInterval(alertRealTime.current)
+        }
 
-        //return () => clearInterval(alertRealTime.current)
-    })
-
-    useEffect(() => {
-        setFirstName(sessionStorage.getItem('firstName'))
-        setLastName(sessionStorage.getItem('lastName'))
-        setRole(sessionStorage.getItem('role'))
-        setEmail(sessionStorage.getItem('email'))
-    }, [sessionStorage.getItem('role')])
+        return () => clearInterval(alertRealTime.current)
+    }, [role])
 
     let languageList = (languageSelected === 'EN' ? english : vietnamese)
 
@@ -162,9 +164,14 @@ function Header({ languageSelected, setLanguageSelected, setProgress }) {
             }
         }
         else {
-            return date
+            const day = date.split('-')[2]
+            const month = date.split('-')[1]
+            const year = date.split('-')[0]
+            return `${day}/${month}/${year}`
         }
     }
+
+
 
     return (<div className='container header-container box-shadow-common'>
         {showPopupDetailAlert &&
@@ -175,7 +182,7 @@ function Header({ languageSelected, setLanguageSelected, setProgress }) {
                 <img src={Logo} className='logo' />
                 <div className='text-logo'>WeTravel</div>
             </Link>
-            <nav className='nav-link'>
+            <nav className='nav-link d-flex'>
                 {(role != 1) ?
                     <>
                         <Link to='/tours' className='link' ><BiTrip className='icon-image' />Tours</Link>
@@ -183,14 +190,16 @@ function Header({ languageSelected, setLanguageSelected, setProgress }) {
                         <Link to='/forum' className='link' ><MdOutlineForum className='icon-image' />{languageList.txtForum}</Link>
                         <Link to={role == 2 ? '/partner' : '/select-service'} className='link'><FaRegHandshake className='icon-image' /> {languageList.txtPartner}</Link>
                         {role !== null &&
-                            <details className='click-alert'>
-                                <summary>
+                            <span onMouseEnter={() => document.getElementById('alert-list').style.display = 'inline'}
+                                onMouseLeave={() => document.getElementById('alert-list').style.display = 'none'}
+                                className='click-alert'>
+                                <label>
                                     {unSeen &&
                                         <div className='unseen-notify'></div>
                                     }
                                     <a className='link'><AiOutlineNotification className='icon-image' />{languageList.txtAlert}</a>
-                                </summary>
-                                <div className='dropdown-alert' id='alert-list'>
+                                </label>
+                                <div className='fade-in dropdown-alert' id='alert-list'>
                                     <div className='font-20 text-bold plr-20'>{languageList.txtAlert}</div>
                                     <Scrollbars>
                                         <div className='pt-10'></div>
@@ -214,7 +223,7 @@ function Header({ languageSelected, setLanguageSelected, setProgress }) {
                                         ))}
                                     </Scrollbars>
                                 </div>
-                            </details>
+                            </span>
 
                         }
                     </>
@@ -223,20 +232,25 @@ function Header({ languageSelected, setLanguageSelected, setProgress }) {
                         <Link to={role != 1 ? '/forum' : '/admin/forum'} className='link' ><MdOutlineForum className='icon-image' />{languageList.txtForum}</Link>
                     </>
                 }
-                <details id='select-language'>
-                    <summary className='select-language'><img src={language === 'EN' ? EnglishFlag : VietNamFlag} className='icon-image' />{language} <AiOutlineCaretDown className='icon-image' /></summary>
-                    <label className='label-select-language' onClick={handleSelectLanguage}>
+                <span onMouseEnter={() => document.getElementById('select-language-box').style.display = 'inline'}
+                    onMouseLeave={() => document.getElementById('select-language-box').style.display = 'none'}>
+                    <label
+                        className='select-language'><img src={language === 'EN' ? EnglishFlag : VietNamFlag} className='icon-image' />{language} <AiOutlineCaretDown className='icon-image' /></label>
+                    <label
+                        id='select-language-box' className='fade-in label-select-language' onClick={handleSelectLanguage}>
                         <img src={language === 'EN' ? VietNamFlag : EnglishFlag} className='icon-image' />
                         <label id='select-language-option'>{language !== 'EN' ? 'EN' : 'VI'}</label>
                     </label>
-                </details>
+                </span>
                 {role === null ? <>
                     <label className='link login' onClick={() => setShowLogin(true)}>{languageList.txtLogin}</label>
                     <Link to='/register' className='link register' >{languageList.txtRegister}</Link>
                 </> :
-                    <details className='link ml-50'>
-                        <summary className='d-flex'>{role > 1 ? `${firstName} ${lastName}` : `${email}`} <AiOutlineCaretDown className='icon-image icon-lower' /></summary>
-                        <div className='dropdown-profile-item'>
+                    <span onMouseEnter={() => document.getElementById('my-account').style.display = 'inline'}
+                        onMouseLeave={() => document.getElementById('my-account').style.display = 'none'}
+                        className='link ml-50 my-account-dropdown'>
+                        <label className='d-flex'>{role > 1 ? `${firstName} ${lastName}` : `${email}`} <AiOutlineCaretDown className='icon-image icon-lower' /></label>
+                        <label id='my-account' className='fade-in dropdown-profile-item'>
                             <div>{languageList.txtMyAccount}</div>
                             <Link to={role == 1 ? '/admin/change-password-account' : '/change-password-account'} className='item-dropdown-profile'><MdPassword className='icon-image icon-dropdown-profile' /> {languageList.txtChangePassword}</Link>
                             {role > 1 &&
@@ -246,10 +260,9 @@ function Header({ languageSelected, setLanguageSelected, setProgress }) {
                             }
                             <Link to={role != 1 ? '/my-post' : '/admin/my-post'} className='item-dropdown-profile'><RiEditBoxLine className='icon-image icon-dropdown-profile' /> {languageList.txtMyPost}</Link>
                             <Link onClick={handleCLickLogout} to='/' className='item-dropdown-profile'><AiOutlineLogout className='icon-image icon-dropdown-profile' /> {languageList.txtLogout}</Link>
-                        </div>
-                    </details>
+                        </label>
+                    </span>
                 }
-
             </nav>
         </header>
         {(showLogin || showForgotPassword || showLoading) && <div className='popup'>

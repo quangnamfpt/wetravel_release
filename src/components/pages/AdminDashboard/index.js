@@ -4,7 +4,7 @@ import { english, vietnamese } from '../../Languages/AdminDashboard'
 import { AreaChart, XAxis, YAxis, CartesianGrid, Tooltip, Area, PieChart, Pie, ResponsiveContainer, BarChart, Bar, Cell } from 'recharts';
 import './AdminDashboard.scss'
 import axios from 'axios';
-import { API_GET_CUSTOMER, API_GET_SERVICE_BY_CONDITION } from '../../API';
+import { API_GET_ALL_TOUR, API_GET_CUSTOMER, API_GET_SERVICE_BY_CONDITION } from '../../API';
 import { english as englishTableCustomer, vietnamese as vietnameseTableCustomer } from '../../Languages/TableListCustomer'
 import { BiLineChart, BiPieChartAlt2, BiBarChartAlt2 } from 'react-icons/bi'
 
@@ -14,74 +14,66 @@ function AdminDashboard({ languageSelected }) {
 
     const navigate = useNavigate()
 
-    const [countBookingThisMonth, setCountBookingThisMonth] = useState(82)
+    const [countBookingThisMonth, setCountBookingThisMonth] = useState(2)
     const [countTour, setCountTour] = useState(20)
-    const [countBookingLastMonth, setCountBookingLastMonth] = useState(123)
-    const [countBookingTwoMonthAgo, setCountBookingTwoMonthAgo] = useState(100)
-    const rate = useRef((countBookingLastMonth - countBookingTwoMonthAgo) / countBookingLastMonth * 100)
+    const [countBookingLastMonth, setCountBookingLastMonth] = useState(15)
+    const [countBookingTwoMonthAgo, setCountBookingTwoMonthAgo] = useState(60)
+    const rate = useRef((countBookingLastMonth - countBookingTwoMonthAgo) / (countBookingLastMonth + countBookingTwoMonthAgo) * 100)
 
     const [typeChart, setTypeChart] = useState(0)
 
     const dataBookingDate = [
         {
-            time: '10/2022',
-            booking: 4000
-        },
-        {
-            time: '09/2022',
-            booking: 3000
-        },
-        {
-            time: '08/2022',
-            booking: 2000
+            time: '06/2022',
+            booking: 1
         },
         {
             time: '07/2022',
-            booking: 2780
+            booking: 70
         },
         {
-            time: '06/2022',
-            booking: 1890
+            time: '09/2022',
+            booking: 56
         },
         {
-            time: '05/2022',
-            booking: 2390
+            time: '10/2022',
+            booking: 60
         },
         {
-            time: '04/2022',
-            booking: 3490
+            time: '11/2022',
+            booking: 15
         },
+        {
+            time: '12/2022',
+            booking: 2
+        }
     ];
 
     const dataStartDate = [
         {
-            time: '10/2022',
-            booking: 400
-        },
-        {
-            time: '09/2022',
-            booking: 300
-        },
-        {
-            time: '08/2022',
-            booking: 200
+            time: '06/2022',
+            booking: 11
         },
         {
             time: '07/2022',
-            booking: 270
+            booking: 52
         },
         {
-            time: '06/2022',
-            booking: 180
+            time: '09/2022',
+            booking: 15
         },
         {
-            time: '05/2022',
-            booking: 230
+            time: '10/2022',
+            booking: 60
         },
         {
-            time: '04/2022',
-            booking: 1490
+            time: '11/2022',
+            booking: 15
         },
+        {
+            time: '12/2022',
+            booking: 2
+        }
     ];
 
     const [optionChart, setOptionChart] = useState(true)
@@ -122,12 +114,25 @@ function AdminDashboard({ languageSelected }) {
         }).catch((e) => {
             getDataSuppliers(1)
         })
+
+        axios.get(API_GET_ALL_TOUR, {
+            params: {
+                page: 1,
+                size: 99999
+            }
+        }).then((res) => {
+            setCountTour(res.data.data.countTour)
+        }).catch(() => setCountTour(0))
     }
 
     const getDataSuppliers = (id) => {
         axios.get(API_GET_SERVICE_BY_CONDITION, {
             params: {
-                serviceCategoryId: id
+                serviceCategoryId: id,
+                page: 1,
+                size: 99999,
+                isActive: 1,
+                isBlocked: 0
             }
         }).then((count) => {
             if (id === 1) {
@@ -217,22 +222,25 @@ function AdminDashboard({ languageSelected }) {
             {showNoteRate && <label className='note-rate bg-white p-20 br-10'>{languageList.txtNoteRate}</label>}
             <div className='d-flex space-between btn-option-chart'>
                 <div className='w-75 d-flex space-between'>
-                    <div className='d-flex'>
-                        <div className={`br-10 box-shadow-common btn-change-type-chart ${typeChart === 0 && 'btn-change-type-chart-selected'}`}
+                    <div className='d-flex center-vertical'>
+                        <div className={`br-10 btn-change-type-chart ${typeChart === 0 && 'btn-change-type-chart-selected'}`}
                             onClick={() => setTypeChart(0)}>
                             <BiLineChart />
                         </div>
-                        <div className={`br-10 box-shadow-common btn-change-type-chart ${typeChart === 1 && 'btn-change-type-chart-selected'}`}
+                        <div className={`br-10 btn-change-type-chart ${typeChart === 1 && 'btn-change-type-chart-selected'}`}
                             onClick={() => setTypeChart(1)}>
                             <BiBarChartAlt2 />
                         </div>
+                        {/* <input type='month' className='w-50 font-14 ml-20 br-10 pt-10 pb-10 pl-20 select-range-month' />
+                        <label className='ml-20'>-</label>
+                        <input type='month' className='w-50 font-14 ml-20 br-10 pt-10 pb-10 pl-20 select-range-month' /> */}
                     </div>
                     <div className='d-flex'>
-                        <div className={`br-10 box-shadow-common btn-change-data-chart ${optionChart && 'btn-change-data-chart-selected'}`}
+                        <div className={`br-10 btn-change-data-chart ${optionChart && 'btn-change-data-chart-selected'}`}
                             onClick={() => setOptionChart(true)}>
                             {languageList.txtBookingDate}
                         </div>
-                        <div className={`br-10 box-shadow-common btn-change-data-chart ${!optionChart && 'btn-change-data-chart-selected'}`}
+                        <div className={`br-10 btn-change-data-chart ${!optionChart && 'btn-change-data-chart-selected'}`}
                             onClick={() => setOptionChart(false)}>
                             {languageList.txtStartDate}
                         </div>

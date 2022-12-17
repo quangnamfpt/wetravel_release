@@ -52,6 +52,7 @@ function AdminSuppliersEntertainment({ languageSelected }) {
                     serviceId: service.serviceId,
                     serviceName: service.serviceName,
                     serviceCategory: parseInt(service.serviceCategory),
+                    phone: service.phone,
                     address: service.address,
                     city: service.city,
                     partnerEmail: service.partnerEmail,

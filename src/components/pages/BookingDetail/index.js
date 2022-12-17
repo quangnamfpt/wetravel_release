@@ -6,8 +6,9 @@ import './BookingDetail.scss'
 function BookingDetail({ languageList, setOptionSelected, tour, startDate, countAdult, countChildren, languageSelected, priceOrigin
     , fullName, setFullName, phone, setPhone, email, setEmail, idCard, setIdCard, dateOfIssue, setDateOfIssue, placeOfIssue, setPlaceOfIssue,
     promoCode, setPromoCode, request, setRequest }) {
-    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-    const formatTime = (languageSelected === 'EN' ? "en-US" : 'vi-VI')
+
+    const today = new Date().toISOString().split('T')[0];
+
     const formatter = new Intl.NumberFormat('vi-VI', {
         style: 'currency',
         currency: 'VND',
@@ -18,10 +19,7 @@ function BookingDetail({ languageList, setOptionSelected, tour, startDate, count
         if ((tour.type === 1 && startDate === '') || fullName === '' || phone === '' || email === '' || idCard === '' || dateOfIssue === '' || placeOfIssue === '') {
             toast.error(languageList.txtWarningFullInformation)
         }
-        else if (!/^[A-Za-z ]/.test(fullName) || !/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(phone)
-            || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)
-            || ((!/^[0-9]{9}$/.test(idCard) && !/^[0-9]{12}$/.test(idCard)))) {
-            console.log(!/^[0-9]{6}[0-9]{3}[0-9]{3}[0-9]{3}[0-9]{3}$/.test(idCard))
+        else if (!/^[A-Za-z ]/.test(fullName) || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
             toast.error(languageList.txtInvalidInformation)
         }
         else {
@@ -32,6 +30,12 @@ function BookingDetail({ languageList, setOptionSelected, tour, startDate, count
 
             Momo(requestId, orderInfo, priceRaw, tour.id, isDeposit, -1, false, fullName, phone, email, promoCode, request,
                 idCard, dateOfIssue, placeOfIssue, startDateRaw, countAdult, countChildren, tour.type, tour.adultPrice, tour.childrenPrice)
+        }
+    }
+
+    const handleCheckDateOfIssue = () => {
+        if (dateOfIssue !== '' && dateOfIssue > today) {
+            setDateOfIssue(today)
         }
     }
 
@@ -73,7 +77,7 @@ function BookingDetail({ languageList, setOptionSelected, tour, startDate, count
                     <div className="d-flex line-input">
                         <div className='w-45 mlr-20'>
                             <label htmlFor="numberOfRoom" className="d-block title-create-tour">{languageList.txtDateOfIssue}<span className="requird-star">*</span></label>
-                            <input type='date' value={dateOfIssue} onChange={(e) => setDateOfIssue(e.target.value)} className="input-inline" />
+                            <input type='date' onBlur={handleCheckDateOfIssue} value={dateOfIssue} onChange={(e) => setDateOfIssue(e.target.value)} max={today} className="input-inline" />
                         </div>
                         <div className='w-45 mlr-20'>
                             <label htmlFor="bedType" className="d-block title-create-tour">{languageList.txtPlaceOfIssue}<span className="requird-star">*</span></label>
@@ -102,7 +106,7 @@ function BookingDetail({ languageList, setOptionSelected, tour, startDate, count
                         </div>
                         <div className='mt-20 d-flex'>
                             <label className='title-create-tour font-14 w-50'>{languageList.txtSightseeingDay}</label>
-                            <label className='font-14'>{tour.type == 1 ? startDate : tour.startDate}</label>
+                            <input type='date' disabled className='fake-label font-14' value={tour.type == 1 ? startDate : tour.startDate} />
                         </div>
                         <div className='mt-20 d-flex mb-10'>
                             <label className='title-create-tour font-14 w-50'>{languageList.txtApplyFor}</label>

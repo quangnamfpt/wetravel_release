@@ -59,6 +59,7 @@ function ViewBookingList({ languageSelected }) {
             params: {
                 page: numberPage,
                 size: 10,
+                status: 1,
                 tourName: searchName,
                 status: searchStatus,
                 tourType: searchType

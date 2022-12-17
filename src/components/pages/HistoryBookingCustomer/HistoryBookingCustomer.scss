@@ -183,3 +183,18 @@
 .color-have-feedback:hover {
     background-color: #21ffff87;
 }
+
+.pop-up-view-feedback {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    justify-items: center;
+    align-items: center;
+    align-content: center;
+}

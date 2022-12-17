@@ -31,6 +31,7 @@ function RegisterInformationAccomodation({ languageSelected, handleClickSaveAndN
     }
 
     const handleInputStatus = (value) => {
+        console.log(value)
         setServiceData({ ...serviceData, status: value })
     }
 
@@ -154,7 +155,7 @@ function RegisterInformationAccomodation({ languageSelected, handleClickSaveAndN
                 </div>
                 <div className="line-input">
                     <div className="input-alone">
-                        <label htmlFor='description' className='d-block'>{languageList.txtDescription}</label>
+                        <label htmlFor='description' className='d-block'>{languageList.txtDescription}<span className="requird-star">*</span></label>
                         <textarea rows="4" id='description' className='input-inline'
                             value={serviceData.description} onChange={(e) => handleInputDescription(e.target.value)}
                             onFocus={(e) => handleFocus(e.target)}

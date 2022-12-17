@@ -1,10 +1,28 @@
 import { memo, useLayoutEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { FaRegPaperPlane } from 'react-icons/fa'
 import './Home.css'
 import BackgroundHome from '../../images/bgHome.jpg'
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { english, vietnamese } from '../../Languages/Home';
+import Hotel1 from '../../images/hotel (1).jpg'
+import Hotel2 from '../../images/hotel (2).jpg'
+import Hotel3 from '../../images/hotel (3).jpg'
+import Hotel4 from '../../images/hotel (4).jpg'
+
+import Attraction1 from '../../images/attractions (1).jpg'
+import Attraction2 from '../../images/attractions (2).jpg'
+
+import Transport1 from '../../images/transport (1).jpg'
+import Transport2 from '../../images/transport (2).jpg'
+
+import Restaurant1 from '../../images/restaurant (1).jpg'
+import Restaurant2 from '../../images/restaurant (2).jpg'
+import Restaurant3 from '../../images/restaurant (3).jpg'
+import Restaurant4 from '../../images/restaurant (4).jpg'
+import Restaurant5 from '../../images/restaurant (5).jpg'
+
 
 const responsive = {
     desktop: {
@@ -44,6 +62,8 @@ const responsiveFetures = {
 
 function Home({ languageSelected }) {
     let languageList = (languageSelected === 'EN' ? english : vietnamese)
+
+    const navigate = useNavigate()
 
     useLayoutEffect(() => {
         languageList = (languageSelected === 'EN' ? english : vietnamese)
@@ -100,85 +120,87 @@ function Home({ languageSelected }) {
 
     const arrayGroup = [[{
         id: 13,
-        link: 'https://ceblog.s3.amazonaws.com/wp-content/uploads/2012/05/20172622/ce-travel.jpg'
+        link: Hotel1
     },
     {
         id: 14,
-        link: 'https://wttc.org/DesktopModules/MVC/NewsArticleList/images/141_20201013185512_Consumer%20Survey%20Finds%2070%20Percent%20of%20Travelers%20Plan%20to%20Holiday%20in%202021.jpg'
+        link: Hotel2
     },
     {
         id: 15,
-        link: 'https://img.freepik.com/free-photo/full-shot-travel-concept-with-landmarks_23-2149153258.jpg?3'
+        link: Hotel3
     },
     {
         id: 16,
-        link: 'https://v-biz.vn/static/media/Travel.ff88c854.jpg'
+        link: Hotel4
     },
     {
         id: 17,
-        link: 'https://hips.hearstapps.com/hmg-prod/images/where-to-travel-in-2022-1640200544.jpg'
+        link: Attraction1
     },
     {
         id: 18,
-        link: 'https://youmatter.world/app/uploads/sites/2/2019/11/travel-world.jpg'
+        link: Attraction2
     }],
     [{
         id: 19,
-        link: 'https://ceblog.s3.amazonaws.com/wp-content/uploads/2012/05/20172622/ce-travel.jpg'
+        link: Transport1
     },
     {
         id: 20,
-        link: 'https://wttc.org/DesktopModules/MVC/NewsArticleList/images/141_20201013185512_Consumer%20Survey%20Finds%2070%20Percent%20of%20Travelers%20Plan%20to%20Holiday%20in%202021.jpg'
+        link: Transport2
     },
     {
         id: 21,
-        link: 'https://img.freepik.com/free-photo/full-shot-travel-concept-with-landmarks_23-2149153258.jpg?3'
+        link: Restaurant1
     },
     {
         id: 22,
-        link: 'https://v-biz.vn/static/media/Travel.ff88c854.jpg'
+        link: Restaurant2
     },
     {
         id: 23,
-        link: 'https://hips.hearstapps.com/hmg-prod/images/where-to-travel-in-2022-1640200544.jpg'
+        link: Restaurant3
     },
     {
         id: 24,
-        link: 'https://youmatter.world/app/uploads/sites/2/2019/11/travel-world.jpg'
-    }], [{
-        id: 25,
-        link: 'https://ceblog.s3.amazonaws.com/wp-content/uploads/2012/05/20172622/ce-travel.jpg'
-    },
-    {
-        id: 26,
-        link: 'https://wttc.org/DesktopModules/MVC/NewsArticleList/images/141_20201013185512_Consumer%20Survey%20Finds%2070%20Percent%20of%20Travelers%20Plan%20to%20Holiday%20in%202021.jpg'
-    },
-    {
-        id: 27,
-        link: 'https://img.freepik.com/free-photo/full-shot-travel-concept-with-landmarks_23-2149153258.jpg?3'
-    },
-    {
-        id: 28,
-        link: 'https://v-biz.vn/static/media/Travel.ff88c854.jpg'
-    },
-    {
-        id: 29,
-        link: 'https://hips.hearstapps.com/hmg-prod/images/where-to-travel-in-2022-1640200544.jpg'
-    },
-    {
-        id: 30,
-        link: 'https://youmatter.world/app/uploads/sites/2/2019/11/travel-world.jpg'
+        link: Restaurant4
     }]]
+
+    const listImageForum = [{
+        id: 1,
+        link: 'https://cdn.searchenginejournal.com/wp-content/uploads/2021/09/16-reasons-why-social-media-is-important-to-your-company-616d3200e6dc6-sej-1520x800.png'
+    },
+    {
+        id: 2,
+        link: 'https://cdn.searchenginejournal.com/wp-content/uploads/2020/09/outstanding-social-media-campaigns-5f60d3e4bb13b.png'
+    },
+    {
+        id: 3,
+        link: 'https://d4y70tum9c2ak.cloudfront.net/contentImage/cp-xkfWuQLB8A-LnxHmXAXyjr697tiDTJ-H-hSl1VjA/resized.png'
+    },
+    {
+        id: 4,
+        link: 'https://www.pagepersonnel.fr/sites/pagepersonnel.fr/files/legacy/shutterstock_767934082_970x480.jpg'
+    },
+    {
+        id: 5,
+        link: 'https://wewin.com.vn/wp-content/uploads/2021/09/social-media-manager-la-lam-gi.png'
+    }]
+
+    const role = sessionStorage.getItem('role')
+
     return (
         <div className='container home-main'>
             <img src={BackgroundHome} className='bg-image' />
-            <div className='border-search container search'>
+            <div className='border-search container search'
+                onClick={() => navigate('/tours')}>
                 <FaRegPaperPlane className='icon-search' />
                 <input placeholder={languageList[0]} className='input-search' />
                 <button className='btn-search'>{languageList[1]}</button>
             </div>
 
-            <div className='container place'>
+            <div className='container place' onClick={() => navigate('/tours')}>
                 <h1 className='title-home'>{languageList[2]}</h1>
                 <div className='title-home description-home'>{languageList[3]}</div>
                 <div className='slider'>
@@ -199,7 +221,7 @@ function Home({ languageSelected }) {
                 </div>
             </div>
 
-            <div className='container place'>
+            <div className='container place' onClick={() => navigate('/services')}>
                 <h1 className='title-home title-left'>{languageList[4]}</h1>
                 <div className='slider'>
                     <Carousel autoPlay={true}
@@ -230,9 +252,9 @@ function Home({ languageSelected }) {
                 </div>
             </div>
 
-            <div className='container place'>
-                <h1 className='title-home'>{languageList[2]}</h1>
-                <div className='title-home description-home'>{languageList[3]}</div>
+            <div className='container place' onClick={() => navigate('/forum')}>
+                <h1 className='title-home'>{languageList[5]}</h1>
+                <div className='title-home description-home'>{languageList[6]}</div>
                 <div className='slider'>
                     <Carousel autoPlay={true}
                         autoPlaySpeed={1500}
@@ -246,7 +268,7 @@ function Home({ languageSelected }) {
                         removeArrowOnDeviceType={["tablet", "mobile"]}
                         dotListClass="custom-dot-list-style"
                         itemClass="carousel-item-padding-40-px">
-                        {listItem.map((item, index) => (<img src={item.link} key={index} className="image-slide image-hover" />))}
+                        {listImageForum.map((item, index) => (<img src={item.link} key={index} className="image-slide image-hover" />))}
                     </Carousel>
                 </div>
             </div>

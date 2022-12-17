@@ -145,21 +145,23 @@ details > summary::-webkit-details-marker {
 }
 
 .label-select-language {
+    display: none;
     position: absolute;
     padding: 5px 10px;
-    margin-left: 10px;
     background-color: white;
     z-index: 2;
     border: solid 1px #ccc;
     border-radius: 5px;
     border-top-right-radius: 0px;
     font-size: 16px;
+    margin-top: 20px;
+    margin-left: -65px;
     transition: 0.5s;
 }
 
 .dropdown-profile-item {
+    display: none;
     position: absolute;
-    margin-top: 10px;
     z-index: 2;
     color: black;
     background-color: white;
@@ -167,6 +169,10 @@ details > summary::-webkit-details-marker {
     padding: 5px 10px;
     border-radius: 5px;
     box-shadow: 0px 2px 5px black;
+}
+
+.my-account-dropdown {
+    display: inline;
 }
 
 .item-dropdown-profile {
@@ -213,14 +219,14 @@ details > summary::-webkit-details-marker {
 }
 
 .dropdown-alert {
+    display: none;
     position: absolute;
     margin-top: 23px;
     z-index: 2;
     color: black;
     background-color: white;
-    margin-left: -100px;
+    margin-left: -200px;
     box-shadow: none;
-    border: solid 1px #d9d9d9;
     border-top: none;
     border-radius: 0px 0px 10px 10px;
     height: 350px;

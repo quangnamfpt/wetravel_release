@@ -519,8 +519,8 @@ function EditProfilePartner({ languageSelected }) {
                                                             <td>{languageList.txtName}: </td>
                                                             <td className="pl-10">{service.serviceName}
                                                                 <label className="text-danger"> {service.isBlock && `(${languageList.txtBlocked})`}</label>
-                                                                <label className="text-pause"> {!service.isActive && `(${languageList.txtPending})`}</label>
-                                                                <label className="text-active"> {service.isActive && `(${languageList.txtActive})`}</label>
+                                                                <label className="text-pause"> {!service.isActive && !service.isBlock && `(${languageList.txtPending})`}</label>
+                                                                <label className="text-active"> {service.isActive && !service.isBlock && `(${languageList.txtActive})`}</label>
                                                             </td>
                                                         </tr>
                                                         <tr>

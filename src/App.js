@@ -18,7 +18,7 @@ function App() {
   const navigate = useNavigate()
 
   const cokkieArr = document.cookie;
-  const language = (cokkieArr.split("languageSelected=")[1] ? cokkieArr.split("languageSelected=")[1].split(';')[0] : 'EN')
+  const language = cokkieArr.split("languageSelected=")[1] ? cokkieArr.split("languageSelected=")[1].split(';')[0] : 'EN'
   const email = cokkieArr.split("email=")[1] && cokkieArr.split("email=")[1].split(';')[0]
   const password = cokkieArr.split("password=")[1] && cokkieArr.split("password=")[1].split(';')[0]
 

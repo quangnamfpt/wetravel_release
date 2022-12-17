@@ -1,6 +1,6 @@
 import { vietnamese, english } from "../../Languages/OptionInputInformationService";
 import { useState, memo, useEffect, useRef, useLayoutEffect } from 'react'
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import './RegisterInformationServiceLayout.scss'
 import RegisterInformationRooms from '../../pages/RegisterInformationRooms'
 import RegisterInformationAccomodation from '../../pages/RegisterInformationAccomodation'
@@ -22,6 +22,7 @@ function RegisterInformationServiceLayout({ setProgress, languageSelected }) {
 
     const [showLoading, setShowLoading] = useState(false);
     const [moveToTop, setMoveToTop] = useState(true)
+    const state = useLocation().state
 
     useEffect(() => {
         window.scrollTo(0, 0)
@@ -93,9 +94,9 @@ function RegisterInformationServiceLayout({ setProgress, languageSelected }) {
 
     let serviceId;
 
-    const queryString = window.location.search;
-    const urlParams = new URLSearchParams(queryString);
-    serviceId = urlParams.get('serviceId');
+    if (state !== null) {
+        serviceId = state.serviceId
+    }
 
     function setAllImageDataForEdit(serviceDataRaw, receptionHallPhoto, outdoorPhoto, otherPhoto, roomsData) {
         serviceDataRaw.receptionHallPhoto = receptionHallPhoto
@@ -109,7 +110,6 @@ function RegisterInformationServiceLayout({ setProgress, languageSelected }) {
     useEffect(() => {
         //Lấy dữ liệu service theo serviceId ở trên để edit
         if (window.location.pathname.includes('/partner/edit-service')) {
-            console.log(serviceId)
             axios.get(API_SERVICE_DETAIL_INFORMATION, {
                 params: {
                     serviceId: serviceId
@@ -501,7 +501,7 @@ function RegisterInformationServiceLayout({ setProgress, languageSelected }) {
         var regexWebsite = new RegExp(regexWeb);
 
         if (serviceData.propertyName === '' || serviceData.address === '' || serviceData.taxCode === '' || serviceData.phoneNumberContact === '' ||
-            serviceData.emailContact === '' || serviceData.receptionHallPhoto.length == 0 || !checkInformationRooms) {
+            serviceData.emailContact === '' || serviceData.receptionHallPhoto.length == 0 || serviceData.description === '' || !checkInformationRooms) {
             toast.warning(languageList[3])
         }
         else if (serviceData.propertyName !== '' && serviceData.address !== '' &&
@@ -646,7 +646,7 @@ function RegisterInformationServiceLayout({ setProgress, languageSelected }) {
 
         if (serviceData.propertyName === '' || serviceData.address === '' || serviceData.taxCode === '' || serviceData.phoneNumberContact === '' ||
             serviceData.emailContact === '' || serviceData.timeOpen === '' || serviceData.timeClose === '' || serviceData.dateOpen.length == 0 ||
-            serviceData.receptionHallPhoto.length == 0 || serviceData.outdoorPhoto.length == 0) {
+            serviceData.receptionHallPhoto.length == 0 || serviceData.outdoorPhoto.length == 0 || serviceData.description === '') {
             toast.warning(languageList[3])
         }
         else if (serviceData.propertyName !== '' && serviceData.address !== ''
@@ -766,7 +766,8 @@ function RegisterInformationServiceLayout({ setProgress, languageSelected }) {
 
         if (serviceData.propertyName === '' || serviceData.address === '' || serviceData.taxCode === '' || serviceData.phoneNumberContact === '' ||
             serviceData.emailContact === '' || serviceData.typeOfCuisine.length == 0 ||
-            serviceData.timeOpen === '' || serviceData.timeClose === '' || serviceData.receptionHallPhoto.length == 0) {
+            serviceData.timeOpen === '' || serviceData.timeClose === '' || serviceData.receptionHallPhoto.length == 0
+            || serviceData.description === '') {
             toast.warning(languageList[3])
         }
         else if (serviceData.propertyName !== '' && serviceData.address !== ''

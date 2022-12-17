@@ -236,18 +236,6 @@ function GeneralInformationTour({ languageSelected, tour, setTour, tourSchedule,
                         </div>
                     </>
                 }
-                {tour.type == 1 &&
-                    <div className="d-flex line-input">
-                        <div className="mlr-50 input-alone">
-                            <label className="d-block title-create-tour">{languageList.txtMinToActive}<span className="requird-star">*</span></label>
-                            <input onFocus={(e) => handleFocus(e.target)}
-                                onBlur={(e) => handleBlur(e.target)}
-                                value={tour.minToActive} disabled={isDisabled}
-                                onChange={(e) => setTour({ ...tour, minToActive: e.target.value })}
-                                className="input-inline" type='number' min={1} />
-                        </div>
-                    </div>
-                }
             </div>
             <div className='w-50'>
                 <div className="d-flex line-input">

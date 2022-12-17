@@ -28,8 +28,7 @@ function RegisterProfile({ languageSelected, role, passwordMain, setProgress, to
         if (firstName === '' || lastName === '') {
             toast.error(languageList.txtWarningFullInformation)
         }
-        else if (!/^[A-Za-z ]/.test(firstName) || !/^[A-Za-z ]/.test(lastName)
-            || (phone !== '' && !/^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(phone))) {
+        else if (!/^[A-Za-z ]/.test(firstName) || !/^[A-Za-z ]/.test(lastName)) {
             toast.error(languageList.txtInvalid)
         }
         else {

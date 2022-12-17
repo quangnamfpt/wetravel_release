@@ -14,24 +14,24 @@ function PopupReport({ languageSelected, setShowReport, idReason, setIdReason, c
         <div className='fade-in bg-popup-report'>
             <div className='bg-white p-20 box-shadow-common br-10'>
                 <div className='text-bold font-20 text-center mb-10'>{languageList.txtReport}</div>
-                <div className={`reason-report-item ${idReason === 0 && 'reason-report-item-selected'}`}
-                    onClick={() => setIdReason(0)}>
-                    {languageList.txtContentWrong}
-                </div>
                 <div className={`reason-report-item ${idReason === 1 && 'reason-report-item-selected'}`}
                     onClick={() => setIdReason(1)}>
-                    {languageList.txtViolentLanguage}
+                    {languageList.txtContentWrong}
                 </div>
                 <div className={`reason-report-item ${idReason === 2 && 'reason-report-item-selected'}`}
                     onClick={() => setIdReason(2)}>
-                    {languageList.txtOffensive}
+                    {languageList.txtViolentLanguage}
                 </div>
                 <div className={`reason-report-item ${idReason === 3 && 'reason-report-item-selected'}`}
                     onClick={() => setIdReason(3)}>
-                    {languageList.txtCauseToMisunderstand}
+                    {languageList.txtOffensive}
                 </div>
                 <div className={`reason-report-item ${idReason === 4 && 'reason-report-item-selected'}`}
                     onClick={() => setIdReason(4)}>
+                    {languageList.txtCauseToMisunderstand}
+                </div>
+                <div className={`reason-report-item ${idReason === 5 && 'reason-report-item-selected'}`}
+                    onClick={() => setIdReason(5)}>
                     {languageList.txtOther}
                 </div>
                 <div className='d-flex item-right mt-20'>

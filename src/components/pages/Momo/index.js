@@ -10,7 +10,7 @@ function Momo(rawRequestId, rawOrderInfo, rawAmount, tourId, isDeposit, bookingI
         + isUpdate + '&fullName=' + fullName + '&phone=' + phone + '&email=' + email + '&promoCode=' + promoCode + '&request=' + request +
         '&idCard=' + idCard + '&dateOfIssue=' + dateOfIssue + '&placeOfIssue=' + placeOfIssue + '&startDate=' + startDate + '&numberOfAdult=' + countAdult +
         '&numberOfChildren=' + countChildren + '&type=' + type + '&adultPrice=' + adultPrice + '&childrenPrice=' + childrenPrice;
-    var ipnUrl = 'https://www.youtube.com/watch?v=M2cckDmNLMI';
+    var ipnUrl = 'http://localhost:3000/';
     var requestType = "payWithMethod";
     var amount = rawAmount;
     var orderId = rawRequestId;

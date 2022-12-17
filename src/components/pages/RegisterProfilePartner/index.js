@@ -57,10 +57,7 @@ function RegisterProfilePartner({ languageSelected, role, setProgress }) {
         else {
             if (/^[A-Za-z ]/.test(firstName) && /^[A-Za-z ]/.test(lastName) &&
                 (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailCompany)) &&
-                (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailPartner)) &&
-                /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(phone) &&
-                /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(phoneCompany)
-                && (numberIdCard === '' || /^[0-9]{9}$/.test(numberIdCard) || /^[0-9]{12}$/.test(numberIdCard))
+                (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(emailPartner))
                 && (/^[0-9]{10}$/.test(taxCode) || /^[0-9]{13}$/.test(taxCode))
                 && (website === '' || /^[a-zA-Z0-9]+([-][a-zA-Z0-9]+)*\.[a-zA-Z0-9]+([-][a-zA-Z0-9]+)*$/.test(website)
                     && (fax === '' || /^(0?)(3[2-9]|5[6|8|9]|7[0|6-9]|8[0-6|8|9]|9[0-4|6-9])[0-9]{7}$/.test(fax)))
@@ -336,11 +333,11 @@ function RegisterProfilePartner({ languageSelected, role, setProgress }) {
                             className="input-inline" type='text' />
                     </div>
                     <div className="mlr-50 d-flex form-2-on-4-right">
-                        <div className="mlr-25">
+                        <div className="mr-20">
                             <label htmlFor="contactDateOfIssue" className="d-block">{languageList.txtDateOfIssue}</label>
                             <input onChange={(e) => setDateIssue(e.target.value)} onFocus={(e) => handleFocus(e.target)} onBlur={(e) => handleBlur(e.target)} id='contactDateOfIssue' className="input-inline input-4-item" type='date' />
                         </div>
-                        <div className="mlr-25">
+                        <div>
                             <label htmlFor="contactPlaceOfIssue" className="d-block">{languageList.txtPlaceOfIssue}</label>
                             <input onChange={(e) => setPlaceIssue(e.target.value)} onFocus={(e) => handleFocus(e.target)} onBlur={(e) => handleBlur(e.target)} id='contactPlaceOfIssue' className="input-inline input-4-item" />
                         </div>

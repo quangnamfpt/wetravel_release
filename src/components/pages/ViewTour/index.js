@@ -204,6 +204,8 @@ function ViewTour({ languageSelected }) {
             let tourRaw = {
                 code: data.tourCode,
                 startPlace: data.startPlace,
+                startTime: data.startTime,
+                endTime: data.endTime,
                 endPlace: data.endPlace,
                 status: data.status,
                 type: data.tourType,
@@ -494,7 +496,7 @@ function ViewTour({ languageSelected }) {
                             </button>
                         }
                         {tour.status == 2 &&
-                            <div className='d-flex w-20'>
+                            <div className='d-flex w-25'>
                                 <button className='btn btn-active-close-tour btn-success w-50'
                                     onClick={() => handleClickCloseOrActive(table.txtTitleActive, table.txtContentActive, activeTour, false, table.txtActive, table.txtCancel)}>
                                     {languageSelected == 'EN' ? 'Active' : 'Kích hoạt'}

@@ -34,15 +34,18 @@ function AdminSuppliersAccommodation({ languageSelected }) {
     const typeService = languageSelected === 'EN' ? englishTypeService : vietnameseTypeService
 
     const maxItemInPage = 10
+    const [searchName, setSearchName] = useState('')
     const [numberPage, setNumberPage] = useState(1)
     const [numberOfPages, setNumberOfPages] = useState([])
 
     useEffect(() => {
+        console.log('choc api')
         axios.get(API_GET_SERVICE_BY_CONDITION, {
             params: {
                 serviceCategoryId: 1,
                 page: numberPage,
                 size: 10,
+                serviceName: searchName,
                 isActive: 1
             }
         }).then((response) => {
@@ -53,6 +56,7 @@ function AdminSuppliersAccommodation({ languageSelected }) {
                     serviceId: service.serviceId,
                     serviceName: service.serviceName,
                     serviceCategory: parseInt(service.serviceCategory),
+                    phone: service.phone,
                     address: service.address,
                     city: service.city,
                     partnerEmail: service.partnerEmail,
@@ -63,9 +67,9 @@ function AdminSuppliersAccommodation({ languageSelected }) {
                 }
                 servicesRaw.push(serviceItem)
             })
-            const numberOfPages = Math.ceil(servicesRaw.length / maxItemInPage)
+            const totalPages = response.data.data.totalPages
             let arrayPage = []
-            for (let i = 0; i < numberOfPages; i++) {
+            for (let i = 0; i < totalPages; i++) {
                 arrayPage.push(i + 1)
             }
             setNumberOfPages(arrayPage)
@@ -75,7 +79,7 @@ function AdminSuppliersAccommodation({ languageSelected }) {
             setServices([])
             setGetDataComplete(true)
         })
-    }, [pathName])
+    }, [searchName, numberPage])
 
     if (!getDataComplete) {
         return (
@@ -128,7 +132,8 @@ function AdminSuppliersAccommodation({ languageSelected }) {
                 <div className='d-flex list-service-tool'>
                     <label htmlFor='search-name' className='search-input-text'>
                         <AiOutlineSearch className='icon-inner icon-search-list-service' />
-                        <input placeholder='Name' id='search-name' type='text' className='input-inline input-list-service search-name-service input-inline-list-service' />
+                        <input onChange={(e) => setSearchName(e.target.value)}
+                            placeholder='Name' id='search-name' type='text' className='input-inline input-list-service search-name-service input-inline-list-service' />
                     </label>
                 </div>
             </div>

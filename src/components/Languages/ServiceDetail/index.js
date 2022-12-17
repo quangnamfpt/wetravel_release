@@ -6,7 +6,9 @@ export const english = {
     txtAddress: 'Address',
     txtEmail: 'Email',
     txtPhoneNumber: 'Phone Number',
-    txtTheAmenities: 'The amenities',
+    txtTheAmenities: 'Utilities and services',
+    txtIntroduce: 'Introduce',
+    txtOtherService: 'Other services'
 }
 
 export const vietnamese = {
@@ -17,5 +19,7 @@ export const vietnamese = {
     txtAddress: 'Địa chỉ',
     txtEmail: 'Email',
     txtPhoneNumber: 'Số điện thoại',
-    txtTheAmenities: 'Các tiện nghi'
+    txtTheAmenities: 'Tiện ích và dịch vụ',
+    txtIntroduce: 'Giới thiệu',
+    txtOtherService: 'Các dịch vụ khác'
 }

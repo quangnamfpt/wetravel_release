@@ -10,6 +10,10 @@ import { CgDanger } from 'react-icons/cg'
 import PopupReport from '../../Layout/PopupReport';
 import { BiTrashAlt } from 'react-icons/bi'
 import PopupCreateAlert from '../../Layout/PopupCreateAlert'
+import axios from 'axios'
+import { API_CREATE_COMMENT, API_GET_COMMENT } from '../../API'
+import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
+import LoadingDialog from '../../Layout/LoadingDialog'
 
 const responsive = {
     desktop: {
@@ -35,17 +39,24 @@ function PostDetailForum({ languageSelected }) {
     const languageTypePost = languageSelected === 'EN' ? typePostEnglish : typePostVietnamese
     const languageList = languageSelected === 'EN' ? english : vietnamese
 
+    const [getDataComplete, setGetDataComplete] = useState(false)
+
     const [showReport, setShowReport] = useState(false)
-    const [idReasonReport, setIdReasonReport] = useState(0)
+    const [idReasonReport, setIdReasonReport] = useState(1)
+
+    const [numberPage, setNumberPage] = useState(1)
+    const [numberOfPages, setNumberOfPages] = useState([])
 
     const role = sessionStorage.getItem('role')
 
     const createReportPost = () => {
         console.log('Post report: ', post.id)
     }
+
     const blockPost = () => {
         console.log('Post report: ', post.id)
     }
+
     const callbackConfirm = useRef(role == 1 ? blockPost : createReportPost)
 
     const [showConfirm, setShowConfirm] = useState(false)
@@ -65,15 +76,58 @@ function PostDetailForum({ languageSelected }) {
 
     const id = sessionStorage.getItem('id')
 
-    const postParam = useLocation().state.post
+    let postParam = useLocation().state.post
 
-    const [post, setPost] = useState(postParam)
+    const [post, setPost] = useState()
     const listPost = useLocation().state.listPost
     const index = useLocation().state.index
 
     useEffect(() => {
-        setPost(postParam)
-    }, [postParam.id])
+        axios.get(API_GET_COMMENT, {
+            params: {
+                page: numberPage,
+                size: 4,
+                postId: postParam.id
+            }
+        }).then((res) => {
+            const data = res.data.data
+            let listCommentRaw = []
+            data.content.map((comment) => {
+                let replysRaw = comment.commentDTOList !== null ? comment.commentDTOList : []
+                let replysAdd = []
+                replysRaw.forEach((reply) => {
+                    const replyRaw = {
+                        id: reply.commentId,
+                        name: `${reply.firstName} ${reply.lastName !== null ? reply.lastName : ''}`,
+                        createDate: reply.timeComment.split('T')[0],
+                        content: reply.content,
+                        isUploaded: true
+                    }
+                    replysAdd.push(replyRaw)
+                })
+
+                const commentRaw = {
+                    id: comment.commentId,
+                    name: `${comment.firstName} ${comment.lastName !== null ? comment.lastName : ''}`,
+                    createDate: comment.timeComment.split('T')[0],
+                    content: comment.content,
+                    isUploaded: true,
+                    reply: replysAdd
+                }
+                listCommentRaw.push(commentRaw)
+            })
+            postParam.comment = listCommentRaw
+
+            const totalPages = data.totalPages
+            let numberOfPagesRaw = []
+            for (let i = 0; i < totalPages; i++) {
+                numberOfPagesRaw.push(i + 1)
+            }
+            setNumberOfPages(numberOfPagesRaw)
+            setPost(postParam)
+            setGetDataComplete(true)
+        })
+    }, [postParam.id, numberPage])
 
     const handleClickReport = () => {
         setShowReport(true)
@@ -101,10 +155,12 @@ function PostDetailForum({ languageSelected }) {
             let addComment = {
                 content: newComment,
                 isUploaded: false,
-                name: firstName + ' ' + lastName,
+                name: role != 1 ? firstName + ' ' + lastName : 'Admin',
                 createDate: new Date().toISOString().split('T')[0],
                 reply: [],
-                parentComment: null
+                accountId: id,
+                postId: postParam.id,
+                parentCommentId: null
             }
             listCommentCurrent.splice(0, 0, addComment);
             for (let i = 0; i < post.comment.length; i++) {
@@ -113,10 +169,16 @@ function PostDetailForum({ languageSelected }) {
             }
             setPost({ ...post, comment: listCommentCurrent })
             setNewComment('')
+
+            axios.post(API_CREATE_COMMENT, addComment).then((res) => {
+                listCommentCurrent[0].id = res.data.data.commentId
+                listCommentCurrent[0].isUploaded = true
+                setPost({ ...post, comment: listCommentCurrent })
+            })
         }
     }
 
-    const handleClickReplyComment = (index, id) => {
+    const handleClickReplyComment = (index, idComment) => {
         if (newReply !== '') {
             const firstName = sessionStorage.getItem('firstName')
             const lastName = sessionStorage.getItem('lastName')
@@ -124,14 +186,27 @@ function PostDetailForum({ languageSelected }) {
             let addReply = {
                 content: newReply,
                 isUploaded: false,
-                name: firstName + ' ' + lastName,
+                name: role != 1 ? firstName + ' ' + lastName : 'Admin',
                 createDate: new Date().toISOString().split('T')[0],
-                parentComment: id
+                parentCommentId: idComment,
+                postId: postParam.id,
+                accountId: id
             }
             listReplyCurrent[index].reply.push(addReply)
             setPost({ ...post, comment: listReplyCurrent })
             setNewReply('')
+
+            axios.post(API_CREATE_COMMENT, addReply).then((res) => {
+                const lengthReply = listReplyCurrent[index].reply.length
+                listReplyCurrent[index].reply[lengthReply - 1].id = res.data.data.commentId
+                listReplyCurrent[index].reply[lengthReply - 1].isUploaded = true
+                setPost({ ...post, comment: listReplyCurrent })
+            })
         }
+    }
+
+    if (!getDataComplete) {
+        return <LoadingDialog />
     }
 
     return (
@@ -201,7 +276,7 @@ function PostDetailForum({ languageSelected }) {
                                 }
                             </div>
                             <div className='space-reply mt-20'>
-                                {comment.reply.map((reply) => (
+                                {comment.reply.length > 0 && comment.reply.map((reply) => (
                                     <div className='mt-20 hover-reply'>
                                         <div className='title m-0 title-reply'>
                                             <div className='mark-reply' />
@@ -216,7 +291,7 @@ function PostDetailForum({ languageSelected }) {
                                                 }
                                             </div>
                                         </div>
-                                        <div className={`create-date-post-detail date-reply ${!reply.isUploaded && 'comment-uploading'}`}>{reply.createDate}</div>
+                                        <input type='date' disabled className={`fake-label create-date-post-detail date-reply ${!reply.isUploaded && 'comment-uploading'}`} value={reply.createDate} />
                                         <div className={`content-word-wrap content-reply ${!reply.isUploaded && 'comment-uploading'}`}>{reply.content}</div>
                                     </div>
                                 ))}
@@ -231,35 +306,48 @@ function PostDetailForum({ languageSelected }) {
                             </div>
                         </div>
                     ))}
+                    <div className='d-flex float-end paging bg-white mt-nega-5'>
+                        {numberPage > 1 && <label onClick={() => setNumberPage(pre => pre - 1)} className='btn-paging unseleted'>
+                            <AiOutlineLeft />
+                        </label>}
+                        {numberOfPages.map((item) => (
+                            <label className={`btn-paging ${numberPage === item ? 'selected-paging' : 'unseleted'}`} onClick={() => setNumberPage(item)}>{item}</label>
+                        ))}
+                        {numberPage < numberOfPages.length && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
+                            <AiOutlineRight />
+                        </label>}
+                    </div>
                 </div>
             </div>
-            <div className='w-100 bg-white mt-20 bg-another-post'>
-                <header className='title text-left'>{languageList.txtAnotherPost}</header>
-                <div>
-                    <Carousel autoPlay={true}
-                        autoPlaySpeed={3000}
-                        swipeable={false}
-                        showDots={true}
-                        draggable={false}
-                        responsive={responsive}
-                        ssr={true} // means to render carousel on server-side.
-                        infinite={true}
-                        containerClass="carousel-container"
-                        removeArrowOnDeviceType={["tablet", "mobile"]}
-                        dotListClass="custom-dot-list-style"
-                        itemClass="carousel-item-padding-40-px">
-                        {listPost.map((item, indexPost) => (
-                            indexPost !== index &&
-                            <div className='each-post-another' onClick={() => navigate(role != 1 ? '/forum/post' : '/admin/forum/post', { state: { post: item, listPost: listPost, index: indexPost } })}>
-                                <img src={item.image} className='image-another-post-slide' />
-                                <div className='topic-another-post'>{languageTypePost[parseInt(item.topic) - 1].label.toUpperCase()}</div>
-                                <div className='title m-0 title-another-post'>{item.title}</div>
-                                <div className='title text-left account-name-another-post'>{item.accountName}</div>
-                            </div>
-                        ))}
-                    </Carousel>
-                </div>
-            </div >
+            {listPost &&
+                <div className='w-100 bg-white mt-20 bg-another-post'>
+                    <header className='title text-left'>{languageList.txtAnotherPost}</header>
+                    <div>
+                        <Carousel autoPlay={true}
+                            autoPlaySpeed={3000}
+                            swipeable={false}
+                            showDots={true}
+                            draggable={false}
+                            responsive={responsive}
+                            ssr={true} // means to render carousel on server-side.
+                            infinite={true}
+                            containerClass="carousel-container"
+                            removeArrowOnDeviceType={["tablet", "mobile"]}
+                            dotListClass="custom-dot-list-style"
+                            itemClass="carousel-item-padding-40-px">
+                            {listPost.map((item, indexPost) => (
+                                indexPost !== index &&
+                                <div className='each-post-another' onClick={() => navigate(role != 1 ? '/forum/post' : '/admin/forum/post', { state: { post: item, listPost: listPost, index: indexPost } })}>
+                                    <img src={item.image} className='image-another-post-slide' />
+                                    <div className='topic-another-post'>{languageTypePost[parseInt(item.topic) - 1].label.toUpperCase()}</div>
+                                    <div className='title m-0 title-another-post'>{item.title}</div>
+                                    <div className='title text-left account-name-another-post'>{item.accountName}</div>
+                                </div>
+                            ))}
+                        </Carousel>
+                    </div>
+                </div >
+            }
         </div >
     )
 }

@@ -51,7 +51,7 @@ function ReportFeedbackList({ languageSelected }) {
                 data.forEach((item) => {
                     let feedback = {
                         tourId: item.tourId,
-                        tourName: 'Tour Tam Dao',
+                        tourName: item.tourName,
                         feedbackId: item.feedbackId,
                         content: item.content,
                         accountId: item.accountId
@@ -59,7 +59,7 @@ function ReportFeedbackList({ languageSelected }) {
                     let reportsRaw = []
                     item.reportFeedbackDTOList.forEach((report) => {
                         let reportRaw = {
-                            name: report.firstName + report.lastName,
+                            name: report.firstName + ' ' + report.lastName,
                             date: report.createDate,
                             reason: report.reasonReportFeedbackId
                         }
@@ -145,7 +145,7 @@ function ReportFeedbackList({ languageSelected }) {
                                         <div className='d-flex center-vertical link-to-tour'>
                                             <div className='text-bold font-18'
                                                 onClick={() => navigate('/admin/preview', { state: { id: feedback.tourId } })}>
-                                                {feedback.tourName.substring(0, 25)}{feedback.tourName.length > 25 && '...'}
+                                                {feedback.tourName.substring(0, 20)}{feedback.tourName.length > 20 && '...'}
                                             </div>
                                             <AiFillCaretRight />
                                         </div>
@@ -171,7 +171,7 @@ function ReportFeedbackList({ languageSelected }) {
                                             <div className='bg-white box-shadow-common br-10 p-20 m-10'>
                                                 <div className='text-bold'>{report.name}</div>
                                                 <input type='date' disabled className='fake-label color-gray font-14' value={report.date} />
-                                                <div>{reasonReport[report.reason - 1]}</div>
+                                                <div>{reasonReport[parseInt(report.reason)]}</div>
                                             </div>
                                         ))}
                                     </Scrollbars>

@@ -48,8 +48,6 @@ function InformationCustomerRegisterTourPrivate({ languageSelected, customerRegi
         return true
     }
 
-    console.log(tour)
-
     const handleClickCreateTour = () => {
         if (tour.code === '' || tour.name === '' || (tour.mode == 0 && (tour.startTime === '' || tour.endTime === ''))
             || tour.introduce === '' || tour.totalPrice === '' || (tour.type == 2 && tour.deposit === '')
@@ -65,7 +63,6 @@ function InformationCustomerRegisterTourPrivate({ languageSelected, customerRegi
             || !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(customerRegisted.emailContact)
             || (!/^[0-9]{9}$/.test(customerRegisted.idCard) && !/^[0-9]{12}$/.test(customerRegisted.idCard))
             || parseInt(tour.totalPrice) < 1000 || (tour.type == 2 && parseInt(tour.deposit) < 1000)) {
-            console.log(!/^[A-Za-z]\w+$/.test(customerRegisted.fullName))
             setShowLoading(false)
             toast.warning(languageList.txtInvalid)
         }

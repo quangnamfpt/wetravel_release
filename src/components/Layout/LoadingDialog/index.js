@@ -6,7 +6,7 @@ import { memo } from 'react'
 
 function LoadingDialog() {
     return (
-        <div className='location locationDialog'>
+        <div className='locationDialog'>
             <Lottie
                 animationData={LoadingFly}
                 height={350}

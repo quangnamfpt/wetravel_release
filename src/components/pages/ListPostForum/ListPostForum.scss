@@ -52,10 +52,13 @@
 
 .each-post {
     cursor: pointer;
+}
+
+.title-post {
     transition: 0.5s;
 }
 
-.each-post:hover {
+.each-post:hover .title-post {
     color: rgb(47, 182, 255);
 }
 

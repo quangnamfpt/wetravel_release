@@ -21,6 +21,8 @@ export const english = {
     txtAddFeedbackSuccess: 'Add feedback success',
     txtWaitingCancel: 'Wait for cancellation',
     txtRequestCancelSuccess: 'Cancellation request was success',
+    txtFeedbackContent: 'Feedback content',
+    txtCancel: 'Cancel'
 }
 
 export const vietnamese = {
@@ -45,5 +47,7 @@ export const vietnamese = {
     txtFeebackAboutTour: 'Đánh giá về tour',
     txtAddFeedbackSuccess: 'Đánh giá thành công',
     txtWaitingCancel: 'Chờ huỷ',
-    txtRequestCancelSuccess: 'Yêu cầu huỷ thành công'
+    txtRequestCancelSuccess: 'Yêu cầu huỷ thành công',
+    txtFeedbackContent: 'Nội dung đánh giá',
+    txtCancel: 'Huỷ'
 }
