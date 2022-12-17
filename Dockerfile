@@ -1,13 +1,27 @@
 # build stage
 FROM node:16-alpine as builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm install --silent
-COPY . /app
+
+# Create app directory
+RUN mkdir -p /usr/src/app
+WORKDIR /usr/src/app
+
+# Versions
+RUN npm -v
+RUN node -v
+
+# Install app dependencies
+COPY package.json /usr/src/app/
+COPY package-lock.json /usr/src/app/
+
+RUN npm install
+
+# Bundle app source
+COPY . /usr/src/app
+
+# Port to listener
+EXPOSE 3000
+
 RUN npm run build
 
-FROM node:16-alpine as runner
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-EXPOSE 3000
-CMD ["npm", "start"]
+# Main command
+CMD [ "npm", "run", "start" ]
