@@ -404,44 +404,46 @@ function TourDetail({ languageSelected }) {
                         <div className='w-25' />
                     </div>
                 </StickyContainer>
-                <div className='container d-flex mt-20 mb-40'>
-                    <div className='section-tour-detail w-100'>
-                        <label className='title mb-20'>{languageList.txtFeedback}</label>
-                        {tour.feedback.map((item) => (
-                            <div className='each-feedback'>
-                                <div className='d-flex'>
-                                    <div className='information-feedback w-100'>
-                                        <div className='d-flex react-feedback'>
-                                            <div className='name-feedback'>{item.name}</div>
-                                            <div>
-                                                {sessionStorage.getItem('id') != item.accountId && sessionStorage.getItem('role') !== null && sessionStorage.getItem('role') != 1 &&
-                                                    <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
-                                                        <MenuItem className='requird-star' onClick={() => handleClickReport(item.id)}>
-                                                            <MdReportGmailerrorred /> <label className='ml-5'>{languageList.txtReport}</label>
-                                                        </MenuItem>
-                                                    </Menu>
-                                                }
+                {tour.feedback.length > 0 &&
+                    <div className='container d-flex mt-20 mb-40'>
+                        <div className='section-tour-detail w-100'>
+                            <label className='title mb-20'>{languageList.txtFeedback}</label>
+                            {tour.feedback.map((item) => (
+                                <div className='each-feedback'>
+                                    <div className='d-flex'>
+                                        <div className='information-feedback w-100'>
+                                            <div className='d-flex react-feedback'>
+                                                <div className='name-feedback'>{item.name}</div>
+                                                <div>
+                                                    {sessionStorage.getItem('id') != item.accountId && sessionStorage.getItem('role') !== null && sessionStorage.getItem('role') != 1 &&
+                                                        <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
+                                                            <MenuItem className='requird-star' onClick={() => handleClickReport(item.id)}>
+                                                                <MdReportGmailerrorred /> <label className='ml-5'>{languageList.txtReport}</label>
+                                                            </MenuItem>
+                                                        </Menu>
+                                                    }
+                                                </div>
                                             </div>
+                                            <input disabled type='date' value={item.time} className='fake-label time-feedback' />
+                                            <div className='feedback'>{item.comment}</div>
                                         </div>
-                                        <input disabled type='date' value={item.time} className='fake-label time-feedback' />
-                                        <div className='feedback'>{item.comment}</div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                        <div className='d-flex paging float-end'>
-                            {numberPage > 1 && <label onClick={() => setNumberPage(pre => pre - 1)} className='btn-paging unseleted'>
-                                <AiOutlineLeft />
-                            </label>}
-                            {numberOfPagesFeedback.map((item) => (
-                                <label className={`btn-paging ${numberPage === item ? 'selected-paging' : 'unseleted'}`} onClick={() => setNumberPage(item)}>{item}</label>
                             ))}
-                            {numberPage < numberOfPagesFeedback.length && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
-                                <AiOutlineRight />
-                            </label>}
+                            <div className='d-flex paging float-end'>
+                                {numberPage > 1 && <label onClick={() => setNumberPage(pre => pre - 1)} className='btn-paging unseleted'>
+                                    <AiOutlineLeft />
+                                </label>}
+                                {numberOfPagesFeedback.map((item) => (
+                                    <label className={`btn-paging ${numberPage === item ? 'selected-paging' : 'unseleted'}`} onClick={() => setNumberPage(item)}>{item}</label>
+                                ))}
+                                {numberPage < numberOfPagesFeedback.length && <label onClick={() => setNumberPage(pre => pre + 1)} className='btn-paging unseleted'>
+                                    <AiOutlineRight />
+                                </label>}
+                            </div>
                         </div>
                     </div>
-                </div>
+                }
             </div>
         </>
     )

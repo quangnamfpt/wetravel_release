@@ -145,7 +145,7 @@ function EditProfile({ languageSelected, isDisabled, customer, setCustomer }) {
                 </div>
                 <div className="mlr-50">
                     <label htmlFor="lastName" className="d-block title-bold">{languageList.txtEmail}</label>
-                    <input onChange={(e) => setCustomer({ ...customer, email: e.target.value })} value={customer.email} disabled={isDisabled} id='lastName' className="input-inline" type='text' />
+                    <input disabled onChange={(e) => setCustomer({ ...customer, email: e.target.value })} value={customer.email} id='lastName' className="input-inline" type='text' />
                 </div>
             </div>
             <div className="d-flex line-input line-btn-right">
