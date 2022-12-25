@@ -14,7 +14,8 @@ export const english = {
     txtWarningEditPost: 'Are you sure you want to edit this post?',
     txtCancel: 'Cancel',
     txtWarningFullInformation: 'Please enter all required information',
-    txtPostSuccess: 'Post successfully'
+    txtPostSuccess: 'Post successfully',
+    txtEditSuccess: 'Edit successfully'
 }
 
 export const vietnamese = {
@@ -33,5 +34,6 @@ export const vietnamese = {
     txtWarningEditPost: 'Bạn chắc chắn muốn sửa bài đăng này chứ?',
     txtCancel: 'Huỷ',
     txtWarningFullInformation: 'Vui lòng nhập đủ thông tin bắt buộc',
-    txtPostSuccess: 'Đăng bài thành công'
+    txtPostSuccess: 'Đăng bài thành công',
+    txtEditSuccess: 'Chỉnh sửa thành công'
 }

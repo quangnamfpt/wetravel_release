@@ -11,7 +11,7 @@ import '../ReportFeedbackList/ReportFeedbackList.scss'
 import { Scrollbars } from 'react-custom-scrollbars-2';
 import { typePostEnglish, typePostVietnamese } from '../../Languages/ListPostForum'
 import axios from 'axios';
-import { API_BLOCK_POST, API_GET_LIST_POST } from '../../API';
+import { API_BLOCK_POST, API_DELETE_REPORT_POST, API_GET_LIST_POST } from '../../API';
 import Forum1 from '../../images/forum (1).jpg'
 import { ref, getDownloadURL } from 'firebase/storage'
 import { storage } from "../../../firebase/Config";
@@ -66,7 +66,7 @@ function ReportPostList({ languageSelected }) {
                 let reportsRaw = []
                 post.reportPostDTOList.forEach((report) => {
                     const reportItem = {
-                        name: 'Gia Bẻo',
+                        name: report.firstName + ' ' + report.lastName,
                         date: report.createDate,
                         reasonId: report.reasonReportPostId
                     }
@@ -103,7 +103,7 @@ function ReportPostList({ languageSelected }) {
         }).catch((e) => setListReportPost([]))
     }, [numberPage, changeData])
 
-    const handleBlockPost = (postId, accountId, index) => {
+    const handleBlockPost = (postId) => {
         axios.delete(`${API_BLOCK_POST}${postId}`)
             .then(() => {
                 setChangeData(!changeData)
@@ -115,18 +115,21 @@ function ReportPostList({ languageSelected }) {
         setShowConfirmAlert(false)
         setShowConfirm(false)
         //choc api
-        //then
-        if ([...listReportPost].length === 1 && numberPage > 1) {
-            setNumberPage(numberPage - 1)
-        }
-        setChangeData(!changeData)
+        axios.delete(`${API_DELETE_REPORT_POST}${postId}`).then(() => {
+            if ([...listReportPost].length === 1 && numberPage > 1) {
+                setNumberPage(numberPage - 1)
+            }
+            setChangeData(!changeData)
+        }).catch(e => {
+            console.error(e)
+        })
 
         toast.success(languageDisplay.txtKeeped)
     }
 
     const handleClickBlock = (postId, accountId, index) => {
         setAccountId(accountId)
-        callbackConfirm.current = () => handleBlockPost(postId, accountId, index)
+        callbackConfirm.current = () => handleBlockPost(postId)
         setShowConfirmAlert(true)
     }
 
@@ -185,7 +188,7 @@ function ReportPostList({ languageSelected }) {
                                     <div className='bg-white box-shadow-common br-10 p-20 m-10'>
                                         <div className='text-bold'>{report.name}</div>
                                         <input type='date' disabled className='fake-label color-gray font-14' value={report.date} />
-                                        <div>{languageReasonReport[parseInt(report.reasonId)]}</div>
+                                        <div>{languageReasonReport[parseInt(report.reasonId) - 1]}</div>
                                     </div>
                                 ))}
                             </Scrollbars>

@@ -92,7 +92,6 @@ function AdminDashboard({ languageSelected }) {
                 size: 4,
             }
         }).then((res) => {
-            console.log('customer: ', res)
             let listCustomerData = []
             for (let i = 0; i < res.data.data.content.length; i++) {
                 const listCus = {

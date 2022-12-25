@@ -125,8 +125,6 @@ function ListPostForum({ languageSelected }) {
 
     listPost.forEach((post) => {
         let postRaw = post
-        let contentShort = postRaw.description.substring(0, 150)
-        postRaw.contentShort = `${contentShort}${postRaw.description.length > 150 && '...'}`
         let content = post.content.replace(/<br>/g, '<div class="mb-10"></div>')
         postRaw.content = content
         listPostShow.push(postRaw)
@@ -221,10 +219,10 @@ function ListPostForum({ languageSelected }) {
                                                 </div>
                                                 <div className='title m-0 font-20 title-post'
                                                     onClick={() => navigate(role.current != 1 ? '/forum/post' : '/admin/forum/post', { state: { post: post, listPost: listPost, index: index } })}>
-                                                    {post.title}
+                                                    {post.title.substring(0, 100)}{post.title.length > 100 ? '...' : ''}
                                                 </div>
                                                 <div onClick={() => navigate(role.current != 1 ? '/forum/post' : '/admin/forum/post', { state: { post: post, listPost: listPost, index: index } })}>
-                                                    {post.contentShort}
+                                                    {post.description.substring(0, 150)}{post.description.length > 150 ? '...' : ''}
                                                 </div>
                                             </div>
                                             <div className='d-flex space-between' onClick={() => navigate(role.current != 1 ? '/forum/post' : '/admin/forum/post', { state: { post: post, listPost: listPost, index: index } })}>

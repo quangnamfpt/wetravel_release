@@ -3,7 +3,10 @@ export const english = {
     txtName: 'Schedule name',
     txtContent: 'Content',
     txtDestination: 'Destination',
-    txtServices: 'Services'
+    txtServices: 'Services',
+    txtRecommendedAccommodation: 'Recommended accommodation',
+    txtRecommendedEntertainment: 'Recommended entertainment',
+    txtRecommendedRestaurants: 'Recommended restaurants'
 }
 
 export const vietnamese = {
@@ -11,5 +14,8 @@ export const vietnamese = {
     txtName: 'Tên lịch trình',
     txtContent: 'Nội dung',
     txtDestination: 'Điểm đến',
-    txtServices: 'Dịch vụ'
+    txtServices: 'Dịch vụ',
+    txtRecommendedAccommodation: 'Đề xuất chỗ ở',
+    txtRecommendedEntertainment: 'Đề xuất giải trí',
+    txtRecommendedRestaurants: 'Đề xuất nhà hàng'
 }

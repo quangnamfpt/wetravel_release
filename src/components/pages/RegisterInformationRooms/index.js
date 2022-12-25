@@ -14,8 +14,6 @@ function RegisterInformationRooms({ languageSelected, handleClickSaveAndNext, fo
     let roomTypeList = (languageSelected === 'EN' ? englishRoomType : vietnameseRoomType)
     let bedTypeList = (languageSelected === 'EN' ? englishBedType : vietnameseBedType)
 
-    console.log([...formFields].length, typeof ([...formFields]))
-
 
 
     const handleBlur = (input) => {
@@ -197,12 +195,12 @@ function RegisterInformationRooms({ languageSelected, handleClickSaveAndNext, fo
                         <>
                             <div className='title-room-container'>
                                 <div className='title-roomNumber'>
-                                    <label onClick={() => handleClickShowHide(index)} className='title space-click-hide'> Room {index + 1} </label>
+                                    <label onClick={() => handleClickShowHide(index)} className='title space-click-hide'> {languageList.txtRoom} {index + 1} </label>
                                     {formFields.length > 1 &&
                                         <Menu menuButton={<MenuButton className='btn-action dot-option'>
                                             <BiDotsVerticalRounded className='dot-option-image' />
                                         </MenuButton>} transition>
-                                            <MenuItem onClick={() => handleDeleteForm(index)}>Delete</MenuItem>
+                                            <MenuItem onClick={() => handleDeleteForm(index)}>{languageList.txtDelete}</MenuItem>
                                         </Menu>
                                     }
                                 </div>
@@ -212,10 +210,10 @@ function RegisterInformationRooms({ languageSelected, handleClickSaveAndNext, fo
                         <div className='user-select'>
                             <div className='d-flex mini-infor-room'>
                                 <div className='d-flex w-40 short-information-room'>
-                                    <div className='title-information-room'>Room {index + 1}</div>
+                                    <div className='title-information-room'>{languageList.txtRoom} {index + 1}</div>
                                     <label className='short-information-detail txt-14'>
-                                        <div>Room: {form.roomName}</div>
-                                        <div>Room Size: {form.roomSize} m2</div>
+                                        <div>{languageList.txtRoom}: {form.roomName}</div>
+                                        <div>{languageList.txtRoomSize}: {form.roomSize} <label>&#13217;</label></div>
                                     </label>
                                 </div>
 
@@ -225,7 +223,7 @@ function RegisterInformationRooms({ languageSelected, handleClickSaveAndNext, fo
                                         <Menu menuButton={<MenuButton className='btn-action dot-option'>
                                             <BiDotsVerticalRounded className='dot-option-image' />
                                         </MenuButton>} transition>
-                                            <MenuItem onClick={() => handleDeleteForm(index)}>Delete</MenuItem>
+                                            <MenuItem onClick={() => handleDeleteForm(index)}>{languageList.txtDelete}</MenuItem>
                                         </Menu>
                                     }
                                     {form.bedRoomPhoto.length > 0 &&

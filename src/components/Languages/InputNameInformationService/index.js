@@ -19,6 +19,9 @@ export const vietnamese =
     txtWCPhoto: 'Hình ảnh nhà vệ sinh',
     txtOtherPhoto: 'Hình ảnh khác',
     txtAddImage: 'Thêm ảnh',
+    txtRoom: 'Phòng',
+    txtDelete: 'Xoá',
+    txtRoomSize: 'Kích thước',
     btnSave: 'Lưu và nhập tiếp'
 }
 
@@ -43,5 +46,8 @@ export const english =
     txtWCPhoto: 'WC photo',
     txtOtherPhoto: 'Other photo',
     txtAddImage: 'Add image',
+    txtRoom: 'Room',
+    txtDelete: 'Delete',
+    txtRoomSize: 'Room Size',
     btnSave: 'Save and Next Sections'
 }

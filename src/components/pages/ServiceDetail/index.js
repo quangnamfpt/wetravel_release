@@ -122,6 +122,12 @@ function ServicesDetail({ languageSelected }) {
         }
     }
 
+    let descriptionRaw = service.description.split('\n')
+    for (let i = 0; i < descriptionRaw.length; i++) {
+        descriptionRaw[i] = `<p>${descriptionRaw[i]}</p>`
+    }
+    const description = { __html: descriptionRaw.join("<div className='mb - 10'></div>") }
+
     return (
         <div className='container'>
             <div className='d-flex center-horizontal'>
@@ -180,15 +186,7 @@ function ServicesDetail({ languageSelected }) {
                             <div className='font-24 text-bold'>{languageDisplayMain.txtIntroduce}</div>
                             <label className='font-15'>
                                 <div className='mb-10'></div>
-                                Tọa lạc tại vị trí thuận tiện ở trung tâm thành phố Hà Nội, Sunshine Hotel cung cấp các phòng máy lạnh với Wi-Fi miễn phí, chỗ đỗ xe riêng miễn phí và dịch vụ phòng. Với quầy bar, khách sạn nằm gần một số điểm tham quan nổi tiếng, cách Nhà thờ Lớn khoảng 500 m, Nhà hát múa rối nước Thăng Long 600 m và Hồ Hoàn Kiếm 600 m. Khách sạn có các phòng gia đình.
-                                <div className='mb-10'></div>
-                                Các phòng nghỉ trong khách sạn được trang bị ấm đun nước. Mỗi phòng đều có phòng tắm riêng và dép đi trong phòng, một số phòng tại Sunshine Hotel có ban công.
-                                <div className='mb-10'></div>
-                                Ngôn ngữ được sử dụng tại lễ tân bao gồm tiếng Anh và tiếng Việt.
-                                <div className='mb-10'></div>
-                                Các điểm tham quan nổi tiếng gần chỗ nghỉ bao gồm Ô Quan Chưởng, Tràng Tiền Plaza và ga Hà Nội. Sân bay gần nhất là Sân bay Quốc tế Nội Bài, cách đó 26 km.
-                                <div className='mb-10'></div>
-                                Đây là khu vực tại Hà Nội mà khách yêu thích, theo đánh giá của các độc lập.
+                                <div dangerouslySetInnerHTML={description}></div>
                             </label>
                         </div>
 

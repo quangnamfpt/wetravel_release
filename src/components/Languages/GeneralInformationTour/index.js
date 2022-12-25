@@ -35,7 +35,7 @@ export const vietnamese = {
     txtName: 'Tên tour',
     txtCategory: 'Loại hình du lịch',
     txtStartPlace: 'Điểm bắt đầu',
-    txtEndPlace: 'Điểm kết thúc',
+    txtEndPlace: 'Điểm đến',
     txtMinAdult: 'Số người lớn tối thiểu',
     txtMaxAdult: 'Số người lớn tối đa',
     txtMinChildren: 'Số trẻ em tối thiểu',

@@ -11,7 +11,7 @@ import { TbCameraPlus } from 'react-icons/tb'
 import Switch from 'react-switch'
 import ConfirmDialog from '../../Layout/ConfirmDialog'
 import axios from 'axios'
-import { API_ADD_POST } from '../../API'
+import { API_ADD_POST, API_UPDATE_POST } from '../../API'
 import { toast } from 'react-toastify'
 import LoadingDialog from '../../Layout/LoadingDialog'
 import { UploadImage } from '../../../firebase/UploadImage'
@@ -34,6 +34,7 @@ function CreatePost({ languageSelected }) {
     const [textOk, setTextOk] = useState('Ok')
     const [textCancel, setTextCancel] = useState('Cancel')
 
+    const [id, setId] = useState(0)
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
     const [content, setContent] = useState('')
@@ -48,6 +49,7 @@ function CreatePost({ languageSelected }) {
     useEffect(() => {
         if (editPost) {
             const post = postParam.post
+            setId(post.id)
             setTitle(post.title)
             setDescription(post.description)
             setContent(post.content)
@@ -68,7 +70,7 @@ function CreatePost({ languageSelected }) {
     useEffect(() => {
         if (leng === 1) {
             setShowLoading(false)
-            toast.success(languageDisplay.txtPostSuccess)
+            toast.success(editPost ? languageDisplay.txtEditSuccess : languageDisplay.txtPostSuccess)
             navigate(`${role == 1 ? '/admin/my-post' : '/my-post'}`)
         }
     }, [leng])
@@ -109,7 +111,21 @@ function CreatePost({ languageSelected }) {
     }
 
     const handleEditPost = () => {
-
+        const data = {
+            "topicId": topic,
+            "accountId": sessionStorage.getItem('id'),
+            "title": title,
+            "description": description,
+            "content": content,
+            "isPublic": isPublish
+        }
+        console.log(data)
+        axios.put(`${API_UPDATE_POST}${id}`, data).then((res) => {
+            UploadImage([image], 'forum', 1, setLeng, id, 'post', 0, 'images')
+        }).catch((err) => {
+            setShowLoading(false)
+            console.error(err)
+        })
     }
 
     const modules = {
@@ -136,8 +152,6 @@ function CreatePost({ languageSelected }) {
         'list', 'bullet', 'indent', 'script', 'align', 'direction',
         'link', 'image', 'code-block', 'formula', 'video'
     ]
-
-    console.log(image)
 
     return (
         <div className='fade-in container container-create-post'>

@@ -17,6 +17,97 @@ function CreateTour({ languageSelected }) {
 
     const [userList, setUserList] = useState([])
 
+    const today = new Date();
+    const tomorow = new Date(today.setDate(today.getDate() + 1)).toISOString().split('T')[0];
+
+    const [tour, setTour] = useState({
+        code: '',
+        name: '',
+        category: 1,
+        startPlace: 'Hà Nội',
+        endPlace: 'Hà Nội',
+        minAdult: 1,
+        maxAdult: 20,
+        minChildren: 0,
+        maxChildren: 0,
+        minToActive: 1,
+        maxToActive: 20,
+        status: 2,
+        type: 1,
+        mode: 1,
+        startDate: tomorow,
+        numberOfDay: 1,
+        numberOfNight: 1,
+        startTime: '',
+        endTime: '',
+        introduce: '',
+        include: '',
+        nonInclude: '',
+        generalTerms: '',
+        moreDescription: '',
+        addressStart: '',
+        tag: [],
+        adultPrice: 1000,
+        childrenPrice: 1000,
+        totalPrice: 1000,
+        deposit: 1000,
+        latitude: 21.02776867562664,
+        longitude: 105.83413342865965,
+        images: [],
+        accountId: 0
+    })
+
+    const [tourSchedule, setTourSchedule] = useState([
+        {
+            name: '',
+            content: '',
+            toPlace: 'Hà Nội',
+            openServices: false,
+            show: true,
+            serviceTour: [],
+            recommendAccommodation: [],
+            recommendEntertainment: [],
+            recommendRestaurants: [],
+            getAccommodation: [],
+            getEntertainment: [],
+            getRestaurants: [],
+            indexAccommodation: [],
+            indexEntertainment: [],
+            indexRestaurants: []
+        }
+    ])
+
+    const [customerRegisted, setCustomerRegisted] = useState({
+        numberOfAdult: 1,
+        numberOfChildren: 0,
+        fullName: '',
+        phone: '',
+        emailContact: '',
+        idCard: '',
+        dateOfIssue: '',
+        placeOfIssue: ''
+    })
+
+    const handleClickAddForm = (() => {
+        setTourSchedule([...tourSchedule, {
+            name: '',
+            content: '',
+            toPlace: 'Hà Nội',
+            serviceTour: [],
+            openServices: false,
+            show: true,
+            recommendAccommodation: [],
+            recommendEntertainment: [],
+            recommendRestaurants: [],
+            getAccommodation: [],
+            getEntertainment: [],
+            getRestaurants: [],
+            indexAccommodation: [],
+            indexEntertainment: [],
+            indexRestaurants: []
+        }])
+    })
+
     useEffect(() => {
         let services = []
 
@@ -140,79 +231,6 @@ function CreateTour({ languageSelected }) {
             setServiceList([...services])
         })
     }, [])
-
-    const today = new Date();
-    const tomorow = new Date(today.setDate(today.getDate() + 1)).toISOString().split('T')[0];
-
-    const [tour, setTour] = useState({
-        code: '',
-        name: '',
-        category: 1,
-        startPlace: 'Hà Nội',
-        endPlace: 'Hà Nội',
-        minAdult: 1,
-        maxAdult: 20,
-        minChildren: 0,
-        maxChildren: 0,
-        minToActive: 1,
-        maxToActive: 20,
-        status: 2,
-        type: 1,
-        mode: 1,
-        startDate: tomorow,
-        numberOfDay: 1,
-        numberOfNight: 1,
-        startTime: '',
-        endTime: '',
-        introduce: '',
-        include: '',
-        nonInclude: '',
-        generalTerms: '',
-        moreDescription: '',
-        addressStart: '',
-        tag: [],
-        adultPrice: 1000,
-        childrenPrice: 1000,
-        totalPrice: 1000,
-        deposit: 1000,
-        latitude: 21.02776867562664,
-        longitude: 105.83413342865965,
-        images: [],
-        accountId: 0
-    })
-
-    const [tourSchedule, setTourSchedule] = useState([
-        {
-            name: '',
-            content: '',
-            toPlace: '',
-            openServices: false,
-            show: true,
-            serviceTour: []
-        }
-    ])
-
-    const [customerRegisted, setCustomerRegisted] = useState({
-        numberOfAdult: 1,
-        numberOfChildren: 0,
-        fullName: '',
-        phone: '',
-        emailContact: '',
-        idCard: '',
-        dateOfIssue: '',
-        placeOfIssue: ''
-    })
-
-    const handleClickAddForm = (() => {
-        setTourSchedule([...tourSchedule, {
-            name: '',
-            content: '',
-            toPlace: '',
-            serviceTour: [],
-            openServices: false,
-            show: true
-        }])
-    })
 
     const listScreen = [<GeneralInformationTour languageSelected={languageSelected} tour={tour} setTour={setTour} tourSchedule={tourSchedule} setTourSchedule={setTourSchedule} />,
     <TourSchedule languageSelected={languageSelected} tour={tour} tourSchedule={tourSchedule} setTourSchedule={setTourSchedule} serviceList={serviceList} />,
