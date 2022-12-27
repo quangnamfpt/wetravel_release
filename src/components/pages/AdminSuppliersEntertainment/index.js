@@ -42,7 +42,8 @@ function AdminSuppliersEntertainment({ languageSelected }) {
                 serviceCategoryId: 2,
                 page: numberPage,
                 size: 10,
-                isActive: 1
+                isActive: 1,
+                serviceIdList: ''
             }
         }).then((response) => {
             const data = response.data.data.content

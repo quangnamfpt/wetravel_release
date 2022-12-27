@@ -1,13 +1,48 @@
 import { memo, useState } from 'react'
 import './PopupReport.scss'
 import { english, vietnamese } from '../../Languages/PopupReport'
+import axios from 'axios'
+import { API_CREATE_REPORT_FEEDBACK, API_CREATE_REPORT_POST } from '../../API'
+import { toast } from 'react-toastify'
 
-function PopupReport({ languageSelected, setShowReport, idReason, setIdReason, callback }) {
+function PopupReport({ languageSelected, setShowReport, idReason, setIdReason, callback, id, isPost }) {
     const languageList = languageSelected === 'EN' ? english : vietnamese
 
     const handleClickSubmit = () => {
-        callback()
+        isPost ? createReportPost() : createReportFeedback()
         setShowReport(false)
+    }
+
+    const createReportPost = () => {
+        const postData = {
+            "postId": id,
+            "accountId": sessionStorage.getItem('id'),
+            "reasonReportPostId": idReason
+        }
+
+        axios.post(API_CREATE_REPORT_POST, postData)
+            .then(() => {
+                toast.success(languageSelected === 'EN' ? 'Report post success' : 'Báo cáo thành công')
+            })
+            .catch((e) => {
+                console.log(e)
+            })
+    }
+
+    const createReportFeedback = () => {
+        const feedbackData = {
+            "accountId": sessionStorage.getItem('id'),
+            "feedbackId": id,
+            "reasonReportFeedbackId": idReason
+        }
+
+        axios.post(API_CREATE_REPORT_FEEDBACK, feedbackData)
+            .then((res) => {
+                toast.success(languageSelected === 'EN' ? 'Report feedback success' : 'Báo cáo thành công')
+            })
+            .catch((e) => {
+                console.log(e)
+            })
     }
 
     return (

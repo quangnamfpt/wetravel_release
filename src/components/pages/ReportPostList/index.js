@@ -104,14 +104,14 @@ function ReportPostList({ languageSelected }) {
     }, [numberPage, changeData])
 
     const handleBlockPost = (postId) => {
-        axios.delete(`${API_BLOCK_POST}${postId}`)
+        axios.put(`${API_BLOCK_POST}${postId}`)
             .then(() => {
                 setChangeData(!changeData)
                 toast.success(languageDisplay.txtBlocked)
             }).catch((e) => console.error(e))
     }
 
-    const handleDeleteReport = (postId, isBlock, index) => {
+    const handleDeleteReport = (postId, isBlock) => {
         setShowConfirmAlert(false)
         setShowConfirm(false)
         //choc api
@@ -120,14 +120,13 @@ function ReportPostList({ languageSelected }) {
                 setNumberPage(numberPage - 1)
             }
             setChangeData(!changeData)
+            toast.success(languageDisplay.txtKeeped)
         }).catch(e => {
             console.error(e)
         })
-
-        toast.success(languageDisplay.txtKeeped)
     }
 
-    const handleClickBlock = (postId, accountId, index) => {
+    const handleClickBlock = (postId, accountId) => {
         setAccountId(accountId)
         callbackConfirm.current = () => handleBlockPost(postId)
         setShowConfirmAlert(true)
@@ -169,12 +168,12 @@ function ReportPostList({ languageSelected }) {
                                 </div>
                                 <div>
                                     <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
-                                        <MenuItem onClick={() => handleClickBlock(post.id, post.accountId, index)}>
+                                        <MenuItem onClick={() => handleClickBlock(post.id, post.accountId)}>
                                             <BiTrashAlt />{languageSelected === 'EN' ? 'Block' : 'Khoá'}
                                         </MenuItem>
                                         <MenuItem
                                             onClick={() => handleClickKeepIt(languageDisplay.txtKeepIt, languageDisplay.txtWarningKeepIt,
-                                                () => handleDeleteReport(post.id, false, index), false, languageDisplay.txtKeepIt, languageDisplay.txtCancel)}>
+                                                () => handleDeleteReport(post.id, false), false, languageDisplay.txtKeepIt, languageDisplay.txtCancel)}>
                                             <GrStatusGood />{languageSelected === 'EN' ? 'Keep it' : 'Giữ lại'}
                                         </MenuItem>
                                     </Menu>

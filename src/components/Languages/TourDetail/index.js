@@ -17,6 +17,9 @@ export const english = {
     txtMoreDescription: 'More description',
     txtFeedback: 'Feedback',
     txtReport: 'Report',
+    txtRecommendedAccommodation: 'Recommended accommodation',
+    txtRecommendedEntertainment: 'Recommended entertainment',
+    txtRecommendedRestaurants: 'Recommended restaurants',
     txtWarningPrice: 'The more people participating in the tour, the lower the price will be. You only need to pay the deposit in advance, the remaining amount will be calculated and notified to you after the trip ends.'
 }
 
@@ -39,5 +42,8 @@ export const vietnamese = {
     txtMoreDescription: 'Thông tin thêm',
     txtFeedback: 'Nhận xét',
     txtReport: 'Báo cáo',
+    txtRecommendedAccommodation: 'Đề xuất chỗ ở',
+    txtRecommendedEntertainment: 'Đề xuất giải trí',
+    txtRecommendedRestaurants: 'Đề xuất nhà hàng',
     txtWarningPrice: 'Càng nhiều người tham gia vào tour giá tiền sẽ càng thấp. Bạn chỉ cần trả trước tiền đặt cọc, số tiền còn lại sẽ được tính và thông báo thanh toán đến bạn sau khi chuyến đi kết thúc.'
 }

@@ -21,8 +21,8 @@ function Login({ languageSelected, handleForgotPassword, setShowLoading, toast, 
     const handleClickLogin = () => {
         if (emailLogin !== '' && password !== '') {
             if (rememberMe) {
-                document.cookie = `email="${emailLogin}"`;
-                document.cookie = `password="${password}"`;
+                document.cookie = `email=${emailLogin}`;
+                document.cookie = `password=${password}`;
             }
 
             //create data to request server
@@ -43,7 +43,7 @@ function Login({ languageSelected, handleForgotPassword, setShowLoading, toast, 
                     sessionStorage.setItem('id', account.information.accountId)
 
                     if (account.information.roleId) {
-                        if (account.information.isBlock) {
+                        if (account.information.isBlock && !rememberMe) {
                             toast.error(languageList[12])
                         }
                         else {
@@ -64,7 +64,10 @@ function Login({ languageSelected, handleForgotPassword, setShowLoading, toast, 
                                 sessionStorage.setItem('partnerEmail', account.information.emailContactCompany)
 
                             }
-                            toast.success(languageList[11])
+                            if (!rememberMe) {
+                                toast.success(languageList[11])
+                            }
+
                         }
                         setShowLoading(false)
                         setShowLogin(false)
@@ -72,7 +75,9 @@ function Login({ languageSelected, handleForgotPassword, setShowLoading, toast, 
                     }
                     else {
                         sessionStorage.setItem('role', 1)
-                        toast.success(languageList[11])
+                        if (!rememberMe) {
+                            toast.success(languageList[11])
+                        }
                         setShowLoading(false)
                         setShowLogin(false)
                         navigate('/admin/dashboard')
@@ -81,7 +86,9 @@ function Login({ languageSelected, handleForgotPassword, setShowLoading, toast, 
                     setProgress(100)
                 })
                 .catch(() => {
-                    toast.error(languageList[5])
+                    if (!rememberMe) {
+                        toast.error(languageList[5])
+                    }
                     setShowLoading(false)
                     setProgress(100)
                 })
@@ -91,6 +98,8 @@ function Login({ languageSelected, handleForgotPassword, setShowLoading, toast, 
             toast.error(languageList[10])
         }
     }
+
+    console.log(rememberMe)
 
     return (
         <div className='location'>

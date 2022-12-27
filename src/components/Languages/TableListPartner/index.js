@@ -1,5 +1,5 @@
 export const english = {
-    txtEnterName: 'Enter name',
+    txtEnterName: 'Enter company name',
     txtStatus: 'Status',
     txtActive: 'Active',
     txtBlocked: 'Blocked',
@@ -18,7 +18,7 @@ export const english = {
 }
 
 export const vietnamese = {
-    txtEnterName: 'Nhập tên',
+    txtEnterName: 'Nhập tên công ty',
     txtStatus: 'Trạng thái',
     txtActive: 'Hoạt động',
     txtBlocked: 'Đã khoá',

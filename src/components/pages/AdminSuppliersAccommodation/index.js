@@ -46,7 +46,8 @@ function AdminSuppliersAccommodation({ languageSelected }) {
                 page: numberPage,
                 size: 10,
                 serviceName: searchName,
-                isActive: 1
+                isActive: 1,
+                serviceIdList: ''
             }
         }).then((response) => {
             const data = response.data.data.content

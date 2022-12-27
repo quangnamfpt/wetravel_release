@@ -1,4 +1,4 @@
-import { memo, useState, useEffect, useRef } from 'react'
+import { memo, useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { english as englishTableCustomer, vietnamese as vietnameseTableCustomer } from '../../Languages/TableListCustomer'
 import { AiOutlineLeft, AiOutlineRight, AiOutlineSearch, AiOutlineDelete, AiOutlineCheckCircle } from 'react-icons/ai'
@@ -55,11 +55,16 @@ function ListCustomer({ languageSelected }) {
         })
     }
 
+    useLayoutEffect(() => {
+        setNumberPage(1)
+    }, [searchName])
+
     useEffect(() => {
         axios.get(API_GET_CUSTOMER, {
             params: {
                 page: numberPage,
                 size: 10,
+                email: searchName
             }
         }).then((res) => {
             let listCustomerData = []
@@ -89,7 +94,7 @@ function ListCustomer({ languageSelected }) {
             setNumberOfPages([])
             setCustomers([])
         })
-    }, [numberPage])
+    }, [numberPage, searchName])
 
 
     const handleClickShowConfig = (title, content, callback, isRed, textOk, textCancel) => {

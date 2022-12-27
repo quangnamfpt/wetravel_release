@@ -129,7 +129,7 @@ function MoreInformationTour({ languageSelected, tour, setTour, tourSchedule, is
                 "startPlace": tour.startPlace,
                 "endPlace": tour.endPlace,
                 "status": tour.status,
-                "tourType": tour.type,
+                "tourType": 1,
                 "startDate": tour.type != 1 ? tour.startDate : '',
                 "tourMode": tour.mode,
                 "numberOfDay": tour.numberOfDay,
@@ -174,13 +174,19 @@ function MoreInformationTour({ languageSelected, tour, setTour, tourSchedule, is
                         {
                             "tourScheduleName": tourScheduleItem.name,
                             "content": tourScheduleItem.content,
-                            "toPlace": tourScheduleItem.toPlace
+                            "toPlace": tourScheduleItem.toPlace,
+                            "accommodationService": tourScheduleItem.recommendAccommodation.join(' '),
+                            "restaurantService": tourScheduleItem.recommendRestaurants.join(' '),
+                            "entertainmentService": tourScheduleItem.recommendEntertainment.join(' ')
                         }
                     )
                     ) : [{
                         "tourScheduleName": [...tourSchedule][0].name,
                         "content": [...tourSchedule][0].content,
-                        "toPlace": [...tourSchedule][0].toPlace
+                        "toPlace": [...tourSchedule][0].toPlace,
+                        "accommodationService": [...tourSchedule][0].recommendAccommodation.join(' '),
+                        "restaurantService": [...tourSchedule][0].recommendRestaurants.join(' '),
+                        "entertainmentService": [...tourSchedule][0].recommendEntertainment.join(' ')
                     }]
             }
             setShowLoading(true)

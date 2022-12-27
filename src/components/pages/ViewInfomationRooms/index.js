@@ -40,7 +40,7 @@ function ViewInformationRooms({ languageSelected, roomsData, setRoomsData }) {
                         <>
                             <div className='title-room-container'>
                                 <div className='title-roomNumber'>
-                                    <label onClick={() => handleClickShowHide(index)} className='title space-click-hide'> Room {index + 1} </label>
+                                    <label onClick={() => handleClickShowHide(index)} className='title space-click-hide'> {languageList.txtRoom} {index + 1} </label>
                                 </div>
                             </div>
                             <div onClick={() => handleClickShowHide(index)} className='space-icon-show-container bd-t'>
@@ -52,8 +52,8 @@ function ViewInformationRooms({ languageSelected, roomsData, setRoomsData }) {
                                 <div className='d-flex w-40 short-information-room'>
                                     <div className='title-information-room'>Room {index + 1}</div>
                                     <label className='short-information-detail txt-14'>
-                                        <div>Room: {form.roomName}</div>
-                                        <div>Room Size: {form.roomSize} m2</div>
+                                        <div>{languageList.txtRoom}: {form.roomName}</div>
+                                        <div>{languageList.txtRoomSize}: {form.roomSize} &#13217;</div>
                                     </label>
                                 </div>
 

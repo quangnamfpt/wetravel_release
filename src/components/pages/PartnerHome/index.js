@@ -9,7 +9,7 @@ import './PartnerHome.scss'
 function PartnerHome({ languageSelected }) {
     const [getDataComplete, setGetDataComplete] = useState(false)
     const [services, setServices] = useState([])
-    const email = sessionStorage.getItem('email')
+    const id = sessionStorage.getItem('id')
 
     const [numberPage, setNumberPage] = useState(1)
     const [numberOfPages, setNumberOfPages] = useState([])
@@ -17,9 +17,10 @@ function PartnerHome({ languageSelected }) {
     useEffect(() => {
         axios.get(API_GET_SERVICE_BY_CONDITION, {
             params: {
-                emailPartner: email,
+                accountId: id,
                 page: numberPage,
-                size: 10
+                size: 10,
+                serviceIdList: ''
             }
         }).then((response) => {
             setServices(response.data.data.content)

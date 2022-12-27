@@ -28,7 +28,8 @@ function ViewListServicePending({ languageSelected }) {
             params: {
                 isActive: 0,
                 page: numberPage,
-                size: 10
+                size: 10,
+                serviceIdList: ''
             }
         }).then((response) => {
             const data = response.data.data.content

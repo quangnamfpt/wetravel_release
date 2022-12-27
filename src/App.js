@@ -1,4 +1,4 @@
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
 import { Fragment, useState, memo, useEffect, createContext } from 'react';
 import { publicRoute } from './routes'
 import { DefaultLayout } from './components/Layout';
@@ -9,6 +9,7 @@ import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle'
 import './App.css'
+import { API_LOGIN } from './components/API';
 
 export const LanguageShowing = createContext()
 
@@ -22,21 +23,68 @@ function App() {
   const email = cokkieArr.split("email=")[1] && cokkieArr.split("email=")[1].split(';')[0]
   const password = cokkieArr.split("password=")[1] && cokkieArr.split("password=")[1].split(';')[0]
 
-  if (email && password) {
+  const handleClickLogin = () => {
+    //create data to request server
+    let account = {
+      email: email,
+      password: password
+    }
+
+    //call api from server
+    axios.post(API_LOGIN, account)
+      .then((res) => {
+        sessionStorage.setItem('email', email);
+        const account = res.data.data
+        sessionStorage.setItem('id', account.information.accountId)
+
+        if (account.information.roleId) {
+          if (account.information.isBlock) {
+            toast.error(language === 'EN' ? 'This account has been locked' : 'Tài khoản này đã bị khoá')
+          }
+          else {
+            if (account.information.roleId > 1) {
+              sessionStorage.setItem('role', account.information.roleId)
+              sessionStorage.setItem('firstName', account.information.firstName)
+              sessionStorage.setItem('lastName', account.information.lastName)
+
+              sessionStorage.setItem('gender', account.information.gender)
+              sessionStorage.setItem('birthdate', account.information.birthDate)
+              sessionStorage.setItem('phone', account.information.phone)
+            }
+            if (account.information.roleId === 3) {
+              sessionStorage.setItem('rankPoint', account.information.rankPoint)
+
+            } else if (account.information.roleId === 2) {
+              sessionStorage.setItem('index-service-selected', account.information.serviceCategory)
+              sessionStorage.setItem('partnerEmail', account.information.emailContactCompany)
+
+            }
+            toast.success(language === 'EN' ? 'Login success' : 'Đăng nhập thành công')
+          }
+          navigate('/')
+        }
+        else {
+          sessionStorage.setItem('role', 1)
+          toast.success(language === 'EN' ? 'Login success' : 'Đăng nhập thành công')
+          navigate('/admin/dashboard')
+        }
+
+        setProgress(100)
+      })
+      .catch(() => {
+        toast.error(language === 'EN' ? 'Incorrect account' : 'Tài khoản không chính xác')
+        document.cookie = `email=`;
+        document.cookie = `password=`;
+      })
+  }
+
+  if (email && password && sessionStorage.getItem('role') === null) {
     //Tự động đăng nhập bằng cookie email và password bên trên
+    handleClickLogin()
   }
 
   const [languageSelected, setLanguageSelected] = useState(language)
   const [progress, setProgress] = useState(100)
-
-  // useEffect(() => {
-  //   if (sessionStorage.getItem('email') === null && window.location.pathname !== '/' && window.location.pathname !== '/register' && window.location.pathname !== '/register-partner' && window.location.pathname !== '/checkmail'
-  //     && window.location.pathname !== '/register-information-customer' && window.location.pathname !== '/register-information-partner' && window.location.pathname !== '/register-profile-partner'
-  //     && window.location.pathname !== '/select-service') {
-  //     navigate('/')
-  //     toast.warning('Bạn chưa đăng nhập')
-  //   }
-  // })
 
   useEffect(() => {
     if ((sessionStorage.getItem('role') == 1 && !window.location.pathname.includes('/admin')) ||
@@ -92,6 +140,10 @@ function App() {
               let role;
               let changePassword = false;
               let SecondLayout;
+              let needLogin
+              let path
+
+              path = route.path
 
               if (route.layout) { Layout = route.layout }
               else if (route.layout === null) { Layout = Fragment }
@@ -103,6 +155,14 @@ function App() {
               if (route.changePassword) { changePassword = true }
 
               if (route.secondLayout) { SecondLayout = route.secondLayout }
+
+              needLogin = route.needLogin
+
+              if (path === window.location.pathname && needLogin && sessionStorage.getItem('id') === null) {
+                toast.warning(language === 'EN' ? 'You are not logged in' : 'Bạn chưa đăng nhập')
+                return <Route key={index}
+                  path={route.path} element={<Navigate to={'/'} />} />
+              }
 
               const Page = route.component
               return <Route key={index}
@@ -119,7 +179,7 @@ function App() {
         </div>
         <div id="fb-customer-chat" class="fb-customerchat"></div>
       </ProSidebarProvider>
-    </LanguageShowing.Provider>
+    </LanguageShowing.Provider >
   );
 }
 

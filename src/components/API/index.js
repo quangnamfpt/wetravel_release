@@ -61,6 +61,6 @@ export const API_CREATE_COMMENT = `${DOMAIN}create/comment`
 export const API_GET_COMMENT = `${DOMAIN}get-list/comment/by-post`
 export const API_CREATE_REPORT_POST = `${DOMAIN}create/report-post`
 export const API_DELETE_POST = `${DOMAIN}delete/post/`
-export const API_BLOCK_POST = `${DOMAIN}delete/post/`
+export const API_BLOCK_POST = `${DOMAIN}block/post/`
 export const API_DELETE_REPORT_POST = `${DOMAIN}delete/report-post/`
 export const API_UPDATE_POST = `${DOMAIN}update/post/`

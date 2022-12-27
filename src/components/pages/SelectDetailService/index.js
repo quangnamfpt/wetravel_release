@@ -4,15 +4,13 @@ import { LanguageShowing } from '../../../App'
 import { englishCampingServiceText, vietnameseCampingServiceText, englishTypeService, vietnameseTypeService } from '../../Languages/ServiceType'
 import './SelectDetailService.scss'
 
-function SelectDetailService() {
+function SelectDetailService({ languageSelected }) {
     useEffect(() => {
         sessionStorage.setItem('detail-service', 0)
     }, [])
 
     const categoryService = sessionStorage.getItem('index-service-selected')
     const [selectIndexDetailService, setSelectIndexDetailService] = useState(0)
-
-    let languageSelected = useContext(LanguageShowing)
 
     let campingServiceText = (languageSelected === 'EN' ? englishCampingServiceText : vietnameseCampingServiceText)
 
@@ -43,7 +41,9 @@ function SelectDetailService() {
                 ))}
             </div>
             <div className='location-btn-submit'>
-                <Link to='/partner/register-information-service' className='btn btn-primary btn-submit-detail-service'>Submit</Link>
+                <Link to='/partner/register-information-service' className='btn btn-primary btn-submit-detail-service'>
+                    {languageSelected === 'EN' ? 'Submit' : 'Hoàn thành'}
+                </Link>
             </div>
         </div>
     </div>)

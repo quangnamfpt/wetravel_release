@@ -56,7 +56,8 @@ function EditProfilePartner({ languageSelected }) {
                 numberOfPagesRaw.push(i + 1)
             }
             let listBookingRaw = []
-            response.data.data.content.map((bookingItem) => {
+            response.data.data.content.map((bookingItem, index) => {
+                console.log(index, bookingItem)
                 const bookingItemRaw = {
                     bookingId: bookingItem.userBookingId,
                     tourId: bookingItem.tourId,
@@ -127,9 +128,10 @@ function EditProfilePartner({ languageSelected }) {
             }
             axios.get(API_GET_SERVICE_BY_CONDITION, {
                 params: {
-                    emailPartner: partnerRaw.email,
+                    accountId: partnerRaw.accountId,
                     page: 1,
-                    size: 99999
+                    size: 99999,
+                    serviceIdList: []
                 }
             }).then((res) => {
                 const data = res.data.data.content

@@ -279,12 +279,12 @@ function GeneralInformationTour({ languageSelected, tour, setTour, tourSchedule,
                                 <div htmlFor='type-sic' className={`radio-spuare mr-20 ${tour.type === 1 && 'radio-custom-checked'}`} />
                                 <label htmlFor='type-sic'>{languageList.txtSIC}</label>
                             </label>
-                            <label htmlFor='type-custom' className='d-flex radio-custom input-inline'>
+                            {/* <label htmlFor='type-custom' className='d-flex radio-custom input-inline'>
                                 <input name='status' type='radio' id='type-custom' value='2' hidden
                                     onChange={(e) => pathname !== '/admin/edit-tour' && !isDisabled && setTour({ ...tour, type: parseInt(e.target.value) })} />
                                 <div htmlFor='type-custom' className={`radio-spuare mr-20 ${tour.type === 2 && 'radio-custom-checked'}`} />
                                 <label htmlFor='type-custom'>{languageList.txtCustomTour}</label>
-                            </label>
+                            </label> */}
                         </div>
                     </div>
                 </div>

@@ -1,6 +1,7 @@
 import { useState, memo, useEffect } from 'react'
 import { Link, Navigate } from 'react-router-dom'
 import Carousel from 'react-multi-carousel';
+import { english, vietnamese } from '../../Languages/CreateService';
 
 import HotelLogo from '../../images/hotel.png'
 import HotelLogoSelect from '../../images/hotel_select.png'
@@ -47,47 +48,44 @@ const responsive = {
     }
 };
 
-const commonService = [{
-    logo: HotelLogo,
-    logoSelected: HotelLogoSelect,
-    name: 'Accommodation'
-},
-{
-    logo: AttractionLogo,
-    logoSelected: AttractionLogoSelect,
-    name: 'Entertainment'
-},
-{
-    logo: RestaurantsLogo,
-    logoSelected: RestaurantsLogoSelect,
-    name: 'Restaurants'
-}]
-
-const detailCategory = [
-    {
-        title: 'Registering your accommodation is easy at We Travel',
-        description: 'Your accommodation whether it is a hotel, resort, homestay, ... or a yacht can be registered to sell rooms for free. Our marketing team will help your property appear more on search engines like Google, thus increasing your chances of selling rooms.',
-        image: [Hotel1, Hotel2, Hotel3, Hotel4]
-    },
-    {
-        title: 'Bring joy and comfort',
-        description: 'Let more people enjoy the great experience offers from your service! From attractions, tours and more.',
-        image: [Attraction1, Attraction2]
-    },
-    {
-        title: 'Accompany customers to move safely and quickly',
-        description: 'Provide all types of transportation business to pick up and drop off customers on tour, fast, convenient and safe.',
-        image: [Transport1, Transport2]
-    },
-    {
-        title: 'Providing the best quality food service',
-        description: 'Cooperating with We travel to bring perfect food service, and satisfy customers when they come to enjoy delicious food.',
-        image: [Restaurant1, Restaurant2, Restaurant3, Restaurant4, Restaurant5]
-    }
-]
-
-function CreateService() {
+function CreateService({ languageSelected }) {
     const [indexServiceSelected, setIndexServiceSelected] = useState(0)
+
+    const languageDisplay = languageSelected === 'EN' ? english : vietnamese
+
+    const commonService = [{
+        logo: HotelLogo,
+        logoSelected: HotelLogoSelect,
+        name: languageDisplay.txtAccommodation
+    },
+    {
+        logo: AttractionLogo,
+        logoSelected: AttractionLogoSelect,
+        name: languageDisplay.txtEntertainment
+    },
+    {
+        logo: RestaurantsLogo,
+        logoSelected: RestaurantsLogoSelect,
+        name: languageDisplay.txtRestaurants
+    }]
+
+    const detailCategory = [
+        {
+            title: languageDisplay.txtTitleAccommodation,
+            description: languageDisplay.txtDescriptionAccommodation,
+            image: [Hotel1, Hotel2, Hotel3, Hotel4]
+        },
+        {
+            title: languageDisplay.txtTitleEntertainment,
+            description: languageDisplay.txtDescriptionEntertainment,
+            image: [Attraction1, Attraction2]
+        },
+        {
+            title: languageDisplay.txtTitleRestaurants,
+            description: languageDisplay.txtDescriptionRestaurants,
+            image: [Restaurant1, Restaurant2, Restaurant3, Restaurant4, Restaurant5]
+        }
+    ]
 
     const role = sessionStorage.getItem('role')
 
@@ -119,7 +117,7 @@ function CreateService() {
                         <div className='common-description-service-category item-description-service-category'>
                             <div className='title-service-category'>{detailCategory[indexServiceSelected].title}</div>
                             <label className='description-service-category'>{detailCategory[indexServiceSelected].description}</label>
-                            <Link to='/register-partner' className='btn btn-primary btn-register-service-category'>Register Now</Link>
+                            <Link to='/register-partner' className='btn btn-primary btn-register-service-category'>{languageDisplay.txtRegisterNow}</Link>
                         </div>
                         <Carousel
                             className='slider-description-service-category item-description-service-category'

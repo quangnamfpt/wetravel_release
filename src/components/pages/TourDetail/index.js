@@ -1,6 +1,6 @@
 import { memo, useEffect, useState, useRef } from 'react'
 import Carousel from 'react-multi-carousel';
-import { AiOutlineQuestionCircle } from 'react-icons/ai'
+import { AiOutlineQuestionCircle, AiOutlineCaretDown, AiOutlineCaretUp } from 'react-icons/ai'
 import { useNavigate, useLocation } from 'react-router-dom';
 import { HiOutlineEye } from 'react-icons/hi'
 import { BsThreeDotsVertical } from 'react-icons/bs'
@@ -16,7 +16,7 @@ import { english, vietnamese } from '../../Languages/TourTag';
 
 import { english as englishTourDetail, vietnamese as vietnameseTourDetail } from '../../Languages/TourDetail';
 
-import { API_CREATE_REPORT_FEEDBACK, API_GET_DETAIL_TOUR, API_GET_LIST_FEEDBACK } from '../../API'
+import { API_CREATE_REPORT_FEEDBACK, API_GET_DETAIL_TOUR, API_GET_LIST_FEEDBACK, API_GET_SERVICE_BY_CONDITION } from '../../API'
 import LoadingDialog from '../../Layout/LoadingDialog'
 import axios from 'axios'
 import { ref, listAll, getDownloadURL } from 'firebase/storage'
@@ -66,7 +66,10 @@ function TourDetail({ languageSelected }) {
         introduce: '',
         schedule: [{
             name: '',
-            content: ''
+            content: '',
+            "accommodationService": [],
+            "restaurantService": [],
+            "entertainmentService": []
         }],
         city: '',
         address: '',
@@ -91,6 +94,14 @@ function TourDetail({ languageSelected }) {
     const [idFeedbackReport, setIdFeedbackReport] = useState(0)
 
     const [numberPage, setNumberPage] = useState(1)
+
+    const [openAccommodation, setOpenAccommodation] = useState(false)
+    const [openEntertainment, setOpenEntertainment] = useState(false)
+    const [openRestaurants, setOpenRestaurants] = useState(false)
+
+    const [listAccommodation, setListAccommodation] = useState([])
+    const [listEntertainment, setListEntertainment] = useState([])
+    const [listRestaurants, setListRestaurants] = useState([])
 
     const [optionIndexMoreInformationSelected, setIndexOptionMoreInformationSelected] = useState(0)
     const [optionMoreInformationSelected, setOptionMoreInformationSelected] = useState([])
@@ -119,36 +130,41 @@ function TourDetail({ languageSelected }) {
                 }
                 scheduleRaw.push({
                     name: element.tourScheduleName,
-                    content: contentAdd
+                    content: contentAdd,
+                    "accommodationService": element.accommodationService.split(' '),
+                    "restaurantService": element.restaurantService.split(' '),
+                    "entertainmentService": element.entertainmentService.split(' ')
                 })
             })
             let informationRaw = [];
             let informationAdd = '';
             informationRaw = data.tourDetailDTO.tourInclude.split('<p>')
-            for (let i = 1; i < informationRaw.length; i++) {
+            for (let i = 0; i < informationRaw.length; i++) {
                 informationAdd += ('<div class="circle-line-content-small"></div><p class="d-block content-schedule-inline-information">' + informationRaw[i])
             }
 
             let generalTermsRaw = [];
             let generalTermsAdd = '';
             generalTermsRaw = data.tourDetailDTO.generalTerms.split('<p>')
-            for (let i = 1; i < generalTermsRaw.length; i++) {
+            for (let i = 0; i < generalTermsRaw.length; i++) {
                 generalTermsAdd += ('<div class="circle-line-content-small"></div><p class="d-block content-schedule-inline-information">' + generalTermsRaw[i])
             }
 
             let nonIncludeRaw = [];
             let nonIncludeAdd = '';
             nonIncludeRaw = data.tourDetailDTO.tourNonInclude.split('<p>')
-            for (let i = 1; i < nonIncludeRaw.length; i++) {
+            for (let i = 0; i < nonIncludeRaw.length; i++) {
                 nonIncludeAdd += ('<div class="circle-line-content-small"></div><p class="d-block content-schedule-inline-information">' + nonIncludeRaw[i])
             }
 
             let moreDescriptionRaw = [];
             let moreDescriptionAdd = '';
             moreDescriptionRaw = data.tourDetailDTO.moreDescription.split('<p>')
-            for (let i = 1; i < moreDescriptionRaw.length; i++) {
+            for (let i = 0; i < moreDescriptionRaw.length; i++) {
                 moreDescriptionAdd += ('<div class="circle-line-content-small"></div><p class="d-block content-schedule-inline-information">' + moreDescriptionRaw[i])
             }
+
+            console.log('include: ', informationAdd)
 
             let tourRaw = {
                 id: data.tourId,
@@ -277,11 +293,68 @@ function TourDetail({ languageSelected }) {
             })
     }
 
+    const handleClickDaySchedule = (index) => {
+        setDaySelected(index)
+        setOpenAccommodation(false)
+        setOpenEntertainment(false)
+        setOpenRestaurants(false)
+    }
+
+    const handleOpenRecommendedServices = (idList) => {
+        setGetDataComplete(false)
+        axios.get(API_GET_SERVICE_BY_CONDITION, {
+            params: {
+                serviceIdList: idList.join(','),
+                page: 1,
+                size: 99999,
+                isActive: 1,
+                isBlock: 0,
+                status: 1
+            }
+        }).then(res => {
+            let data = res.data.data.content
+            let leng = 0
+            data.forEach((item, index) => {
+                let refImage
+                const refAccommodation = ref(storage, `/service/accomodation/${item.serviceId}/information/receptionHallPhoto/image-0`)
+                const refEntertainment = ref(storage, `/service/entertainment/${item.serviceId}/information/receptionHallPhoto/image-0`)
+                const refRestaurant = ref(storage, `/service/restaurant/${item.serviceId}/information/receptionHallPhoto/image-0`)
+
+                if (item.serviceCategory == 1) {
+                    refImage = refAccommodation
+                }
+                else if (item.serviceCategory == 2) {
+                    refImage = refEntertainment
+                }
+                else {
+                    refImage = refRestaurant
+                }
+
+                getDownloadURL(refImage)
+                    .then((url) => {
+                        data[index].image = url
+                        leng++
+                        if (leng === data.length) {
+                            if (item.serviceCategory == 1) {
+                                setListAccommodation(data)
+                            }
+                            else if (item.serviceCategory == 2) {
+                                setListEntertainment(data)
+                            }
+                            else {
+                                setListRestaurants(data)
+                            }
+                        }
+                    })
+            })
+
+        })
+    }
+
     return (
         <>
-            {showReport && <PopupReport setShowReport={setShowReport} languageSelected={languageSelected} idReason={idReasonReport} setIdReason={setIdReasonReport} callback={createReportFeedback} />}
+            {showReport && <PopupReport id={idFeedbackReport} setShowReport={setShowReport} languageSelected={languageSelected} idReason={idReasonReport} setIdReason={setIdReasonReport} callback={createReportFeedback} />}
             <div className='container home-main'>
-                {!getDataComplete && <LoadingDialog />}
                 <div className='container pd-tour-detail'>
                     <Carousel autoPlay={true}
                         autoPlaySpeed={3000}
@@ -362,12 +435,104 @@ function TourDetail({ languageSelected }) {
                             <label className='title mb-20'>{languageList.txtScheduled}</label>
                             <div className='d-flex mb-20'>
                                 {tour.schedule.map((item, index) => (
-                                    <div onClick={() => setDaySelected(index)} className={daySelected == index ? 'day-tour-detail-selected' : 'day-tour-detail-unselected'}>
+                                    <div onClick={() => handleClickDaySchedule(index)} className={daySelected == index ? 'day-tour-detail-selected' : 'day-tour-detail-unselected'}>
                                         {languageList.txtDay} {index + 1}
                                     </div>))}
                             </div>
                             <div className='title mb-20 name-schedule-detail'>{tour.schedule[daySelected].name}</div>
-                            <div className='content-schedule-detail' dangerouslySetInnerHTML={{ __html: tour.schedule[daySelected].content }}></div>
+                            <div className='content-schedule-detail mb-20' dangerouslySetInnerHTML={{ __html: tour.schedule[daySelected].content }}></div>
+
+                            {tour.schedule[daySelected].accommodationService[0] !== '' &&
+                                <div className='mb-20 br-10 recommend-service '>
+                                    <div className='d-flex space-between center-vertical p-20'
+                                        onClick={() => {
+                                            setOpenAccommodation(pre => !pre)
+                                            handleOpenRecommendedServices(tour.schedule[daySelected].accommodationService)
+                                        }}>
+                                        <label className='text-bold'>+ {languageList.txtRecommendedAccommodation}</label>
+                                        {openAccommodation ? <AiOutlineCaretDown /> : <AiOutlineCaretUp />}
+                                    </div>
+                                    {openAccommodation &&
+                                        <div className='list-service-recommend'>
+                                            {listAccommodation.map((service, index) => (
+                                                <div className='mb-20 d-flex hover-service-recommend'
+                                                    onClick={() => navigate('/service-detail', { state: { service: service, index: index, listService: listAccommodation } })}>
+                                                    <img src={service.image} className='image-service-recommend' />
+                                                    <div className='p-20'>
+                                                        <div className='text-bold font-20 title-service-recommend'>
+                                                            {service.serviceName.substring(0, 25)}{service.serviceName.length > 25 ? '...' : ''}
+                                                        </div>
+                                                        <div>
+                                                            {service.description.substring(0, 150)}{service.description.length > 150 ? '...' : ''}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            {tour.schedule[daySelected].restaurantService[0] !== '' &&
+                                <div className='mb-20 br-10 recommend-service '>
+                                    <div className='d-flex space-between center-vertical p-20'
+                                        onClick={() => {
+                                            setOpenRestaurants(pre => !pre)
+                                            handleOpenRecommendedServices(tour.schedule[daySelected].restaurantService)
+                                        }}>
+                                        <label className='text-bold'>+ {languageList.txtRecommendedRestaurants}</label>
+                                        {openRestaurants ? <AiOutlineCaretDown /> : <AiOutlineCaretUp />}
+                                    </div>
+                                    {openRestaurants &&
+                                        <div className='list-service-recommend'>
+                                            {listRestaurants.map((service, index) => (
+                                                <div className='mb-20 d-flex hover-service-recommend'
+                                                    onClick={() => navigate('/service-detail', { state: { service: service, index: index, listService: listRestaurants } })}>
+                                                    <img src={service.image} className='image-service-recommend' />
+                                                    <div className='p-20'>
+                                                        <div className='text-bold font-20 title-service-recommend'>
+                                                            {service.serviceName.substring(0, 25)}{service.serviceName.length > 25 ? '...' : ''}
+                                                        </div>
+                                                        <div>
+                                                            {service.description.substring(0, 150)}{service.description.length > 150 ? '...' : ''}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            {tour.schedule[daySelected].entertainmentService[0] !== '' &&
+                                <div className='mb-20 br-10 recommend-service'>
+                                    <div className='d-flex space-between center-vertical p-20'
+                                        onClick={() => {
+                                            setOpenEntertainment(pre => !pre)
+                                            handleOpenRecommendedServices(tour.schedule[daySelected].entertainmentService)
+                                        }}>
+                                        <label className='text-bold'>+ {languageList.txtRecommendedEntertainment}</label>
+                                        {openEntertainment ? <AiOutlineCaretDown /> : <AiOutlineCaretUp />}
+                                    </div>
+                                    {openEntertainment &&
+                                        <div className='list-service-recommend'>
+                                            {listEntertainment.map((service, index) => (
+                                                <div className='mb-20 d-flex hover-service-recommend'
+                                                    onClick={() => navigate('/service-detail', { state: { service: service, index: index, listService: listEntertainment } })}>
+                                                    <img src={service.image} className='image-service-recommend' />
+                                                    <div className='p-20'>
+                                                        <div className='text-bold font-20 title-service-recommend'>
+                                                            {service.serviceName.substring(0, 25)}{service.serviceName.length > 25 ? '...' : ''}
+                                                        </div>
+                                                        <div>
+                                                            {service.description.substring(0, 150)}{service.description.length > 150 ? '...' : ''}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    }
+                                </div>
+                            }
+
                         </div>
                         <div className='w-25' />
                     </div>

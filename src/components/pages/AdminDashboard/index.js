@@ -90,6 +90,7 @@ function AdminDashboard({ languageSelected }) {
             params: {
                 page: 1,
                 size: 4,
+                email: ''
             }
         }).then((res) => {
             let listCustomerData = []
@@ -131,7 +132,8 @@ function AdminDashboard({ languageSelected }) {
                 page: 1,
                 size: 99999,
                 isActive: 1,
-                isBlocked: 0
+                isBlocked: 0,
+                serviceIdList: ''
             }
         }).then((count) => {
             if (id === 1) {
@@ -162,7 +164,8 @@ function AdminDashboard({ languageSelected }) {
                 isActive: 0,
                 isBlock: 0,
                 page: 1,
-                size: 5
+                size: 5,
+                serviceIdList: ''
             }
         }).then((response) => {
             const data = response.data.data.content

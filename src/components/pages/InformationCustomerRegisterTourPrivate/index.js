@@ -74,7 +74,7 @@ function InformationCustomerRegisterTourPrivate({ languageSelected, customerRegi
                 "startPlace": tour.startPlace,
                 "endPlace": tour.endPlace,
                 "status": tour.status,
-                "tourType": tour.type,
+                "tourType": 0,
                 "startDate": tour.type != 1 ? tour.startDate : '',
                 "tourMode": tour.mode,
                 "numberOfDay": tour.numberOfDay,
@@ -119,13 +119,19 @@ function InformationCustomerRegisterTourPrivate({ languageSelected, customerRegi
                         {
                             "tourScheduleName": tourScheduleItem.name,
                             "content": tourScheduleItem.content,
-                            "toPlace": tourScheduleItem.toPlace
+                            "toPlace": tourScheduleItem.toPlace,
+                            "accommodationService": tourScheduleItem.recommendAccommodation.join(' '),
+                            "restaurantService": tourScheduleItem.recommendRestaurants.join(' '),
+                            "entertainmentService": tourScheduleItem.recommendEntertainment.join(' ')
                         }
                     )
                     ) : [{
                         "tourScheduleName": [...tourSchedule][0].name,
                         "content": [...tourSchedule][0].content,
-                        "toPlace": [...tourSchedule][0].toPlace
+                        "toPlace": [...tourSchedule][0].toPlace,
+                        "accommodationService": [...tourSchedule][0].recommendAccommodation.join(' '),
+                        "restaurantService": [...tourSchedule][0].recommendRestaurants.join(' '),
+                        "entertainmentService": [...tourSchedule][0].recommendEntertainment.join(' ')
                     }]
             }
             setShowLoading(true)
@@ -150,7 +156,7 @@ function InformationCustomerRegisterTourPrivate({ languageSelected, customerRegi
                         "placeOfIssue": customerRegisted.placeOfIssue,
                         "numberOfAdult": customerRegisted.numberOfAdult,
                         "numberOfChildren": customerRegisted.numberOfChildren,
-                        "totalPrice": tour.deposit,
+                        "totalPrice": tour.totalPrice,
                         "orderId": Date.now(),
                         "orderTitle": `${tour.name} ${customerRegisted.numberOfAdult} Adult, ${customerRegisted.numberOfChildren} Children`,
                         "payType": "",

@@ -15,7 +15,7 @@ import { CgDanger } from 'react-icons/cg'
 import { FiTrash } from 'react-icons/fi'
 import PopupCreateAlert from '../../Layout/PopupCreateAlert'
 import PopupReport from '../../Layout/PopupReport';
-import { API_CREATE_REPORT_POST, API_GET_LIST_POST } from '../../API'
+import { API_BLOCK_POST, API_CREATE_REPORT_POST, API_GET_LIST_POST } from '../../API'
 import axios from 'axios'
 import { ref, getDownloadURL } from 'firebase/storage'
 import { storage } from "../../../firebase/Config";
@@ -27,6 +27,8 @@ function ListPostForum({ languageSelected }) {
 
     const navigate = useNavigate()
 
+    const [postId, setPostId] = useState(0)
+    const [accountId, setAccountId] = useState(0)
     const [showConfirm, setShowConfirm] = useState(false)
     const [titleConfirm, setTitleConfirm] = useState(languageDisplay.txtDelete)
     const [shortReason, setShortReason] = useState(languageDisplay.txtShortReason)
@@ -47,6 +49,8 @@ function ListPostForum({ languageSelected }) {
 
     const [numberPage, setNumberPage] = useState(1)
     const [numberOfPages, setNumberOfPages] = useState([])
+
+    const [changeData, setChangeData] = useState(true)
 
     useEffect(() => {
         axios.get(API_GET_LIST_POST, {
@@ -94,7 +98,7 @@ function ListPostForum({ languageSelected }) {
             }
             setNumberOfPages(numberOfPagesRaw)
         }).catch(err => console.error(err))
-    }, [numberPage, topicSelected, changeSearch])
+    }, [numberPage, topicSelected, changeSearch, changeData])
 
     const handleSelectTopic = (value) => {
         let topicSelectedRaw = [...topicSelected]
@@ -107,18 +111,24 @@ function ListPostForum({ languageSelected }) {
         setTopicSelected([...topicSelectedRaw])
     }
 
-    const handleClickBlock = (callback) => {
+    const handleClickBlock = (callback, accountId) => {
+        setAccountId(accountId)
         setShowConfirm(true)
         callbackConfirm.current = callback
     }
 
     const handleBlockPost = (idPost) => {
+        axios.put(`${API_BLOCK_POST}${idPost}`)
+            .then(() => {
+                setChangeData(!changeData)
+                toast.success(languageDisplay.txtBlocked)
+            }).catch((e) => console.error(e))
         setShowConfirm(false)
     }
 
-    const handleClickReport = (callback) => {
+    const handleClickReport = (postId) => {
         setShowReport(true)
-        callbackConfirm.current = callback
+        setPostId(postId)
     }
 
     let listPostShow = []
@@ -136,10 +146,8 @@ function ListPostForum({ languageSelected }) {
         const postData = {
             "postId": idPost,
             "accountId": sessionStorage.getItem('id'),
-            "reasonReportPostId": idReasonReport + 1
+            "reasonReportPostId": idReasonReport
         }
-
-        console.log(postData)
 
         axios.post(API_CREATE_REPORT_POST, postData)
             .then(() => {
@@ -152,9 +160,9 @@ function ListPostForum({ languageSelected }) {
 
     return (
         <div className='container home-main'>
-            {showReport && <PopupReport setShowReport={setShowReport} languageSelected={languageSelected} idReason={idReasonReport} setIdReason={setIdReasonReport} callback={callbackConfirm.current} />}
+            {showReport && <PopupReport id={postId} isPost setShowReport={setShowReport} languageSelected={languageSelected} idReason={idReasonReport} setIdReason={setIdReasonReport} callback={callbackConfirm.current} />}
             {showConfirm &&
-                <PopupCreateAlert textOk={textOk} textCancel={textCancel} title={titleConfirm} shortReason={shortReason} fullReason={fullReason} callback={callbackConfirm.current} isRed={isRed} setShowDialog={setShowConfirm} />
+                <PopupCreateAlert accountId={accountId} textOk={textOk} textCancel={textCancel} title={titleConfirm} shortReason={shortReason} fullReason={fullReason} callback={callbackConfirm.current} isRed={isRed} setShowDialog={setShowConfirm} />
             }
             <img src={BackgroundForum} className='bg-image rotation-0' />
             <div className='border-search container search w-86'>
@@ -198,14 +206,14 @@ function ListPostForum({ languageSelected }) {
                                                                     <Menu menuButton={<MenuButton className='btn-action'><BsThreeDotsVertical /></MenuButton>} transition>
                                                                         {role.current == 1 ?
                                                                             <MenuItem
-                                                                                onClick={() => handleClickBlock(() => handleBlockPost(post.id))}>
+                                                                                onClick={() => handleClickBlock(() => handleBlockPost(post.id), post.accountId)}>
                                                                                 <FiTrash /><label className='ml-5'>{languageDisplay.txtDelete}</label>
                                                                             </MenuItem>
                                                                             :
                                                                             <>
 
                                                                                 <MenuItem className='requird-star'
-                                                                                    onClick={() => handleClickReport(() => createReportPost(post.id))}>
+                                                                                    onClick={() => handleClickReport(post.id)}>
                                                                                     <CgDanger /><label className='ml-5'>{languageDisplay.txtReport}</label>
                                                                                 </MenuItem>
 

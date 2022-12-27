@@ -36,10 +36,10 @@ function ServicesList({ languageSelected }) {
                 isBlock: 0,
                 serviceName: searchName,
                 page: numberPage,
-                size: 12
+                size: 12,
+                serviceIdList: ''
             }
         }).then((res) => {
-            console.log(res)
             let listServiceRaw = res.data.data.content
             let leng = 0
             const count = listServiceRaw.length

@@ -1,5 +1,5 @@
 export const english = {
-    txtEnterName: 'Enter name',
+    txtEnterName: 'Enter email',
     txtGender: 'Gender',
     txtMale: 'Male',
     txtFemale: 'Female',
@@ -24,7 +24,7 @@ export const english = {
 }
 
 export const vietnamese = {
-    txtEnterName: 'Nhập tên',
+    txtEnterName: 'Nhập email',
     txtGender: 'Giới tính',
     txtMale: 'Nam',
     txtFemale: 'Nữ',

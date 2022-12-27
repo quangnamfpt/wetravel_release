@@ -1,4 +1,4 @@
-import { memo, useState, useEffect, useRef } from 'react'
+import { memo, useState, useEffect, useRef, useLayoutEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { english as englishServiceCategory, vietnamese as vietnameseServiceCategory } from '../../Languages/ServiceCategory'
 import { english as englishTablePartner, vietnamese as vietnameseTablePartner } from '../../Languages/TableListPartner'
@@ -33,11 +33,16 @@ function ListParner({ languageSelected }) {
     const [textOk, setTextOk] = useState('Ok')
     const [textCancel, setTextCancel] = useState('Cancel')
 
+    useLayoutEffect(() => {
+        setNumberPage(1)
+    }, [searchName])
+
     useEffect(() => {
         axios.get(API_GET_PARTNER, {
             params: {
                 page: numberPage,
-                size: 10
+                size: 10,
+                companyName: searchName
             }
         }).then((res) => {
             let listPartnerData = []

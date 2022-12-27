@@ -105,6 +105,8 @@ function Header({ languageSelected, setLanguageSelected, setProgress }) {
         sessionStorage.removeItem('role')
         sessionStorage.removeItem('index-service-selected')
         sessionStorage.removeItem('id')
+        document.cookie = `email=`;
+        document.cookie = `password=`;
         setFirstName('')
         setEmail('')
         setRole(0)
@@ -278,4 +280,4 @@ function Header({ languageSelected, setLanguageSelected, setProgress }) {
     </div>)
 }
 
-export default memo(Header)
+export default Header

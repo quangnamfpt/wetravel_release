@@ -42,7 +42,8 @@ function AdminSuppliersRestaurant({ languageSelected }) {
                 serviceCategoryId: 3,
                 page: numberPage,
                 size: 10,
-                isActive: 1
+                isActive: 1,
+                serviceIdList: ''
             }
         }).then((response) => {
             const data = response.data.data.content

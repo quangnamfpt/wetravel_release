@@ -70,10 +70,13 @@ function TourSchedule({ languageSelected, tour, tourSchedule, setTourSchedule, s
                     isActive: 1,
                     isBlock: 0,
                     status: '1',
-                    serviceCategoryId: i
+                    serviceCategoryId: i,
+                    city: value,
+                    serviceIdList: ''
                 }
             }).then(res => {
                 const data = res.data.data.content
+                console.log(data)
                 let list = []
                 data.forEach(item => {
                     list.push({
@@ -102,6 +105,8 @@ function TourSchedule({ languageSelected, tour, tourSchedule, setTourSchedule, s
         newDataForm[index].getEntertainment = getService[1]
         newDataForm[index].getRestaurants = getService[2]
 
+        console.log(getService)
+
         if (isChangeCity) {
             newDataForm[index].recommendAccommodation = []
             newDataForm[index].recommendEntertainment = []
@@ -110,6 +115,41 @@ function TourSchedule({ languageSelected, tour, tourSchedule, setTourSchedule, s
             newDataForm[index].indexAccommodation = []
             newDataForm[index].indexEntertainment = []
             newDataForm[index].indexRestaurants = []
+        }
+        else {
+            let indexAccommodation = []
+            for (let i = 0; i < newDataForm[index].recommendAccommodation.length; i++) {
+                for (let j = 0; i < getService[0].length; i++) {
+                    if (newDataForm[index].recommendAccommodation[i] == getService[0][j].value) {
+                        indexAccommodation.push(i)
+                        break;
+                    }
+                }
+            }
+
+            let indexEntertainment = []
+            for (let i = 0; i < newDataForm[index].recommendEntertainment.length; i++) {
+                for (let j = 0; i < getService[1].length; i++) {
+                    if (newDataForm[index].recommendEntertainment[i] == getService[1][j].value) {
+                        indexEntertainment.push(i)
+                        break;
+                    }
+                }
+            }
+
+            let indexRestaurants = []
+            for (let i = 0; i < newDataForm[index].recommendRestaurants.length; i++) {
+                for (let j = 0; i < getService[2].length; i++) {
+                    if (newDataForm[index].recommendRestaurants[i] == getService[2][j].value) {
+                        indexRestaurants.push(i)
+                        break;
+                    }
+                }
+            }
+
+            newDataForm[index].indexAccommodation = indexAccommodation
+            newDataForm[index].indexEntertainment = indexEntertainment
+            newDataForm[index].indexRestaurants = indexRestaurants
         }
 
         setGetDataComplete(true)
@@ -187,6 +227,10 @@ function TourSchedule({ languageSelected, tour, tourSchedule, setTourSchedule, s
         tourSchedule.forEach((item, index) => {
             getListServiceRecommend(item.toPlace, index, false)
         })
+    }, [])
+
+    useEffect(() => {
+        getListServiceRecommend(tourSchedule[tourSchedule.length - 1].toPlace, tourSchedule.length - 1, false)
     }, [tourSchedule.length])
 
     return (

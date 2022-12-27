@@ -11,9 +11,10 @@ import PopupReport from '../../Layout/PopupReport';
 import { BiTrashAlt } from 'react-icons/bi'
 import PopupCreateAlert from '../../Layout/PopupCreateAlert'
 import axios from 'axios'
-import { API_CREATE_COMMENT, API_GET_COMMENT } from '../../API'
+import { API_BLOCK_POST, API_CREATE_COMMENT, API_CREATE_REPORT_POST, API_GET_COMMENT } from '../../API'
 import { AiOutlineLeft, AiOutlineRight } from 'react-icons/ai'
 import LoadingDialog from '../../Layout/LoadingDialog'
+import { toast } from 'react-toastify'
 
 const responsive = {
     desktop: {
@@ -39,6 +40,9 @@ function PostDetailForum({ languageSelected }) {
     const languageTypePost = languageSelected === 'EN' ? typePostEnglish : typePostVietnamese
     const languageList = languageSelected === 'EN' ? english : vietnamese
 
+
+    const [accountId, setAccountId] = useState(0)
+
     const [getDataComplete, setGetDataComplete] = useState(false)
 
     const [showReport, setShowReport] = useState(false)
@@ -50,14 +54,31 @@ function PostDetailForum({ languageSelected }) {
     const role = sessionStorage.getItem('role')
 
     const createReportPost = () => {
-        console.log('Post report: ', post.id)
+        const postData = {
+            "postId": post.id,
+            "accountId": sessionStorage.getItem('id'),
+            "reasonReportPostId": idReasonReport
+        }
+
+        axios.post(API_CREATE_REPORT_POST, postData)
+            .then(() => {
+                toast.success(languageSelected === 'EN' ? 'Report post success' : 'Báo cáo thành công')
+            })
+            .catch((e) => {
+                console.log(e)
+            })
     }
 
     const blockPost = () => {
-        console.log('Post report: ', post.id)
+        axios.put(`${API_BLOCK_POST}${post.id}`)
+            .then(() => {
+                navigate(-1)
+                toast.success(languageSelected === 'EN' ? 'Post blocked' : 'Đã khoá bài viết')
+            }).catch((e) => console.error(e))
+        setShowConfirm(false)
     }
 
-    const callbackConfirm = useRef(role == 1 ? blockPost : createReportPost)
+    const callbackConfirm = useRef(() => { })
 
     const [showConfirm, setShowConfirm] = useState(false)
     const [titleConfirm, setTitleConfirm] = useState(languageList.txtBlock)
@@ -68,7 +89,9 @@ function PostDetailForum({ languageSelected }) {
     const [textCancel, setTextCancel] = useState(languageList.txtCancel)
 
     const handleClickBlock = () => {
+        setAccountId(post.accountId)
         setShowConfirm(true)
+        callbackConfirm.current = blockPost
     }
 
     const [newComment, setNewComment] = useState('')
@@ -131,6 +154,7 @@ function PostDetailForum({ languageSelected }) {
 
     const handleClickReport = () => {
         setShowReport(true)
+        callbackConfirm.current = createReportPost
     }
 
     const handleClickBtnReply = (id) => {
@@ -209,12 +233,14 @@ function PostDetailForum({ languageSelected }) {
         return <LoadingDialog />
     }
 
+    console.log(idReasonReport)
+
     return (
         <div className='container post-detail'>
             {showConfirm &&
-                <PopupCreateAlert textOk={textOk} textCancel={textCancel} title={titleConfirm} shortReason={shortReason} fullReason={fullReason} callback={callbackConfirm.current} isRed={isRed} setShowDialog={setShowConfirm} />
+                <PopupCreateAlert accountId={accountId} textOk={textOk} textCancel={textCancel} title={titleConfirm} shortReason={shortReason} fullReason={fullReason} callback={callbackConfirm.current} isRed={isRed} setShowDialog={setShowConfirm} />
             }
-            {showReport && <PopupReport setShowReport={setShowReport} languageSelected={languageSelected} idReason={idReasonReport} setIdReason={setIdReasonReport} callback={callbackConfirm} />}
+            {showReport && <PopupReport id={post.id} isPost setShowReport={setShowReport} languageSelected={languageSelected} idReason={idReasonReport} setIdReason={setIdReasonReport} callback={callbackConfirm.current} />}
             <img src={post.image} className='w-75 bg-image rotation-0 mt-20 mb-20 image-post-detail' />
             <div className='w-75 bg-white pd-20 main-content-post-detail'>
                 <div className='content-post-detail topic-post mb-20'>{languageTypePost[parseInt(post.topic) - 1].label.toUpperCase()}</div>
@@ -240,7 +266,9 @@ function PostDetailForum({ languageSelected }) {
                         }
                     </>
                 }
+
                 <div className='content-post-detail space-comment'>
+                    <div className='text-bold font-20'>{languageList.txtComment}</div>
                     {role !== null &&
                         <div className='input-comment d-flex'>
                             <input type='text' value={newComment} placeholder={languageList.txtComment} className='w-75 input-comment-post-detail'

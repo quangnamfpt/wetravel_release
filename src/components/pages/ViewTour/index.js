@@ -51,7 +51,8 @@ function ViewTour({ languageSelected }) {
             params: {
                 isActive: 1,
                 isBlock: window.location.pathname === '/admin/view-detail-tour' ? -1 : 0,
-                status: 1
+                status: 1,
+                serviceIdList: ''
             }
         }).then((response) => {
             response.data.data.map((item) => {
@@ -195,6 +196,15 @@ function ViewTour({ languageSelected }) {
                     name: element.tourScheduleName,
                     content: element.content,
                     toPlace: element.toPlace,
+                    recommendAccommodation: element.accommodationService.split(' '),
+                    recommendEntertainment: element.entertainmentService.split(' '),
+                    recommendRestaurants: element.restaurantService.split(' '),
+                    indexAccommodation: [],
+                    indexEntertainment: [],
+                    indexRestaurants: [],
+                    getAccommodation: [],
+                    getEntertainment: [],
+                    getRestaurants: [],
                     openServices: false,
                     show: true
                 }
